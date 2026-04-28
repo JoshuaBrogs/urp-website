@@ -92,32 +92,42 @@ const HISTORY=[
 ];
 
 const BLOGS=[
-  {id:1,date:"April 22, 2026",readTime:"5 min",tag:"FOUNDATIONS",tagColor:T.accent,
+  {id:1,date:"April 22, 2026",readTime:"8 min",tag:"FOUNDATIONS",tagColor:T.accent,
    title:"Division by Zero Is Not 'Undefined' — It's Unconstructable",
-   sub:"Your math teacher wasn't wrong. But the reason they gave wasn't quite right.",
-   pullQuote:"You cannot divide by what doesn't exist as a frame. It's not a rule. It's a structural impossibility.",
+   sub:"Your math teacher wasn't wrong. But the reason they gave wasn't quite right. There's a deeper explanation that changes how you see every equation you've ever written.",
+   pullQuote:"You cannot divide by what doesn't exist as a frame. It's not a rule. It's a structural impossibility written into the nature of quantity itself.",
    sections:[
-     {h:"The Wall Every Student Hits",b:"5 ÷ 0. It appears on the board and the explanation follows: 'That's undefined. Don't do it. Move on.' Most of us memorize the rule and carry on. But 'undefined' never sat right. It sounds like the mathematical community just hasn't gotten around to defining it — like a gap in the map, not a wall."},
-     {h:"What the URP Says",b:"The Unitary Reference Principle gives a structural answer: zero has no declared reference. There is no R. Without R, there is no frame to divide into. Division requires a declared partition — a reference that says 'this is what we're splitting.' Zero cannot be that reference, because zero is the absence of any declared reference. It's not undefined. It's unconstructable. The question itself requests something that cannot structurally exist."},
-     {h:"Why the Distinction Matters",b:"'Undefined' implies a missing definition. 'Unconstructable' implies a structural barrier. One is a gap in our knowledge. The other is a feature of reality. Every time a student is told division by zero is undefined, they're being given an administrative answer to a structural question. The URP replaces administration with reason."},
+     {h:"The Wall Every Student Hits",b:"There's a moment in every student's mathematical education where the teacher writes something on the board, gives a rule, and moves on. For most of us, that moment involves division by zero. '5 ÷ 0 is undefined,' the teacher says. 'Don't do it. It just is.' And most students, being sensible, accept this and move on. But the answer has always felt incomplete. Not wrong — the teacher isn't wrong, the result really is problematic — but incomplete. 'Undefined' sounds like a gap in the map. Like we've reached the edge of what mathematics has bothered to define yet. Like someone could, in principle, define it, they just haven't gotten around to it. That unease is legitimate. The reason 'undefined' never fully satisfies is that it is an administrative answer to a structural question."},
+     {h:"What a Declared Reference Actually Is",b:"To understand why division by zero is not merely 'undefined' but structurally unconstructable, you first have to understand what the Unitary Reference Principle proposes about the nature of numbers themselves. The central claim is simple but far-reaching: every meaningful quantity is a fraction of a declared reference. When you say '3 apples,' the number 3 only means something because there is an implicit declared reference — one apple. 3/R where R = one apple. When you say '60 miles per hour,' the 60 only means something because there is a declared reference of one hour and one mile. Remove the declared reference and you don't have a smaller number. You have nothing — no measurement, no meaning. This is the Unitary Reference Principle in its most compact form: n/R is the minimum unit of meaningful quantity. The denominator R is not optional. It is what makes the number a number."},
+     {h:"Why Zero Cannot Be a Reference",b:"Now apply this to division. Division asks: how many times does the divisor fit into the dividend? Or more precisely under the URP: what fraction is the dividend of the divisor as a declared reference? When you calculate 12 ÷ 4, you are declaring R = 4 and asking how many times R fits into 12. The answer is 3 — three complete declared references. When you try to calculate 12 ÷ 0, you are attempting to declare R = 0. But zero, under the URP, is not a quantity. Zero is the absence of any declared reference. Zero is non-existence. You cannot declare non-existence as your reference frame. There is no frame to divide into. The operation is not undefined — meaning we haven't gotten around to defining it. The operation is unconstructable — meaning the conditions required for the operation to exist are not met, and cannot be met, structurally."},
+     {h:"The Difference Between Undefined and Unconstructable",b:"This distinction matters more than it might first appear. 'Undefined' implies a missing definition. Mathematics could, in principle, assign a value. Some systems do — IEEE floating point arithmetic returns 'infinity' or 'NaN' for division by zero, as a pragmatic engineering choice. But these are workarounds, not answers. 'Unconstructable' implies a structural barrier. It says: the question itself requests something that cannot exist. Not because we haven't thought about it hard enough. Because the request is incoherent at the foundational level. The reason this matters is that 'undefined' invites students to treat division by zero as an oddity, a special case to memorize, a rule without reason. 'Unconstructable' invites them to ask: what does this reveal about the nature of division, and the nature of zero? And the answer to that question — the URP answer — is that every operation requires a declared reference, and zero cannot be one."},
+     {h:"What This Reveals About Zero Itself",b:"The Unitary Reference Principle also distinguishes between two kinds of zero that conventional mathematics treats as one. True zero — standalone zero — is non-existence: no declared reference was ever established. But there is a second kind of zero that appears constantly in real measurement: 0/R, which the URP calls contextual depletion. The frame R is declared and active. The content within it has been fully exhausted. The container exists. The content is gone. An empty bank account is not the same as no bank account. A fully discharged battery is not the same as no battery. A signal that has been fully attenuated is not the same as no signal. These are 0/R states: the frame persists, the content is zero. When you encounter 'zero' in the real world, it is almost always 0/R, not non-existence. The two are structurally different. Conflating them — treating the empty bank account as if the account itself doesn't exist — is the source of a surprising number of mathematical and conceptual errors. Division by zero fails because you cannot declare non-existence as a reference. Division by 0/R — zero content within an active frame — is a different matter, and behaves differently. The URP makes this distinction precise."},
+     {h:"Why This Should Be Taught From the Start",b:"None of this makes mathematics harder. In many ways it makes it simpler. When a student is told 'division by zero is undefined, memorize the rule,' they receive a fact with no explanation. When they are told 'division requires a declared reference, and zero has no reference to declare,' they receive a reason. Reasons are stickier than rules. Reasons connect to other things. The reason division by zero is unconstructable is the same reason that every measurement requires a unit, the same reason that probability is always between 0 and 1, the same reason that the Riemann Hypothesis's zeros sit at exactly one-half. It all traces to the same structural claim. That claim is what the Unitary Reference Principle proposes. Not as a replacement for conventional mathematics, which gets the right answers. But as a structural explanation for why mathematics gets those answers — and why the ones it can't get are structured the way they are."},
    ]},
-  {id:2,date:"April 24, 2026",readTime:"6 min",tag:"NUMBER THEORY",tagColor:T.blue,
-   title:"Does 0.999... Really Equal 1?",
-   sub:"Millions have seen the algebraic proof. Millions still don't believe it. They might be onto something.",
-   pullQuote:"1 is a destination. 0.999... is a journey. They are not the same thing.",
+  {id:2,date:"April 24, 2026",readTime:"10 min",tag:"NUMBER THEORY",tagColor:T.blue,
+   title:"Does 0.999... Really Equal 1? The Question Is More Important Than the Answer.",
+   sub:"Millions of people have seen the algebraic proof. Millions still don't believe it. This isn't irrationality — it's a correct intuition that conventional mathematics cannot fully address. The URP can.",
+   pullQuote:"1 is a destination. 0.999... is a journey. They are not the same thing, and the proof that says they are hides an assumption that deserves scrutiny.",
    sections:[
-     {h:"The Proof That Doesn't Convince",b:"Let x = 0.999... Multiply both sides by 10: 10x = 9.999... Subtract x: 9x = 9. Therefore x = 1. The logic is valid. And yet millions who see this proof remain unconvinced. They're not being irrational. They're sensing something the proof glosses over."},
-     {h:"The Hidden Assumption",b:"The proof assumes that 0.999... is already a completed value — a fixed point on the number line. But it isn't. 0.999... is a process: base-10 arithmetic running forever, generating 9s, never terminating. It approaches 1 without arriving. The proof treats the destination as if it were already reached. Under the URP, approach and arrival are structurally different."},
-     {h:"The Fraction Is the Exact Answer",b:"The fraction 1/3 is the exact answer. The decimal 0.333... is what base-10 arithmetic produces when it struggles to represent 1/3. The non-termination is the signal that the fraction is irrational relative to base-10 — not that the fraction is wrong, but that the representation is incomplete. The fraction is the declared reference. The decimal is the infinite journey toward expressing it."},
+     {h:"The Proof That Doesn't Convince",b:"The standard algebraic proof of 0.999... = 1 goes like this. Let x = 0.999... Multiply both sides by 10: 10x = 9.999... Subtract the first equation from the second: 9x = 9. Divide by 9: x = 1. Therefore 0.999... = 1. The logic is valid. The algebra is correct. And yet, when this proof is presented in classrooms and across the internet, the response is consistently split. Some people find it immediately convincing. Many do not. The doubters are often told they are being irrational, that they don't understand limits, that they are making a philosophical objection to a mathematical fact. But the doubters are not wrong to feel something is being glossed over. They are sensing a genuine assumption buried inside the proof, and the Unitary Reference Principle gives that assumption a name."},
+     {h:"The Hidden Assumption",b:"The proof assumes, at its first step, that 0.999... is a completed value — a fixed, determinate quantity that occupies a specific position on the number line. It treats '0.999...' as if it were a number in the same sense that '3' or '1/2' or 'π' are numbers: objects with stable identities that can be manipulated algebraically. But 0.999... is not a number in that sense. It is a process. It is base-10 arithmetic running indefinitely, generating nines, never terminating. The ellipsis '...' is not decoration. It is telling you that the sequence has not ended. The proof treats the destination as if it were already reached. Under the Unitary Reference Principle, approach and arrival are structurally different operations. They are not equivalent. They cannot simply be assumed to be equivalent without argument."},
+     {h:"What the Fraction Is",b:"The URP offers a precise way to think about this. The fraction 1/3 is the exact answer to the question 'one divided into three equal parts.' It is not an approximation. It is not a process. It is a declared relationship between a numerator and a denominator — a complete, static mathematical object. The decimal 0.333... is something entirely different: it is what base-10 arithmetic produces when it tries to represent 1/3 in positional decimal notation. Base-10 cannot represent 1/3 exactly. So it generates an infinite sequence of 3s that approaches the correct value asymptotically but never arrives. The non-termination of the decimal is not a property of the number 1/3. It is a property of base-10 arithmetic's inability to express 1/3. The fraction is more precise than the decimal, not less. The fraction is the arrival. The decimal is the journey."},
+     {h:"Approach and Arrival Are Structurally Different",b:"This distinction — between approach and arrival — runs throughout the URP and appears in several of the series papers. In calculus, it is the distinction between a limit (the reference being approached) and the variable (which approaches but does not arrive). In the Riemann Hypothesis, it is the distinction between a zero of the zeta function (a 0/R depletion event) and true non-existence. In physical reality, it is the structural reason conservation laws exist: a physical quantity can approach zero indefinitely but cannot reach standalone non-existence, because reaching it would require a receiving frame of non-existence — which cannot be declared. The 0.999... question touches all of this. The question is not really about whether 0.999... equals 1. The question is: when you say two mathematical expressions are equal, what do you mean? Are you saying they describe the same static object? Or are you saying one process converges to one value? These are different claims. The proof conflates them."},
+     {h:"What the URP Proposes Instead",b:"The URP does not claim that 0.999... = 1 is false. Depending on how you define equality and limits, it is formally true within standard real analysis. What the URP claims is that the proof reveals a structural distinction that conventional mathematics does not make explicit. When we say 1/3 = 0.333..., we are making a claim about equivalence of representation — the fraction and the decimal represent the same quantity. When we say 0.999... = 1, we are making a similar claim. And it is true in the limiting sense: the sequence of partial sums 0.9, 0.99, 0.999... converges to 1. The limit is 1. But the sequence itself — the process — is not 1. It approaches 1. The distinction between 'the limit of the sequence' and 'the sequence' is what the doubters are sensing, and they are not wrong to sense it. The URP's contribution is to give this distinction a name, a framework, and a place in a larger structural account of what numbers are."},
+     {h:"Why Any of This Matters",b:"You might reasonably ask: if the conventional answer is formally correct, why does it matter whether we make this distinction? It matters because mathematical intuition is not noise. When millions of people look at a valid proof and feel it is missing something, that feeling is data. It is evidence that the proof is working harder than it needs to, that it is smuggling in an assumption rather than making it explicit. The history of mathematics is full of cases where popular unease about a formal result turned out to be tracking a genuine structural issue — one that later demanded attention. The URP proposes that the 0.999... discomfort is tracking exactly this: the distinction between a process and its limit, between approach and arrival, between the journey and the destination. That distinction, once named, connects to everything from the foundations of calculus to the structure of physical conservation laws. The question 'does 0.999... equal 1' is far more interesting than its answer."},
    ]},
-  {id:3,date:"April 26, 2026",readTime:"8 min",tag:"MILLENNIUM PROBLEMS",tagColor:T.warn,
-   title:"The Riemann Hypothesis: Why Nobody Could Answer 'Why ½?'",
-   sub:"165 years. Trillions of verified zeros. Nobody could explain WHY that specific line.",
-   pullQuote:"Only ½ maps to itself. One depletion event. Self-symmetric. Structurally forced.",
+  {id:3,date:"April 26, 2026",readTime:"12 min",tag:"MILLENNIUM PROBLEMS",tagColor:T.warn,
+   title:"The Riemann Hypothesis: Why Nobody Could Answer 'Why Exactly One-Half?'",
+   sub:"165 years. Ten trillion verified zeros. The most famous unsolved problem in mathematics. The question everyone asked but nobody could answer. The URP proposes a structural answer.",
+   pullQuote:"Only ½ maps to itself under the symmetry of the functional equation. One depletion event. Self-symmetric. No deficit required. Structurally forced.",
    sections:[
-     {h:"The Most Famous Unsolved Problem",b:"In 1859, Bernhard Riemann published a paper on the distribution of prime numbers. It contained an observation: the non-trivial zeros of his zeta function all appear to have real part exactly equal to one-half. Since then, ten trillion zeros have been computed. Every single one sits on that line. And nobody has been able to prove it — or to explain why ½ specifically."},
-     {h:"The Critical Strip Is the URP Domain",b:"The critical strip 0 < σ < 1 is not an arbitrary region of analytic continuation. It is the domain of fractional reality under the URP. σ = 0 is non-existence — no declared reference. σ = 1 is complete wholeness — the declared reference fully achieved. Every value between 0 and 1 is a partial state. The Riemann zeta function operates entirely within the URP's domain."},
-     {h:"The Structural Answer",b:"A zero of the zeta function is a point of 0/R depletion. The functional equation maps σ to 1−σ. A zero at σ creates a mirror zero at 1−σ. If σ ≠ ½, there are two distinct depletion events in the same declared frame. Two depletions require the frame to go negative — a deficit state. A deficit cannot serve as a declared reference. The frame breaks. Only σ = ½ maps to itself: one depletion event, self-symmetric, no deficit required. Structurally forced."},
+     {h:"The Most Expensive Unsolved Problem in Mathematics",b:"In 2000, the Clay Mathematics Institute listed seven 'Millennium Prize Problems' — unsolved problems in mathematics so important that they offered one million dollars for each solution. One of them has stood unanswered since 1859. That's not a typo. The Riemann Hypothesis is 167 years old, has resisted the efforts of the greatest mathematical minds of the 19th, 20th, and 21st centuries, and has accumulated more than ten trillion pieces of computational evidence in its favor — every single one confirming the hypothesis without proving it. This is unusual in mathematics. Most unsolved problems are simply hard. The Riemann Hypothesis is hard and strange. The strangeness is this: everyone can see that it appears to be true. The pattern is unmistakable. Ten trillion examples is not a coincidence. And yet nobody can explain why it is true. More specifically, nobody has been able to answer the deceptively simple question at its heart: why exactly one-half?"},
+     {h:"What Riemann Actually Found",b:"In 1859, Bernhard Riemann published a paper on the distribution of prime numbers. To understand why primes thin out as numbers get larger — why there are 25 primes below 100 but only 21 primes between 100 and 200 — he developed a complex-valued function now called the Riemann zeta function. The function takes a complex number s = σ + it as input, where σ is the real part and t is the imaginary part. Riemann's function has what are called 'non-trivial zeros' — input values where the function equals zero. These zeros lie somewhere in the vertical strip of the complex plane where the real part σ is between 0 and 1. Riemann observed that all the zeros he could compute appeared to have real part exactly equal to one-half. He conjectured this was always true. That conjecture — that all non-trivial zeros lie on the line σ = 1/2 — is the Riemann Hypothesis. The question is: why one-half? What is special about exactly that value?"},
+     {h:"The Critical Strip Is the URP Domain",b:"The first observation the Unitary Reference Principle makes about the Riemann Hypothesis is about the strip itself, not just the zeros. The strip 0 < σ < 1 is, under the URP, not an arbitrary region of analytic continuation. It is the domain of fractional reality. σ = 0, the left boundary, is non-existence under the URP — the absence of any declared reference. σ = 1, the right boundary, is complete wholeness — the declared reference fully achieved. Every value strictly between 0 and 1 is a partial state: some fraction of a declared reference, the normal condition of all real measurement. The zeta function operates entirely within this domain for its non-trivial zeros. This is not a coincidence under the URP. The zeta function is, in some structural sense, a function about partial states — about what happens between non-existence and complete wholeness. Its zeros appear in the domain of partial states because that is the domain they belong to."},
+     {h:"What a Zero of the Zeta Function Actually Is",b:"Conventional mathematics describes a zero of the Riemann zeta function as a point where ζ(s) = 0 — an analytic zero, a point where the function's value vanishes. The URP proposes a different description. Under the URP, the zeros are 0/R depletion events. The zeta function's frame — its analytic structure, its derivative, its continuation — persists at every zero. The function is analytic at its zeros, meaning it has a well-defined non-zero derivative there. The function value momentarily reaches zero, but the function itself — the frame — persists. This is precisely the URP's definition of 0/R: the frame is present and active, but the content within it has been momentarily exhausted. The distinction matters because it explains why the zeros cannot be true non-existence. At a genuine non-existence point, the function would not be analytic — the frame would not persist. But the zeta function's zeros are analytic. The frame persists. The content is depleted. They are 0/R events, not standalone zeros."},
+     {h:"Why ½? The Structural Answer",b:"Now the key question: why must these 0/R depletion events occur at σ = 1/2? The Riemann zeta function satisfies what is called a functional equation: a symmetry that relates ζ(s) to ζ(1-s). This equation maps σ to 1-σ: whatever happens at real part σ has a corresponding, symmetric event at real part 1-σ. When there is a zero at σ, the functional equation implies there is a corresponding zero at 1-σ. These zeros are symmetric partners. Now consider what happens if a zero occurs at σ ≠ 1/2. The symmetry creates a partner zero at 1-σ, which is a different value. There are now two distinct zeros — two distinct 0/R depletion events — in the same declared frame, at different positions. Under the URP, two depletion events in the same declared frame require the frame to accommodate both. But accommodating two distinct depletions in a fractional domain forces the frame into a deficit state — a state where n/R < 0, below the declared domain. A deficit state cannot serve as a declared reference. The reference structure breaks."},
+     {h:"Only ½ Maps to Itself",b:"The only value of σ where the functional equation does not create a distinct partner is σ = 1/2. At exactly one-half, the symmetry maps σ to 1-σ = 1/2. The zero maps to itself. There is one depletion event, not two. One depletion event in a declared frame does not require a deficit state. The reference structure is maintained. The frame persists. This is the structural answer the URP proposes: zeros must occur at σ = 1/2 because it is the only position in the critical strip where a 0/R depletion event is self-symmetric under the functional equation — where the depletion does not create a distinct partner requiring a deficit. At any other position, the symmetry would create two depletions, force a deficit, and break the declared reference structure. The Riemann Hypothesis is, under this reading, a statement about the structural stability of declared references in the fractional domain."},
+     {h:"Why This Is a Proposal, Not a Proof",b:"It is important to be clear about what the URP offers here. This is a structural argument — a proposed explanation for why the Riemann Hypothesis should be true. It is not a formal mathematical proof in the conventional sense. A proof would require establishing precise connections between the URP's structural claims and the analytic properties of the zeta function in rigorous mathematical terms. That work is ongoing and is part of what the paper series is building toward. What the URP offers right now is something that has been absent from the Riemann Hypothesis literature for 167 years: a conceptual answer to 'why one-half?' Not just 'the functional equation forces it' — which is observation, not explanation — but a structural reason why the symmetry of the functional equation produces exactly this constraint. The URP's answer is: because the fractional domain has only one self-symmetric point, and that point is the only position where a depletion event can occur without creating a deficit. Whether that structural argument can be made rigorous is the open question. The argument itself has been absent."},
    ]},
 ];
 
@@ -999,6 +1009,158 @@ function AboutPage({go}){
 }
 
 // ═══════════════════════════════════════════
+// PROVOCATIONS — Interactive Homepage Section
+// ═══════════════════════════════════════════
+function Provocations({go}){
+  const [active,setActive]=useState(null);
+  const [answered,setAnswered]=useState({});
+
+  const questions=[
+    {
+      id:"whole",
+      q:"Is 7 a whole number?",
+      hint:"Most people say yes immediately.",
+      choices:[
+        {val:"yes",label:"Yes — 7 is a whole number"},
+        {val:"no",label:"No — it depends on context"},
+      ],
+      reveal:{
+        yes:`Your answer is conventional and completely reasonable. But consider what "whole" means structurally. The URP proposes that 1 is the only complete whole — the only value where a measurement exactly equals its declared reference. 7 is not one whole thing. It is seven completed reference frames, stacked. 7 apples is seven complete 1-apple references. 7 kilometres is seven complete 1-km references. The "7" is a count of completed wholes, not a whole itself. This isn't saying you're wrong — it's asking: what does "whole" actually mean? And the answer changes what integers are.`,
+        no:`You're already thinking structurally. The URP formalises exactly this intuition: "whole" requires a declared reference, and whether 7 is whole depends entirely on what that reference is. 7/7 = 1, which is complete. 7/10 = 0.7, which is partial. 7/3 creates a surplus — more than one complete frame. The number 7 has no wholeness on its own. It is a count of completed units of a declared reference. This is the starting point of the Unitary Reference Principle.`,
+      }
+    },
+    {
+      id:"zero",
+      q:"What is zero?",
+      hint:"There might be more than one answer.",
+      choices:[
+        {val:"nothing",label:"Nothing — the absence of quantity"},
+        {val:"number",label:"A number like any other"},
+        {val:"placeholder",label:"A placeholder — an empty position"},
+      ],
+      reveal:{
+        nothing:`This intuition is structurally correct in one sense, and the URP preserves it. Standalone zero — true zero — is non-existence: no declared reference was ever established. But there is a second kind of zero the URP calls 0/R, or contextual depletion. An empty bank account is not the same as no bank account. A fully discharged battery is not the same as no battery. In both cases, the frame persists — the account, the battery — but the content is exhausted. 0/R is "nothing within a declared frame." It behaves differently from non-existence. Conflating them is the source of centuries of mathematical confusion, including why division by zero has never been properly explained.`,
+        number:`Convention treats zero this way, but the URP challenges it. If zero is a number like 3 or 7, then it should be expressible as n/R for some reference R. But what is the reference for zero? There is none — zero is the absence of any declared reference. This is why dividing by zero is not just "undefined" but structurally unconstructable: you cannot declare non-existence as a reference frame. Zero has a legitimate role in the URP, but not as a number. It is the boundary condition: the state before any reference is declared.`,
+        placeholder:`You're thinking of 0/R — contextual depletion — which is one of the two zeros the URP distinguishes. The placeholder zero in positional notation (the "0" in 104 or 0.3) is exactly this: the frame exists (the positional column is declared), but the content is empty. This is structurally different from non-existence. The URP formalises the placeholder intuition: 0/R means the reference persists, the content is zero. Fibonacci was using this concept correctly in 1202 without having a name for it. You just named it.`,
+      }
+    },
+    {
+      id:"division",
+      q:"Why is division by zero 'undefined'?",
+      hint:"You were probably taught a rule without a reason.",
+      choices:[
+        {val:"rule",label:"It just is — that's the rule"},
+        {val:"infinity",label:"Because it would be infinite"},
+        {val:"noframe",label:"There's no reference frame to divide into"},
+      ],
+      reveal:{
+        rule:`This is what most of us were taught, and there's nothing wrong with accepting it. But "undefined" is an administrative answer. It says we haven't defined it, not that it cannot be defined. Some systems do assign a value — IEEE arithmetic returns "infinity" or NaN. The URP goes deeper: division requires a declared reference R. When you divide 12 by 4, you declare R = 4 and ask how many times R fits into 12. When you try to divide by zero, you are attempting to declare R = 0. But zero has no declared reference to be a frame for. The operation is not undefined — it is unconstructable. The conditions for the operation's existence are not met, and cannot be met.`,
+        infinity:`This is the limit argument: as the divisor approaches zero, the quotient grows without bound. It's a meaningful observation and has applications in analysis. But it confuses the limit of a process with the value at a point. The limit of 1/x as x→0 from the right is +∞. But that's the limit of the approach — it doesn't assign a value to 1/0 itself. The URP's answer is different: the problem is not that the result is too large to name. The problem is that the operation requires declaring R = 0 as a reference frame, and zero cannot be a reference frame. The issue is structural, not a matter of the result being large.`,
+        noframe:`You've arrived at the URP answer directly. Every division operation requires a declared reference — a frame to divide into. Zero cannot be that reference because zero is the absence of any declared reference. There is no frame. The operation cannot be constructed. This is why the URP describes division by zero not as "undefined" but as "unconstructable" — a structural impossibility, not a definitional gap. The distinction matters: an undefined thing might be definable with more thought. An unconstructable thing cannot be constructed because the structural requirements for its existence are not satisfied.`,
+      }
+    },
+    {
+      id:"riemann",
+      q:"The Riemann Hypothesis says all non-trivial zeros sit at exactly σ = ½. Why one-half?",
+      hint:"165 years of mathematics hasn't answered this.",
+      choices:[
+        {val:"symmetry",label:"Because of the functional equation's symmetry"},
+        {val:"unknown",label:"Nobody knows — that's why it's unsolved"},
+        {val:"domain",label:"Because ½ is the midpoint of the fractional domain (0,1)"},
+      ],
+      reveal:{
+        symmetry:`This is the standard mathematical observation, and it's true. The functional equation of the zeta function relates ζ(s) to ζ(1-s), creating a symmetry that pairs zeros at σ with zeros at 1-σ. But symmetry is an observation, not an explanation. Why does the symmetry force σ = ½ specifically? The URP's answer: because at any other position, the symmetric pairing creates two distinct depletion events in the same declared frame, forcing the frame into a deficit state. A deficit state cannot serve as a declared reference. Only σ = ½ maps to itself under the symmetry — one depletion event, self-symmetric, no deficit required.`,
+        unknown:`That's exactly right, and it's been the honest answer for 167 years. But the URP proposes a structural reason. The critical strip 0 < σ < 1 is the domain of fractional reality: σ = 0 is non-existence, σ = 1 is complete wholeness, everything in between is a partial state. Zeros of the zeta function are 0/R depletion events — the function's frame persists, but its content momentarily exhausts. The only position in the strip where a depletion event is self-symmetric under the functional equation — where it doesn't require a partner depletion creating a structural deficit — is exactly σ = ½. That's the proposed structural answer. It's not a proof. But it's the first attempt at a reason.`,
+        domain:`You're thinking structurally, and this is close to the URP's answer. The critical strip is indeed the fractional domain (0,1) in the URP framework — σ = 0 is non-existence, σ = 1 is complete wholeness. And ½ is the unique self-symmetric point of this domain under the functional equation's symmetry. More precisely: a depletion event at any σ ≠ ½ creates a symmetric partner at 1-σ, producing two distinct depletion events that force a structural deficit. Only ½ avoids this. The URP calls this self-symmetry without deficit: one depletion event that maps to itself, requiring no partner, creating no deficit. Structurally forced.`,
+      }
+    },
+  ];
+
+  const q=questions[active!==null?active:0];
+  const currentAnswer=active!==null?answered[q.id]:null;
+
+  return(
+    <section style={{background:T.bg,padding:"5rem 3rem",position:"relative",zIndex:1,borderTop:`1px solid ${T.border}`}}>
+      <div style={{maxWidth:860,margin:"0 auto"}}>
+        {/* Section header */}
+        <div style={{textAlign:"center",marginBottom:"3.5rem"}}>
+          <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".3em",color:T.dim,marginBottom:".75rem"}}>BEFORE YOU READ THE PAPERS</div>
+          <h2 style={{fontFamily:T.head,fontSize:"clamp(24px,3.5vw,42px)",fontWeight:700,color:T.text,margin:"0 0 1rem",lineHeight:1.15}}>What Does Your Intuition Say?</h2>
+          <p style={{fontFamily:T.body,fontSize:17,color:T.muted,maxWidth:560,margin:"0 auto",lineHeight:1.9}}>The URP doesn't ask you to abandon what you know. It asks: what does your existing answer reveal about the structure underneath? Answer each question, then see what the framework finds there.</p>
+        </div>
+
+        {/* Question tabs */}
+        <div style={{display:"flex",gap:0,marginBottom:"2rem",borderBottom:`1px solid ${T.border}`,overflowX:"auto"}}>
+          {questions.map((q,i)=>(
+            <button key={q.id} onClick={()=>setActive(i)} style={{
+              padding:".75rem 1.25rem",background:"transparent",
+              border:"none",borderBottom:`2px solid ${active===i?T.accent:"transparent"}`,
+              color:active===i?T.text:T.dim,fontFamily:T.body,fontSize:13,
+              cursor:"pointer",transition:"all .2s",whiteSpace:"nowrap",flexShrink:0,
+              fontWeight:active===i?600:400}}>
+              {answered[q.id]&&<span style={{color:T.accent,marginRight:".4rem",fontSize:10}}>✓</span>}
+              {`Q${i+1}`}
+            </button>
+          ))}
+        </div>
+
+        {/* Active question */}
+        {active!==null&&(()=>{
+          const q=questions[active];
+          const ans=answered[q.id];
+          return(
+            <div>
+              <div style={{marginBottom:"2rem"}}>
+                <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".2em",color:T.dim,marginBottom:".75rem"}}>QUESTION {active+1} OF {questions.length}</div>
+                <h3 style={{fontFamily:T.head,fontSize:"clamp(20px,2.8vw,32px)",fontWeight:700,color:T.text,margin:"0 0 .5rem",lineHeight:1.2}}>{q.q}</h3>
+                <div style={{fontFamily:T.body,fontSize:14,color:T.muted,fontStyle:"italic"}}>{q.hint}</div>
+              </div>
+              {!ans&&<div style={{display:"flex",flexDirection:"column",gap:".65rem",marginBottom:"1.5rem"}}>
+                {q.choices.map(ch=>(
+                  <button key={ch.val} onClick={()=>setAnswered(prev=>({...prev,[q.id]:ch.val}))} style={{
+                    textAlign:"left",padding:"1.1rem 1.5rem",
+                    background:T.bg1,border:`1px solid ${T.border}`,
+                    color:T.sub,fontFamily:T.body,fontSize:15,cursor:"pointer",
+                    transition:"all .2s",lineHeight:1.5}}
+                    onMouseEnter={e=>{e.currentTarget.style.borderColor=T.accent;e.currentTarget.style.color=T.text;}}
+                    onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.color=T.sub;}}>
+                    {ch.label}
+                  </button>
+                ))}
+              </div>}
+              {ans&&<>
+                <div style={{padding:".6rem 1rem",background:T.bg1,border:`1px solid ${T.border}`,display:"inline-flex",alignItems:"center",gap:".75rem",marginBottom:"1.5rem"}}>
+                  <span style={{fontFamily:T.mono,fontSize:10,color:T.dim,letterSpacing:".1em"}}>YOUR ANSWER</span>
+                  <span style={{fontFamily:T.body,fontSize:14,color:T.accent}}>
+                    {q.choices.find(c=>c.val===ans)?.label}
+                  </span>
+                </div>
+                <div style={{padding:"1.75rem 2rem",background:"rgba(0,20,12,.4)",borderLeft:`4px solid ${T.accent}`,marginBottom:"1.75rem"}}>
+                  <div style={{fontFamily:T.mono,fontSize:9,letterSpacing:".2em",color:T.accent,marginBottom:".85rem"}}>WHAT THE URP FINDS IN YOUR ANSWER</div>
+                  <div style={{fontFamily:T.body,fontSize:15,color:"#B8D8C8",lineHeight:2.05}}>{q.reveal[ans]}</div>
+                </div>
+                <div style={{display:"flex",gap:".75rem",alignItems:"center",flexWrap:"wrap"}}>
+                  {active<questions.length-1&&<button onClick={()=>setActive(active+1)} style={{background:T.accent,color:T.bg,border:"none",fontFamily:T.body,fontSize:13,fontWeight:700,padding:".65rem 1.5rem",cursor:"pointer"}}>Next Question →</button>}
+                  {active===questions.length-1&&Object.keys(answered).length===questions.length&&<button onClick={()=>go("Papers")} style={{background:T.accent,color:T.bg,border:"none",fontFamily:T.body,fontSize:13,fontWeight:700,padding:".65rem 1.75rem",cursor:"pointer"}}>Explore the Papers →</button>}
+                  <button onClick={()=>setAnswered(prev=>{const n={...prev};delete n[q.id];return n;})} style={{background:"transparent",color:T.dim,border:`1px solid ${T.border}`,fontFamily:T.body,fontSize:13,padding:".65rem 1.25rem",cursor:"pointer"}}>Change my answer</button>
+                </div>
+              </>}
+            </div>
+          );
+        })()}
+
+        {/* Start prompt if none active */}
+        {active===null&&<div style={{textAlign:"center",padding:"2.5rem",border:`1px solid ${T.border}`,background:T.bg1}}>
+          <div style={{fontFamily:T.body,fontSize:16,color:T.muted,marginBottom:"1.25rem"}}>Four questions. Your answers reveal the structure underneath your intuitions.</div>
+          <button onClick={()=>setActive(0)} style={{background:T.accent,color:T.bg,border:"none",fontFamily:T.body,fontSize:14,fontWeight:700,padding:".8rem 2rem",cursor:"pointer"}}>Start with Question 1</button>
+        </div>}
+      </div>
+    </section>
+  );
+}
+
+
+// ═══════════════════════════════════════════
 // HERO
 // ═══════════════════════════════════════════
 function Hero({go}){
@@ -1063,7 +1225,7 @@ export default function App(){
     <div style={{background:T.bg,minHeight:"100vh",color:T.text,fontFamily:T.body}}>
       <ParticleField/>
       <Nav page={page} go={go} mobile={mobile}/>
-      {page==="Home"&&<><Hero go={go}/><Footer go={go}/></>}
+      {page==="Home"&&<><Hero go={go}/><Provocations go={go}/><Footer go={go}/></>}
       {page==="Papers"&&<PapersPage onSelectPaper={handleSelectPaper} mobile={mobile} go={go}/>}
       {page==="PaperDetail"&&selectedPaper&&<PaperPage paper={selectedPaper} onBack={()=>go("Papers")} go={go}/>}
       {page==="History"&&<HistoryPage mobile={mobile} go={go}/>}
