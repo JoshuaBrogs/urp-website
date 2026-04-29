@@ -1150,8 +1150,17 @@ function StickySection({id, height="200vh", children, bg=T.bg}) {
         display:"flex", flexDirection:"column",
         alignItems:"center", justifyContent:"center",
         background:bg, overflow:"hidden",
+        paddingTop:64,
       }}>
-        {children}
+        <div style={{
+          width:"100%", maxHeight:"calc(100vh - 80px)",
+          overflowY:"auto", overflowX:"hidden",
+          scrollbarWidth:"none", msOverflowStyle:"none",
+          display:"flex", flexDirection:"column",
+          alignItems:"center", justifyContent:"center",
+        }}>
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -1165,7 +1174,7 @@ function AnimIn({children, delay=0, from="bottom"}) {
     const el = ref.current; if(!el) return;
     const obs = new IntersectionObserver(
       ([e])=>{ if(e.isIntersecting) setVis(true); },
-      {threshold:0.15, rootMargin:"0px 0px -60px 0px"}
+      {threshold:0.05, rootMargin:"0px 0px 0px 0px"}
     );
     obs.observe(el);
     return ()=>obs.disconnect();
@@ -1185,7 +1194,7 @@ function AnimIn({children, delay=0, from="bottom"}) {
 // ── SECTION 1: HERO ────────────────────────────────────────────────────
 function HeroSection({go}) {
   return (
-    <StickySection id="s-hero" height="300vh"
+    <StickySection id="s-hero" height="150vh"
       bg="radial-gradient(ellipse at 50% 55%, rgba(0,255,179,0.07) 0%, #05080A 60%)">
       <Particles/>
       <div style={{position:"relative",zIndex:1,textAlign:"center",padding:"0 clamp(1.5rem,5vw,4rem)",maxWidth:800,width:"100%"}}>
@@ -1243,7 +1252,7 @@ function HeroSection({go}) {
           <div style={{display:"flex",gap:"clamp(2rem,5vw,5rem)",flexWrap:"wrap",justifyContent:"center"}}>
             {[{n:"5",l:"Published"},{n:"17",l:"Papers"},{n:"14",l:"Mathematicians"}].map(({n,l})=>(
               <div key={l} style={{textAlign:"center"}}>
-                <div style={{fontFamily:T.head,fontSize:"clamp(32px,5vw,48px)",fontWeight:700,color:T.accent,lineHeight:1}}>{n}</div>
+                <div style={{fontFamily:T.head,fontSize:"clamp(28px,4vw,42px)",fontWeight:700,color:T.accent,lineHeight:1}}>{n}</div>
                 <div style={{fontFamily:T.body,fontSize:12,color:T.dim,marginTop:".3rem",letterSpacing:".05em"}}>{l}</div>
               </div>
             ))}
@@ -1268,8 +1277,9 @@ function WhatSection() {
     {sym:"1/3",text:"The exact answer. 0.333... is base-10 struggling — an infinite approach, never arrival.",c:T.blue},
   ];
   return (
-    <StickySection id="s-what" height="280vh">
-      <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:800,padding:"0 clamp(1.5rem,5vw,4rem)"}}>
+    <StickySection id="s-what" height="140vh">
+      <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:800,
+        padding:"clamp(1rem,3vh,2rem) clamp(1.5rem,5vw,4rem)"}}>
         <AnimIn delay={0}>
           <div style={{fontFamily:T.mono,fontSize:"clamp(9px,1vw,10px)",letterSpacing:".35em",color:T.dim,marginBottom:"1rem"}}>
             WHAT IS THE URP?
@@ -1299,8 +1309,8 @@ function WhatSection() {
                   fontWeight:700,color:r.c,textAlign:"center",letterSpacing:"-.02em"}}>
                   {r.sym}
                 </div>
-                <div style={{padding:".9rem 1.25rem",fontFamily:T.body,
-                  fontSize:"clamp(13px,1.4vw,15px)",color:T.muted,lineHeight:1.75}}>
+                <div style={{padding:".85rem 1rem",fontFamily:T.body,
+                  fontSize:"clamp(12px,1.4vw,14px)",color:T.muted,lineHeight:1.7,minWidth:0}}>
                   {r.text}
                 </div>
               </div>
@@ -1332,9 +1342,10 @@ function AxiomsSection({go}) {
      eq:"Step 0: declare R → Step 1: n/R → Step 2: verify",color:T.purple,blogId:1},
   ];
   return (
-    <StickySection id="s-axioms" height="400vh" bg={T.bg}>
+    <div id="s-axioms" style={{background:T.bg,borderTop:`1px solid ${T.border}`}}>
       <div style={{position:"relative",zIndex:1,width:"100%",maxWidth:1100,
-        padding:"clamp(4rem,8vh,6rem) clamp(1.5rem,4vw,3rem) clamp(2rem,4vh,3rem)"}}>
+        padding:"5rem clamp(1.5rem,4vw,3rem) 5rem",margin:"0 auto",
+        scrollMarginTop:"80px"}}>
         <div style={{textAlign:"center",marginBottom:"clamp(2rem,4vh,3.5rem)"}}>
           <AnimIn delay={0}>
             <div style={{fontFamily:T.mono,fontSize:"clamp(9px,1vw,10px)",letterSpacing:".35em",color:T.dim,marginBottom:".75rem"}}>
@@ -1396,7 +1407,7 @@ function AxiomsSection({go}) {
           ))}
         </div>
       </div>
-    </StickySection>
+    </div>
   );
 }
 
