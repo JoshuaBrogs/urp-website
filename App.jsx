@@ -1602,7 +1602,7 @@ function Hero({go}){
         {[{b:"3",a:"Three of what? Without a declared R, this symbol has no meaning."},
           {b:"0",a:"Not a small number. The absence of any declared reference."},
           {b:"1",a:"The only complete whole — where measurement equals reference exactly."},
-          {b:"0.333...",a:"Not the answer. The fraction 1/3 is exact. The decimal is infinite approach."},
+          {b:"1/3",a:"The fraction is exact. 0.333... is base-10 failing to express it — infinite approach, never arrival."},
         ].map((r,i)=>(
           <div key={i} style={{background:T.bg,display:"grid",gridTemplateColumns:"64px 1fr",alignItems:"center"}}>
             <div style={{padding:"1.1rem",borderRight:`1px solid ${T.border}`,fontFamily:T.mono,fontSize:22,fontWeight:700,color:T.accent,textAlign:"center"}}>{r.b}</div>
@@ -1631,8 +1631,7 @@ function Hero({go}){
   ];
 
   return(
-    <div ref={containerRef} style={{position:"relative",height:"100vh",overflow:"hidden",background:T.bg,zIndex:1}}>
-      <ParticleField/>
+    <div ref={containerRef} style={{position:"relative",height:"100vh",overflow:"hidden",background:T.bg,zIndex:1,flexShrink:0}}>
       <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",
         transform:`translateY(${-slide*100}%)`,
         transition:animating?"transform 0.5s cubic-bezier(0.77,0,0.18,1)":"none"}}>
@@ -1661,7 +1660,7 @@ export default function App(){
     <div style={{background:T.bg,minHeight:"100vh",color:T.text,fontFamily:T.body}}>
       <ParticleField/>
       <Nav page={page} go={go} mobile={mobile}/>
-      {page==="Home"&&<><Hero go={go}/><AxiomsSection go={go}/><Provocations go={go}/><Footer go={go}/></>}
+      {page==="Home"&&<div style={{display:"flex",flexDirection:"column"}}><Hero go={go}/><AxiomsSection go={go}/><Provocations go={go}/><Footer go={go}/></div>}
       {page==="Papers"&&<PapersPage onSelectPaper={handleSelectPaper} mobile={mobile} go={go}/>}
       {page==="PaperDetail"&&selectedPaper&&<PaperPage paper={selectedPaper} onBack={()=>go("Papers")} go={go}/>}
       {page==="History"&&<HistoryPage mobile={mobile} go={go}/>}
