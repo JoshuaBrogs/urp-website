@@ -92,7 +92,7 @@ const HISTORY=[
 ];
 
 const BLOGS=[
-  {id:1,date:"April 22, 2026",readTime:"8 min",tag:"FOUNDATIONS",tagColor:T.accent,
+  {id:1,date:"April 22, 2026",readTime:"5 min",tag:"FOUNDATIONS",tagColor:T.accent,
    title:"Division by Zero Is Not 'Undefined' — It's Unconstructable",
    sub:"Your math teacher wasn't wrong. But the reason they gave wasn't quite right. There's a deeper explanation that changes how you see every equation you've ever written.",
    pullQuote:"You cannot divide by what doesn't exist as a frame. It's not a rule. It's a structural impossibility written into the nature of quantity itself.",
@@ -104,7 +104,7 @@ const BLOGS=[
      {h:"What This Reveals About Zero Itself",b:"The Unitary Reference Principle also distinguishes between two kinds of zero that conventional mathematics treats as one. True zero — standalone zero — is non-existence: no declared reference was ever established. But there is a second kind of zero that appears constantly in real measurement: 0/R, which the URP calls contextual depletion. The frame R is declared and active. The content within it has been fully exhausted. The container exists. The content is gone. An empty bank account is not the same as no bank account. A fully discharged battery is not the same as no battery. A signal that has been fully attenuated is not the same as no signal. These are 0/R states: the frame persists, the content is zero. When you encounter 'zero' in the real world, it is almost always 0/R, not non-existence. The two are structurally different. Conflating them — treating the empty bank account as if the account itself doesn't exist — is the source of a surprising number of mathematical and conceptual errors. Division by zero fails because you cannot declare non-existence as a reference. Division by 0/R — zero content within an active frame — is a different matter, and behaves differently. The URP makes this distinction precise."},
      {h:"Why This Should Be Taught From the Start",b:"None of this makes mathematics harder. In many ways it makes it simpler. When a student is told 'division by zero is undefined, memorize the rule,' they receive a fact with no explanation. When they are told 'division requires a declared reference, and zero has no reference to declare,' they receive a reason. Reasons are stickier than rules. Reasons connect to other things. The reason division by zero is unconstructable is the same reason that every measurement requires a unit, the same reason that probability is always between 0 and 1, the same reason that the Riemann Hypothesis's zeros sit at exactly one-half. It all traces to the same structural claim. That claim is what the Unitary Reference Principle proposes. Not as a replacement for conventional mathematics, which gets the right answers. But as a structural explanation for why mathematics gets those answers — and why the ones it can't get are structured the way they are."},
    ]},
-  {id:2,date:"April 24, 2026",readTime:"10 min",tag:"NUMBER THEORY",tagColor:T.blue,
+  {id:2,date:"April 24, 2026",readTime:"6 min",tag:"NUMBER THEORY",tagColor:T.blue,
    title:"Does 0.999... Really Equal 1? The Question Is More Important Than the Answer.",
    sub:"Millions of people have seen the algebraic proof. Millions still don't believe it. This isn't irrationality — it's a correct intuition that conventional mathematics cannot fully address. The URP can.",
    pullQuote:"1 is a destination. 0.999... is a journey. They are not the same thing, and the proof that says they are hides an assumption that deserves scrutiny.",
@@ -116,7 +116,7 @@ const BLOGS=[
      {h:"What the URP Proposes Instead",b:"The URP does not claim that 0.999... = 1 is false. Depending on how you define equality and limits, it is formally true within standard real analysis. What the URP claims is that the proof reveals a structural distinction that conventional mathematics does not make explicit. When we say 1/3 = 0.333..., we are making a claim about equivalence of representation — the fraction and the decimal represent the same quantity. When we say 0.999... = 1, we are making a similar claim. And it is true in the limiting sense: the sequence of partial sums 0.9, 0.99, 0.999... converges to 1. The limit is 1. But the sequence itself — the process — is not 1. It approaches 1. The distinction between 'the limit of the sequence' and 'the sequence' is what the doubters are sensing, and they are not wrong to sense it. The URP's contribution is to give this distinction a name, a framework, and a place in a larger structural account of what numbers are."},
      {h:"Why Any of This Matters",b:"You might reasonably ask: if the conventional answer is formally correct, why does it matter whether we make this distinction? It matters because mathematical intuition is not noise. When millions of people look at a valid proof and feel it is missing something, that feeling is data. It is evidence that the proof is working harder than it needs to, that it is smuggling in an assumption rather than making it explicit. The history of mathematics is full of cases where popular unease about a formal result turned out to be tracking a genuine structural issue — one that later demanded attention. The URP proposes that the 0.999... discomfort is tracking exactly this: the distinction between a process and its limit, between approach and arrival, between the journey and the destination. That distinction, once named, connects to everything from the foundations of calculus to the structure of physical conservation laws. The question 'does 0.999... equal 1' is far more interesting than its answer."},
    ]},
-  {id:3,date:"April 26, 2026",readTime:"12 min",tag:"MILLENNIUM PROBLEMS",tagColor:T.warn,
+  {id:3,date:"April 26, 2026",readTime:"7 min",tag:"MILLENNIUM PROBLEMS",tagColor:T.warn,
    title:"The Riemann Hypothesis: Why Nobody Could Answer 'Why Exactly One-Half?'",
    sub:"165 years. Ten trillion verified zeros. The most famous unsolved problem in mathematics. The question everyone asked but nobody could answer. The URP proposes a structural answer.",
    pullQuote:"Only ½ maps to itself under the symmetry of the functional equation. One depletion event. Self-symmetric. No deficit required. Structurally forced.",
@@ -129,6 +129,78 @@ const BLOGS=[
      {h:"Only ½ Maps to Itself",b:"The only value of σ where the functional equation does not create a distinct partner is σ = 1/2. At exactly one-half, the symmetry maps σ to 1-σ = 1/2. The zero maps to itself. There is one depletion event, not two. One depletion event in a declared frame does not require a deficit state. The reference structure is maintained. The frame persists. This is the structural answer the URP proposes: zeros must occur at σ = 1/2 because it is the only position in the critical strip where a 0/R depletion event is self-symmetric under the functional equation — where the depletion does not create a distinct partner requiring a deficit. At any other position, the symmetry would create two depletions, force a deficit, and break the declared reference structure. The Riemann Hypothesis is, under this reading, a statement about the structural stability of declared references in the fractional domain."},
      {h:"Why This Is a Proposal, Not a Proof",b:"It is important to be clear about what the URP offers here. This is a structural argument — a proposed explanation for why the Riemann Hypothesis should be true. It is not a formal mathematical proof in the conventional sense. A proof would require establishing precise connections between the URP's structural claims and the analytic properties of the zeta function in rigorous mathematical terms. That work is ongoing and is part of what the paper series is building toward. What the URP offers right now is something that has been absent from the Riemann Hypothesis literature for 167 years: a conceptual answer to 'why one-half?' Not just 'the functional equation forces it' — which is observation, not explanation — but a structural reason why the symmetry of the functional equation produces exactly this constraint. The URP's answer is: because the fractional domain has only one self-symmetric point, and that point is the only position where a depletion event can occur without creating a deficit. Whether that structural argument can be made rigorous is the open question. The argument itself has been absent."},
    ]},
+
+  {id:4,date:"April 28, 2026",readTime:"7 min",tag:"FOUNDATIONS",tagColor:T.accent,
+   title:"What Is a Number? A Question Mathematics Has Never Fully Answered",
+   sub:"We use numbers every day. We have done so since childhood. But ask a mathematician what a number actually is, and the answer is surprisingly unsatisfying. The Unitary Reference Principle proposes a structural definition.",
+   seoQueries:["what is a number in mathematics","definition of a number","what does a number mean","why do numbers need context","number theory foundations"],
+   doi:"10.5281/zenodo.19697119",
+   pullQuote:"Remove the declared reference and you don't have a smaller number. You have nothing. n/R is the minimum unit of meaningful quantity.",
+   sections:[
+     {h:"The Question Nobody Asks",b:"What is a number? Most of us learned what numbers do long before we asked what they are. We learned to count, to add, to multiply, to measure. Numbers were tools, and useful ones. The question of what a number fundamentally is — what gives it meaning, what makes it more than an abstract symbol — tends to get deferred. Mathematicians speak of numbers as elements of sets, as points on the real line, as abstract objects satisfying certain axioms. These are formally rigorous answers. They are also, in a certain sense, evasions. They tell you what operations you can perform on numbers. They do not tell you what a number means."},
+     {h:"The Conventional Answer and Its Limits",b:"The standard mathematical answer to 'what is a number' goes something like this: a number is an abstract object. The real numbers form a complete ordered field. The natural numbers can be constructed from set theory using the Peano axioms. These are correct and powerful frameworks. But they have a curious property: they describe numbers in terms of their relationships to other numbers, and their formal properties. The number 3 is the successor of 2, the predecessor of 4, the result of adding 1 three times. What 3 means — what it refers to in the world — is treated as outside the scope of mathematics. Mathematics, on this view, is a formal game played with abstract symbols. Meaning is somebody else's problem."},
+     {h:"The URP Definition",b:"The Unitary Reference Principle proposes a different answer. A number is a fraction of a declared reference. Written formally: every meaningful quantity Q = n/R, where R is the declared reference unit and n is the measured quantity. The number 3 only means something because there is an implicit declaration: R = one apple, one kilometre, one dollar, one second. Without that declaration, 3 is not a small number. It is no number at all — it is a symbol without referent. This is not a radical claim. It is, in a certain sense, what everyone implicitly knows when they use numbers. 3 apples, 3 kilometres, 3 hours — the 3 has meaning because the unit is declared. The URP makes this explicit and structural, and then asks: what follows from taking it seriously as a foundational definition?"},
+     {h:"The Axiom: n/R Is the Minimum Unit of Meaning",b:"The first axiom of the Unitary Reference Principle states: every meaningful quantity is a fraction of a declared reference R. This has several immediate consequences. First, no number is meaningful without a declared R. Writing '7' without context is like writing a fraction with no denominator. Second, the number 1 acquires a special status: it is the unique value where n = R, where the measurement exactly equals the declared reference. 1 is complete wholeness — not just a number, but the state of complete coincidence between measurement and reference. Third, numbers greater than 1 are not single wholes but counts of completed reference frames. 7 is seven complete 1-unit references, stacked. Fourth, zero requires careful treatment, which the URP provides by distinguishing two structurally different zeros."},
+     {h:"What This Changes",b:"Taking n/R seriously as the definition of a number restructures many things that conventional mathematics treats separately. The unit — the declared reference R — is not a tag you add after the mathematics. It is constitutive of the mathematics. The arithmetic of fractions, the behaviour of limits, the structure of the number line, the meaning of zero, the properties of integers — all of these follow from the structure of n/R in ways that the URP papers develop in detail. Perhaps most importantly, it changes what it means for two quantities to be equal. 3/4 and 6/8 are equal because they express the same fraction of any declared reference. 0.999... and 1 are not equal in the same sense — one is a process, one is an arrival — a distinction the URP formalises and that conventional mathematics glosses over. The definition n/R is simple. What follows from it is not."},
+     {h:"Proof: 1 Is the Only Complete Whole",b:"This follows directly from the definition. Within any declared reference R, the only value where the measured quantity n exactly equals R is n/R = 1. For any n < R, we have n/R < 1: a partial state. For any n > R, we have n/R > 1: a surplus, which initiates a new declared reference (see below). The value 1 = n/R where n = R is the unique completion state. Formally: let R be any declared reference unit. Then the set of values n/R for n ∈ [0, ∞) contains exactly one value equal to 1, occurring at n = R. All values below R yield partial states in (0,1). All values above R yield surplus states initiating new declared references. QED. The integer 7 is not one whole thing. It is seven complete 1-unit references, concatenated. The 'wholeness' is always the unit, always 1, always relative to the declared R."},
+   ]},
+  {id:5,date:"April 28, 2026",readTime:"7 min",tag:"FOUNDATIONS",tagColor:T.accent,
+   title:"Is Zero a Number? The Two Zeros Mathematics Has Always Conflated",
+   sub:"Mathematicians treat zero as a number like any other. But zero behaves strangely in ways that have puzzled everyone from Brahmagupta to modern analysts. The URP explains why: there are actually two structurally different zeros, and conflating them is the source of centuries of confusion.",
+   seoQueries:["is zero a number","what does zero mean in mathematics","why is zero special","history of zero in math","is zero nothing or a number","what is an empty set"],
+   doi:"10.5281/zenodo.19697119",
+   pullQuote:"An empty bank account is not the same as no bank account. Mathematics has one symbol for both. That is the problem.",
+   sections:[
+     {h:"Zero's Strange History",b:"Zero has a more complicated history than any other number. The ancient Greeks resisted it — Aristotle argued against it on philosophical grounds. Indian mathematicians formalised it in the 7th century. Brahmagupta gave the first rules for computing with zero in 628 CE. Fibonacci brought it to Europe in 1202. Yet even today, zero causes problems that no other number causes. Division by zero is undefined. Zero to the power of zero is debated. The limit of functions as they approach zero requires careful handling that other limits don't. These are not coincidences. They are symptoms of a structural issue that the URP makes explicit."},
+     {h:"The Two Zeros",b:"The Unitary Reference Principle distinguishes two structurally different zeros. The first is standalone zero, or non-existence: no declared reference was ever established. This zero is outside all declared domains. It is not a value in any frame — it is the absence of any frame. The second is 0/R, or contextual depletion: the frame R is declared and active, but the content within it has been fully exhausted. The reference persists. The content is zero. An empty bank account: the account (frame R) exists. The balance (content) is zero. A fully discharged battery: the battery (frame R) exists. The charge (content) is zero. A dark fiber optic cable: the channel (frame R) is present. The signal (content) is 0/R. These are 0/R states. The frame persists. The content is depleted."},
+     {h:"Why the Distinction Matters",b:"Conflating these two zeros — treating non-existence and contextual depletion as the same thing — produces real errors. Division by zero: you cannot declare non-existence as a reference R, because there is no frame. Division by 0/R — zero content within an active frame — is a different matter. The empty account still has an account number; you can still make deposits. The discharged battery still has terminals; you can still charge it. The frame's persistence is what makes these operations possible. In information theory, a signal of zero amplitude is not the same as no signal channel — the channel capacity persists as a declared R, and a zero-amplitude signal is 0/R within that channel. In quantum mechanics, a state with probability amplitude zero is not the same as a non-existent state — the state vector persists, the amplitude is 0/R. In thermodynamics, a system at absolute zero temperature is not non-existence — the system persists, the thermal energy is 0/R."},
+     {h:"Brahmagupta Was Right to Distinguish",b:"Brahmagupta's 7th-century rules for zero included the troubling statement that 0 ÷ 0 = 0. This has been criticised as an error. But Brahmagupta was working with a notion of zero that was closer to 0/R — placeholder zero, contextual zero — than to non-existence. He was asking: if you have zero of something divided into zero parts, what do you get? His answer was zero. This is not correct in the non-existence sense (dividing non-existence by non-existence is still unconstructable). But it is closer to correct in the 0/R sense: if your frame has zero content and you are distributing it into zero subframes, the result is a similar depletion state. Brahmagupta was not wrong — he was working with the wrong zero, or rather, with only one zero where two were needed."},
+     {h:"Formal Statement: The Two Zeros",b:"Let R be a declared reference. Then: (1) Non-existence zero, written 0, means R has not been declared. There is no frame. No operation that requires a frame (including division) can be performed. (2) Contextual depletion, written 0/R, means R has been declared and is active, but the measured quantity n = 0. The frame persists. Operations that require the frame (including the prospect of future content) remain meaningful. The distinction can be stated formally: 0 ∉ Domain(R) for any R. But 0/R ∈ [0/R, R] for any declared R. The value 0/R is the lower boundary of the URP domain — the depletion state of a declared reference. It is not the same as the absence of any reference. This is the structural distinction that Brahmagupta, Fibonacci, and every mathematician since has been working around without naming."},
+     {h:"Implications Across Mathematics",b:"The two-zeros distinction has implications that reach throughout the papers in this series. Division by zero is unconstructable because it requires declaring non-existence as a reference — not because it produces an inconveniently large result (Paper 2). The critical strip of the Riemann Hypothesis is the URP domain (0/R, R), bounded by the two zeros on either side — non-existence at σ = 0, complete wholeness at σ = 1 (Paper 3). Physical conservation laws are structural: a physical quantity can approach 0/R indefinitely but cannot reach standalone zero because that would require a receiving frame of non-existence (Paper 5). The Dehn invariant for a cube is D(cube) = 0/Rθ — the angle frame persists, the irrational content is depleted — and this is why D = 0 does not mean the angle reference doesn't exist (Paper 4). The two zeros distinguish what is empty from what is absent. That distinction is foundational."},
+   ]},
+  {id:6,date:"April 28, 2026",readTime:"8 min",tag:"FOUNDATIONS",tagColor:T.accent,
+   title:"Why Is 1 the Only Whole Number? The URP Answer to a Question Nobody Thought to Ask",
+   sub:"We call 1, 2, 3, 4... the 'whole numbers.' But only one of them is structurally whole. The rest are counts. This distinction, once seen, changes how you understand every integer you have ever used.",
+   seoQueries:["why is 1 special in mathematics","what makes a whole number whole","is 1 a natural number","what is the number 1","why is 1 not prime","mathematical definition of whole"],
+   doi:"10.5281/zenodo.19697119",
+   pullQuote:"Seven is not one whole thing. It is seven completed reference frames, stacked. The wholeness is always in the unit.",
+   sections:[
+     {h:"The Terminology We Never Questioned",b:"In school mathematics, the whole numbers are 0, 1, 2, 3, 4, and so on. The name suggests they are all equally 'whole.' We rarely stop to ask why they are called that, or whether the name is accurate, or what 'whole' would even mean for a number. The Unitary Reference Principle asks exactly this question, and the answer it gives is precise and surprising: within any declared reference frame, exactly one value is a complete whole. That value is 1. The number 7, by contrast, is not one whole thing. It is seven completed wholes — seven instances of the unit, counted. The 'wholeness' belongs to the unit, not to the count. This is more than a terminological point. It is a claim about the structure of quantity itself."},
+     {h:"The Definition of Complete Wholeness",b:"The URP defines complete wholeness precisely. Within a declared reference R, a quantity Q = n/R is a complete whole if and only if n = R — that is, if Q = 1. This is the unique state where the measured quantity exactly equals the declared reference. The measurement arrives at the reference. The frame is filled. Nothing is missing, nothing overflows. Formally: for any declared reference R and any quantity n, n/R = 1 if and only if n = R. No other value in the URP domain has this property. For n < R, we have Q < 1: partial. For n > R, we have Q > 1: surplus. For n = 0, we have Q = 0/R: depleted. Only n = R gives Q = 1: complete. The completeness of 1 is not a convention or a definition chosen for convenience. It follows from the structure of n/R."},
+     {h:"What Are the Integers, Then?",b:"If 1 is the only complete whole within a declared reference, what are 2, 3, 7, 1000? The URP answer: they are counts of completed reference frames. The integer 7 means: seven complete instances of the declared unit R, concatenated. 7 = 7/R where each of the 7 numerator units is itself a complete R. The integer is a count of wholeness, not a single wholeness. This reframes what the integers are. They are not a sequence of objects of increasing size sitting on a line. They are records of how many times a declared reference has been completed. 1 kilometre: one complete distance-reference. 7 kilometres: seven complete distance-references. The 7 doesn't refer to a single 7-km thing. It refers to seven 1-km things. The unit — the declared R — is the whole. The integer is the count."},
+     {h:"Why 1 Is Not a Prime Number — Revisited",b:"Mathematicians define prime numbers as natural numbers greater than 1 that have no positive divisors other than 1 and themselves. The number 1 is explicitly excluded. The conventional reason: if 1 were prime, the Fundamental Theorem of Arithmetic (every integer has a unique prime factorisation) would fail, because you could multiply by 1 arbitrarily many times. But this is a consequence, not a reason. The URP offers a structural reason: 1 cannot be prime because it is not a counting unit in the sense primes are. Primes are self-referencing wholes: p/p = 1, and no smaller R satisfies this. They cannot be expressed as n/R for any R smaller than themselves. But 1 is not self-referencing in the same sense — it is the declared reference itself, not a structure built from smaller references. 1 is the unit of measurement. Primes are the indivisible units of counting. These are different structural roles."},
+     {h:"The Surplus State and New Declared References",b:"When n > R — when the measured quantity exceeds the declared reference — the URP describes this as a surplus state, and it requires a new declared reference. 251 apples against a declared R of 250: the 250 constitute one complete R, sealed. The extra 1 begins a new R₂. This is the structural meaning of integers greater than 1: they are not single quantities larger than 1. They are sequences of completed references. 251 = 1 complete R₁ + 1/250 of R₂. Or, declaring R = 1 apple, 251 = 251 complete unit references. The integer representation depends on the declared R. Change R and the integer representation changes. The underlying quantity — 251 apples — does not change. Only the way it is partitioned into complete and partial references changes. The wholeness is always in the unit. The count is always relative to the declared R."},
+     {h:"Mathematical Implications",b:"Treating 1 as the unique complete whole, and integers as counts of completed wholes, has structural consequences throughout mathematics. It explains why the multiplicative identity is 1 rather than any other number: multiplying by 1 preserves the declared reference, because 1 is the completion state. It explains why exponentiation to the power 0 yields 1: any base raised to 0 is a count of zero completed self-references, and a count of zero is the identity — not non-existence, but the empty count within a frame where the base is the declared R. It explains why probability is bounded above by 1: a probability of 1 means the event is certain — the reference (the sample space) is fully achieved. Probability > 1 would be a surplus — more certainty than the declared reference allows. The upper bound is structural, not definitional. And it explains why the Riemann Hypothesis's critical line sits at σ = ½: this is the midpoint of the URP domain, the self-symmetric position between 0 and 1. The domain (0,1) is bounded above by complete wholeness. That bound is 1."},
+   ]},
+  {id:7,date:"April 28, 2026",readTime:"6 min",tag:"FOUNDATIONS",tagColor:T.accent,
+   title:"What Does 0.333... Mean? Why the Fraction 1/3 Is More Precise Than Its Decimal",
+   sub:"Most people think the decimal 0.333... is the natural way to write one-third. The fraction 1/3 looks like an intermediate step. The URP argues the opposite: the fraction is exact, the decimal is an infinite approximation. This matters more than it seems.",
+   seoQueries:["what does 0.333 repeating mean","is 1/3 equal to 0.333","why does 1/3 never terminate","fraction vs decimal which is more accurate","what is a repeating decimal","irrational numbers and fractions"],
+   doi:"10.5281/zenodo.19733441",
+   pullQuote:"The fraction is the arrival. The decimal is the infinite journey toward expressing it. Base-10 is struggling. The fraction isn't.",
+   sections:[
+     {h:"The Decimal We Write Without Thinking",b:"One divided by three. Most people, asked to write this, write 0.333... or 0.3̄. It feels natural — we are accustomed to decimal notation, and this is what a calculator displays. The fraction 1/3 feels like an intermediate step, something you simplify further into the decimal. But this intuition has it backwards. The fraction 1/3 is the exact, complete answer. The decimal 0.333... is an incomplete representation — a process that runs forever and never finishes. The non-termination of the decimal is not a property of one-third as a quantity. It is a property of base-10 arithmetic's inability to represent one-third."},
+     {h:"Why Base-10 Cannot Express 1/3 Exactly",b:"Base-10 positional notation can represent a fraction p/q exactly if and only if the denominator q has no prime factors other than 2 and 5 — the factors of 10. One-half (1/2) terminates: 0.5. One-quarter (1/4) terminates: 0.25. One-fifth (1/5) terminates: 0.2. One-third does not terminate because 3 is not a factor of 10. The fraction 1/3 is perfectly well-defined — there is nothing partial or incomplete about it as a mathematical object. But base-10 cannot write it finitely. So it runs: 0.3, 0.33, 0.333, forever. Each step is a closer approximation. None is the answer. The process converges to 1/3 without arriving."},
+     {h:"The URP Framing: Fraction as Declared Relationship",b:"Under the Unitary Reference Principle, a fraction n/R is a declared relationship between a numerator n and a reference R. 1/3 declares: n = 1, R = 3. The relationship is exact and static — a complete mathematical object. The decimal 0.333... is a representation of this relationship in base-10, and base-10 cannot represent it finitely. The decimal is a process of approximation. The fraction is the object being approximated. This is why the URP treats fractions as primary and decimals as representations: the fraction 1/3 contains more information, and more precision, than any finite decimal approximation of it."},
+     {h:"The Connection to Irrational Numbers",b:"The same principle extends to irrational numbers, but with a key difference. The fraction 1/3 cannot be represented in base-10 exactly, but it can be represented as a fraction. The number arccos(1/3)/π cannot be represented exactly in any positional notation — it is genuinely irrational, meaning it cannot be expressed as any ratio of integers. But under the URP, arccos(1/3)/π is still an exact declared relationship: n = arccos(1/3), R = π. The fraction is exact. The decimal approximation (0.39181...) is an approximation of the exact fraction. And crucially, arccos(1/3)/π appears as the exact value of the Dehn invariant ratio for the regular tetrahedron — the dihedral angle expressed as a fraction of the angle reference Rθ = π. The URP treats this as an exact answer, not an approximation. The fact that no finite decimal can represent it is a fact about decimal notation, not a fact about the number."},
+     {h:"Why 0.999... = 1 Is Formally True but Structurally Incomplete",b:"The decimal 0.999... is the sum of the series 9/10 + 9/100 + 9/1000 + ... This series converges to 1. In standard real analysis, the limit of the sequence of partial sums is 1, and the notation 0.999... refers to this limit. So 0.999... = 1 is true as a statement about the limit of a sequence. But it conflates the sequence (a process) with its limit (an arrival). The fraction 1 is exact. The series 0.999... is a process that converges to 1. Under the URP, approach and arrival are structurally different. The sequence approaches 1. The fraction 1 is 1. These are not the same object, even if their values coincide in the limit. The discomfort millions of people feel about the proof that 0.999... = 1 is not irrationality. It is a correct structural intuition that conventional analysis resolves by definitional fiat — the limit is the value — rather than by structural argument."},
+     {h:"Practical Implications: When Precision Matters",b:"This is not purely philosophical. In any context where precision matters — scientific measurement, financial calculation, cryptography — working with fractions rather than decimal approximations avoids accumulated rounding error. A fraction carries its exact value through any number of algebraic operations. A decimal approximation accumulates error with each operation. Computer scientists know this well: floating-point arithmetic, which uses binary approximations of decimals, introduces small errors that compound in long calculations. The URP's insistence on fractions as primary is structurally motivated: the fraction n/R is the exact declared relationship. Any representation of it in a finite positional system is an approximation. Keeping fractions exact throughout a calculation and converting to decimals only at the end is not just a computational trick. It is fidelity to the structure of what numbers are."},
+   ]},
+  {id:8,date:"April 28, 2026",readTime:"9 min",tag:"MILLENNIUM PROBLEMS",tagColor:T.warn,
+   title:"What Is the Dehn Invariant? And Why Does D(cube) = 0 Not Mean What You Think",
+   sub:"The Dehn invariant is one of the most elegant results in geometry — and one of the most misunderstood. When it equals zero, most people assume that means nothing. The URP shows it means the opposite: an active frame with depleted content. The distinction changes everything about scissors congruence in high dimensions.",
+   seoQueries:["what is the dehn invariant","hilbert third problem explained","scissors congruence geometry","why cant cube and tetrahedron be cut and reassembled","dehn invariant zero means","hilbert problem solved"],
+   doi:"10.5281/zenodo.19847459",
+   pullQuote:"D(cube) = 0 does not mean the angle reference doesn't exist. It means the angle frame is present and the irrational content is depleted. The frame persists.",
+   sections:[
+     {h:"Hilbert's Third Problem",b:"In 1900, David Hilbert posed 23 problems that would define 20th century mathematics. The third was the first to fall — solved within a year by Max Dehn. The problem asked: given two polyhedra with equal volumes, can you always cut the first into finitely many polyhedral pieces and reassemble them to form the second? In two dimensions, the answer is yes (the Bolyai-Gerwien theorem). Hilbert suspected the answer in three dimensions was no, and Dehn proved it. The cube and a regular tetrahedron of equal volume cannot be cut and reassembled into each other. Dehn's proof introduced what is now called the Dehn invariant — a second quantity, beyond volume, that two polyhedra must share to be scissors-congruent."},
+     {h:"What the Dehn Invariant Measures",b:"The Dehn invariant of a polyhedron P is defined as: D(P) = Σ (edge length) ⊗ₚ (dihedral angle at that edge), where the sum is over all edges, and ⊗ₚ denotes the tensor product over the rationals. Rational multiples of π vanish in this tensor product. Only irrational fractions of π contribute. For the cube: all dihedral angles are π/2, which is a rational multiple of π (specifically 1/2 · π). So D(cube) = 0. For the regular tetrahedron: all dihedral angles are arccos(1/3) ≈ 70.53°. The ratio arccos(1/3)/π is irrational (proved by Niven, 1956). So D(tetrahedron) ≠ 0. Since the Dehn invariants differ, the cube and tetrahedron are not scissors-congruent, regardless of their volumes."},
+     {h:"The URP Reframing: What 0 Actually Means Here",b:"The standard account says D(cube) = 0 because rational angles vanish in the tensor product over ℚ. This is correct but unexplanatory. Why do rational angles vanish? The URP provides a structural answer. Declare the angle reference Rθ = π (the half-rotation — the natural reference for dihedral angles). Every dihedral angle is n/Rθ for some n. For the cube, n = π/2, giving n/Rθ = (π/2)/π = 1/2 — a complete rational fraction of the declared reference. Under any scissors operation, the rational n/Rθ values from each edge recombine into whole multiples of Rθ. The net irrational residual: 0/Rθ. The angle frame Rθ is present and active for every polyhedron — every polyhedron has edges. D(cube) = 0 means the irrational content within the angle frame is depleted to 0/Rθ. The frame persists. The content is exhausted."},
+     {h:"Why This Distinction Matters",b:"Under the URP, D(cube) = 0 is not non-existence. It is 0/Rθ — contextual depletion of a declared reference that remains active. This distinction has immediate consequences. If D = 0 meant the angle frame didn't exist, then two polyhedra with D = 0 would both have no angle reference, and there would be no reason they couldn't be scissors-congruent. But they can be congruent — Sydler proved in 1965 that D(P) = 0 and equal volumes is both necessary and sufficient for scissors congruence in 3D. The frame's persistence is what enables this: both polyhedra have active angle frames Rθ, both have zero irrational content (0/Rθ), so their angle reference states match, and scissors congruence is possible (given equal volumes). D = 0/Rθ is a matchable state. Non-existence is not."},
+     {h:"The Open Problem: Dimensions ≥ 5",b:"Sydler (1965) proved that volume + D(P) is sufficient for scissors congruence in 3D. Jessen (1968) proved the same for 4D. But for dimensions 5 and above, the question has been open since 1968. The URP proposes a structural answer. In an n-dimensional polytope, faces exist at every dimension from 0 to n-1. Each class of k-faces carries angle information. The question is which classes introduce genuinely independent declared references. In 3D and 4D, only k=1 edges introduce an independent angle reference (the Dehn invariant Rθ₁). In 5D, 2-faces may introduce an independent reference Rθ₂. In 6D, both 2-faces and 3-faces may introduce independent references. The URP predicts the number of independent declared references for scissors congruence in dimension n is: 1 + ⌊(n-2)/2⌋. In dimension 5: 1 + ⌊3/2⌋ = 2. In dimension 6: 1 + ⌊4/2⌋ = 3. New invariants are predicted at even dimensions ≥ 6."},
+     {h:"A Testable Prediction",b:"The formula 1 + ⌊(n-2)/2⌋ is not a proof. It is a structural prediction from the URP framework. It predicts that volume + D(P) is sufficient in 5D (consistent with what is known) but that a new independent invariant is required in 6D and at each subsequent even dimension. This prediction is testable against the algebraic K-theory literature, which provides the most precise known results on scissors congruence groups. The full development of this prediction — including the 0/R treatment of D = 0, the structural proof of Hilbert's Third without tensor algebra, and the comparison with traditional methods across all known dimensions — appears in the companion paper on the Dehn invariant (Paper 14 of the URP series, forthcoming)."},
+   ]},
+
 ];
 
 // ═══════════════════════════════════════════
@@ -870,6 +942,15 @@ function IdeasPage({go}){
 // ═══════════════════════════════════════════
 function BlogPage({go}){
   const [active,setActive]=useState(null);
+  useEffect(()=>{
+    const handler=(e)=>{
+      const blogId=e.detail;
+      const idx=BLOGS.findIndex(b=>b.id===blogId);
+      if(idx>=0)setActive(idx);
+    };
+    window.addEventListener("openBlog",handler);
+    return()=>window.removeEventListener("openBlog",handler);
+  },[]);
   if(active!==null){
     const post=BLOGS[active];
     return(
@@ -899,10 +980,15 @@ function BlogPage({go}){
               <p style={{fontFamily:T.body,fontSize:16,color:"#9A9590",lineHeight:2.1,margin:0}}>{s.b}</p>
             </div>
           ))}
-          <div style={{paddingTop:"2.5rem",borderTop:`1px solid ${T.border}`,display:"flex",gap:".5rem",flexWrap:"wrap"}}>
+          <div style={{paddingTop:"2.5rem",borderTop:`1px solid ${T.border}`,display:"flex",gap:".5rem",flexWrap:"wrap",alignItems:"center"}}>
             <span style={{fontFamily:T.mono,fontSize:9,color:post.tagColor,border:`1px solid ${post.tagColor}40`,padding:"4px 10px",letterSpacing:".1em"}}>{post.tag}</span>
             <span style={{fontFamily:T.mono,fontSize:9,color:T.dim,border:`1px solid ${T.border}`,padding:"4px 10px",letterSpacing:".1em"}}>URP SERIES</span>
             <span style={{fontFamily:T.mono,fontSize:9,color:T.dim,border:`1px solid ${T.border}`,padding:"4px 10px",letterSpacing:".1em"}}>OPEN ACCESS</span>
+            {post.doi&&<a href={`https://doi.org/${post.doi}`} target="_blank" rel="noopener noreferrer"
+              style={{fontFamily:T.mono,fontSize:9,color:T.accent,border:`1px solid rgba(0,255,179,.3)`,
+                padding:"4px 10px",letterSpacing:".1em",textDecoration:"none"}}>
+              PAPER ↗ doi.org/{post.doi}
+            </a>}
           </div>
         </div>
         <Footer go={go}/>
@@ -1005,6 +1091,160 @@ function AboutPage({go}){
       </div>
       <Footer go={go}/>
     </div>
+  );
+}
+
+
+// ═══════════════════════════════════════════
+// AXIOMS SECTION — home page scroll section
+// ═══════════════════════════════════════════
+function AxiomsSection({go}){
+  const [hovAxiom,setHovAxiom]=useState(null);
+
+  const axioms=[
+    {
+      num:"I",
+      title:"Every number is n/R",
+      sub:"The declared reference is not optional",
+      body:"Remove the declared reference and you don't have a smaller number — you have nothing. Every quantity, every measurement, every mathematical object derives its meaning from a declared reference R. This is the foundational axiom from which everything else follows.",
+      equation:"Q = n / R",
+      eqNote:"Q is any quantity. n is the measured amount. R is the declared reference.",
+      color:T.accent,
+      blogId:4,
+      blogTitle:"What Is a Number? A Question Mathematics Has Never Fully Answered",
+    },
+    {
+      num:"II",
+      title:"1 is the only complete whole",
+      sub:"Completeness requires a declared reference to be equalled",
+      body:"Within any declared reference R, exactly one state is complete: when n = R, giving n/R = 1. All integers greater than 1 are counts of completed reference frames — not single wholes of increasing size. The unit is always the whole. The integer is always a count.",
+      equation:"n/R = 1  ⟺  n = R",
+      eqNote:"Unique solution. The only arrival point.",
+      color:T.accent,
+      blogId:6,
+      blogTitle:"Why Is 1 the Only Whole Number?",
+    },
+    {
+      num:"III",
+      title:"Zero is non-existence",
+      sub:"Not a small number — structural absence",
+      body:"Standalone zero is not the smallest positive quantity. It is the absence of any declared reference. You cannot perform operations that require a frame when no frame exists. This is why division by zero is not undefined but unconstructable.",
+      equation:"0 ∉ Domain(R)  for any R",
+      eqNote:"Zero is outside all declared domains.",
+      color:T.warn,
+      blogId:5,
+      blogTitle:"Is Zero a Number? The Two Zeros Mathematics Has Always Conflated",
+    },
+    {
+      num:"IV",
+      title:"0/R is contextual depletion",
+      sub:"The frame persists — the content is empty",
+      body:"When a declared reference R is active but its content is fully exhausted, the result is 0/R — not non-existence. An empty bank account is not the same as no bank account. A discharged battery is not the same as no battery. The frame persists. This is the lower boundary of the fractional domain.",
+      equation:"0/R ∈ Domain(R)",
+      eqNote:"Zero content within an active frame. Structurally different from standalone zero.",
+      color:T.blue,
+      blogId:5,
+      blogTitle:"Is Zero a Number? The Two Zeros Mathematics Has Always Conflated",
+    },
+    {
+      num:"V",
+      title:"n/R > 1 is surplus — a new R begins",
+      sub:"Exceeding the frame initiates a new declared reference",
+      body:"When n exceeds R, the current frame is complete and sealed. The surplus initiates a new declared reference R₂. 251 apples against a declared R of 250: one complete R, then 1/250 of R₂. This is the structural meaning of integers: counts of completed wholes, not single quantities larger than 1.",
+      equation:"n/R > 1  ⟹  1·R complete + (n−R)/R of R₂",
+      eqNote:"One complete reference, then a new partial state.",
+      color:T.gold,
+      blogId:4,
+      blogTitle:"What Is a Number? A Question Mathematics Has Never Fully Answered",
+    },
+    {
+      num:"VI",
+      title:"The fraction is the exact answer",
+      sub:"Decimals are representations — fractions are the reality",
+      body:"1/3 is the exact answer. 0.333... is base-10 arithmetic struggling to represent it. The non-termination of a decimal is the signal that the fraction is irrational relative to that base — not that the fraction is wrong. Fractions are primary. Decimals are approximations.",
+      equation:"1/3 ≡ exact   |   0.333... ≡ approach",
+      eqNote:"The fraction is the arrival. The decimal is the journey.",
+      color:T.blue,
+      blogId:7,
+      blogTitle:"What Does 0.333... Mean? Why the Fraction Is More Precise",
+    },
+    {
+      num:"VII",
+      title:"All measurement is Step 0 + Step 1 + Step 2",
+      sub:"Every calculation has a mandatory first step that is usually skipped",
+      body:"Step 0: declare R. Step 1: calculate n/R. Step 2: verify R is preserved. Division by zero fails at Step 0. The Pythagorean theorem is a Step 2 verification. Every geometric formula follows from a single Step 0 declaration. The missing step is always Step 0.",
+      equation:"Step 0: declare R  →  Step 1: n/R  →  Step 2: verify",
+      eqNote:"The mandatory structure underlying every calculation.",
+      color:T.purple,
+      blogId:1,
+      blogTitle:"Division by Zero Is Not Undefined — It's Unconstructable",
+    },
+  ];
+
+  return(
+    <section style={{background:T.bg,borderTop:`1px solid ${T.border}`,padding:"6rem 3rem",position:"relative",zIndex:1}}>
+      <div style={{maxWidth:1100,margin:"0 auto"}}>
+        {/* Header */}
+        <div style={{textAlign:"center",marginBottom:"4.5rem"}}>
+          <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".35em",color:T.dim,marginBottom:".75rem"}}>THE FRAMEWORK</div>
+          <h2 style={{fontFamily:T.head,fontSize:"clamp(26px,4vw,48px)",fontWeight:700,color:T.text,margin:"0 0 1.25rem",lineHeight:1.1}}>Seven Axioms.<br/>One Declaration.</h2>
+          <p style={{fontFamily:T.body,fontSize:17,color:T.muted,maxWidth:540,margin:"0 auto",lineHeight:1.9}}>Every claim in the 17-paper series follows from these structural axioms. Each has a dedicated essay that defends it, proves it, and answers the questions you're already forming.</p>
+        </div>
+
+        {/* Axioms grid */}
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:"1px",background:T.bg2,marginBottom:"3rem"}}>
+          {axioms.map((ax,i)=>{
+            const isHov=hovAxiom===i;
+            return(
+              <div key={ax.num}
+                onMouseEnter={()=>setHovAxiom(i)}
+                onMouseLeave={()=>setHovAxiom(null)}
+                style={{background:isHov?`${ax.color}08`:T.bg,padding:"2rem",
+                  transition:"all .25s",borderTop:`3px solid ${isHov?ax.color:"transparent"}`,
+                  display:"flex",flexDirection:"column",gap:"1rem"}}>
+                {/* Number + title */}
+                <div style={{display:"flex",alignItems:"baseline",gap:".75rem"}}>
+                  <span style={{fontFamily:T.head,fontSize:36,fontWeight:700,
+                    color:`${ax.color}30`,lineHeight:1,flexShrink:0}}>{ax.num}</span>
+                  <div>
+                    <h3 style={{fontFamily:T.mono,fontSize:14,fontWeight:700,color:isHov?ax.color:T.text,margin:0,lineHeight:1.3}}>{ax.title}</h3>
+                    <div style={{fontFamily:T.body,fontSize:12,color:ax.color,opacity:.7,marginTop:".2rem"}}>{ax.sub}</div>
+                  </div>
+                </div>
+                {/* Body */}
+                <p style={{fontFamily:T.body,fontSize:14,color:T.muted,lineHeight:1.85,margin:0}}>{ax.body}</p>
+                {/* Equation box */}
+                <div style={{background:T.faint,padding:".75rem 1rem",borderLeft:`2px solid ${ax.color}40`}}>
+                  <div style={{fontFamily:T.mono,fontSize:13,color:ax.color,marginBottom:".25rem",fontWeight:700}}>{ax.equation}</div>
+                  <div style={{fontFamily:T.body,fontSize:11,color:T.dim}}>{ax.eqNote}</div>
+                </div>
+                {/* Learn more link */}
+                <button onClick={()=>{go("Blog");setTimeout(()=>{window.dispatchEvent(new CustomEvent("openBlog",{detail:ax.blogId}));},100);}}
+                  style={{background:"transparent",border:`1px solid ${ax.color}30`,color:ax.color,
+                    fontFamily:T.mono,fontSize:10,letterSpacing:".12em",padding:".45rem .85rem",
+                    cursor:"pointer",transition:"all .2s",textAlign:"left",marginTop:"auto",
+                    display:"flex",alignItems:"center",gap:".5rem"}}
+                  onMouseEnter={e=>e.currentTarget.style.background=`${ax.color}10`}
+                  onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+                  <span>READ THE PROOF</span>
+                  <span style={{opacity:.6}}>↗</span>
+                </button>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom CTA */}
+        <div style={{textAlign:"center",paddingTop:"2rem",borderTop:`1px solid ${T.border}`}}>
+          <div style={{fontFamily:T.body,fontSize:15,color:T.muted,marginBottom:"1.5rem"}}>All seven axioms are developed formally across the published papers.</div>
+          <button onClick={()=>go("Papers")} style={{background:T.accent,color:"#020A06",border:"none",fontFamily:T.body,fontSize:14,fontWeight:700,padding:"1rem 2.5rem",cursor:"pointer",transition:"all .2s",letterSpacing:".03em"}}
+            onMouseEnter={e=>e.currentTarget.style.background="#00DDA0"}
+            onMouseLeave={e=>e.currentTarget.style.background=T.accent}>
+            Explore the Papers →
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -1225,7 +1465,7 @@ export default function App(){
     <div style={{background:T.bg,minHeight:"100vh",color:T.text,fontFamily:T.body}}>
       <ParticleField/>
       <Nav page={page} go={go} mobile={mobile}/>
-      {page==="Home"&&<><Hero go={go}/><Provocations go={go}/><Footer go={go}/></>}
+      {page==="Home"&&<><Hero go={go}/><AxiomsSection go={go}/><Provocations go={go}/><Footer go={go}/></>}
       {page==="Papers"&&<PapersPage onSelectPaper={handleSelectPaper} mobile={mobile} go={go}/>}
       {page==="PaperDetail"&&selectedPaper&&<PaperPage paper={selectedPaper} onBack={()=>go("Papers")} go={go}/>}
       {page==="History"&&<HistoryPage mobile={mobile} go={go}/>}
