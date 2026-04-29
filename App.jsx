@@ -296,40 +296,56 @@ function Nav({page,go,mobile}){
 // ═══════════════════════════════════════════
 function Footer({go}){
   return(
-    <footer style={{borderTop:`1px solid ${T.border}`,background:T.bg,padding:"3.5rem 3rem 2rem",marginTop:"5rem",position:"relative",zIndex:10}}>
-      <div style={{maxWidth:1100,margin:"0 auto",display:"grid",gridTemplateColumns:"1.4fr 1fr 1fr",gap:"3rem"}}>
-        <div>
-          <div style={{fontFamily:T.mono,fontSize:24,fontWeight:700,color:T.accent,marginBottom:".75rem",letterSpacing:"-.02em"}}>n/R</div>
-          <div style={{fontFamily:T.body,fontSize:14,color:T.muted,lineHeight:1.9,maxWidth:260}}>
-            Unitary Reference Principle<br/>
-            Independent mathematical research<br/>
-            Joshua Steven Brogley<br/>
-            Almelo, Netherlands · 2026
+    <footer style={{borderTop:`1px solid ${T.border}`,background:T.bg,padding:"3rem 1.5rem 2rem",position:"relative",zIndex:10}}>
+      <div style={{maxWidth:1100,margin:"0 auto"}}>
+        {/* Top section — stacks on mobile, 3 cols on desktop */}
+        <div style={{display:"grid",
+          gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",
+          gap:"2rem",marginBottom:"2rem"}}>
+          {/* Brand */}
+          <div>
+            <div style={{fontFamily:T.mono,fontSize:22,fontWeight:700,color:T.accent,marginBottom:".6rem"}}>n/R</div>
+            <div style={{fontFamily:T.body,fontSize:13,color:T.muted,lineHeight:1.8}}>
+              Unitary Reference Principle<br/>
+              Joshua Steven Brogley<br/>
+              Almelo, Netherlands · 2026
+            </div>
+          </div>
+          {/* Papers */}
+          <div>
+            <div style={{fontFamily:T.mono,fontSize:9,letterSpacing:".2em",color:T.dim,marginBottom:".9rem"}}>PUBLISHED PAPERS</div>
+            {PAPERS.filter(p=>p.published).map(p=>(
+              <a key={p.id} href={`https://doi.org/${p.doi}`} target="_blank" rel="noopener noreferrer"
+                style={{display:"block",fontFamily:T.body,fontSize:13,color:T.muted,
+                  textDecoration:"none",marginBottom:".4rem",transition:"color .15s",
+                  whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}
+                onMouseEnter={e=>e.currentTarget.style.color=p.color}
+                onMouseLeave={e=>e.currentTarget.style.color=T.muted}>
+                <span style={{fontFamily:T.mono,fontSize:9,color:T.dim,marginRight:".4rem"}}>{p.num}</span>{p.title} ↗
+              </a>
+            ))}
+          </div>
+          {/* Navigate */}
+          <div>
+            <div style={{fontFamily:T.mono,fontSize:9,letterSpacing:".2em",color:T.dim,marginBottom:".9rem"}}>NAVIGATE</div>
+            <div style={{display:"flex",flexDirection:"column",gap:".1rem"}}>
+              {["Papers","History","Demo","Ideas","Blog","About"].map(l=>(
+                <button key={l} onClick={()=>go(l)}
+                  style={{display:"block",fontFamily:T.body,fontSize:13,color:T.muted,
+                    background:"none",border:"none",cursor:"pointer",
+                    padding:".25rem 0",textAlign:"left",transition:"color .15s"}}
+                  onMouseEnter={e=>e.currentTarget.style.color=T.accent}
+                  onMouseLeave={e=>e.currentTarget.style.color=T.muted}>{l}</button>
+              ))}
+            </div>
           </div>
         </div>
-        <div>
-          <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".2em",color:T.dim,marginBottom:"1.1rem"}}>PUBLISHED PAPERS</div>
-          {PAPERS.filter(p=>p.published).map(p=>(
-            <a key={p.id} href={`https://doi.org/${p.doi}`} target="_blank" rel="noopener noreferrer"
-              style={{display:"block",fontFamily:T.body,fontSize:13,color:T.muted,textDecoration:"none",marginBottom:".5rem",transition:"color .15s"}}
-              onMouseEnter={e=>e.currentTarget.style.color=p.color}
-              onMouseLeave={e=>e.currentTarget.style.color=T.muted}>
-              <span style={{fontFamily:T.mono,fontSize:10,color:T.dim,marginRight:".5rem"}}>{p.num}</span>{p.title} ↗
-            </a>
-          ))}
+        {/* Bottom bar */}
+        <div style={{paddingTop:"1.25rem",borderTop:`1px solid ${T.border}`,
+          display:"flex",flexDirection:"column",gap:".4rem"}}>
+          <div style={{fontFamily:T.body,fontSize:11,color:T.dim}}>© 2026 Joshua Steven Brogley · CC BY 4.0 · All papers open access</div>
+          <div style={{fontFamily:T.mono,fontSize:10,color:T.dim}}>unitaryreference.com</div>
         </div>
-        <div>
-          <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".2em",color:T.dim,marginBottom:"1.1rem"}}>NAVIGATE</div>
-          {["Papers","History","Demo","Ideas","Blog","About"].map(l=>(
-            <button key={l} onClick={()=>go(l)} style={{display:"block",fontFamily:T.body,fontSize:13,color:T.muted,background:"none",border:"none",cursor:"pointer",padding:"0 0 .5rem",textAlign:"left",transition:"color .15s"}}
-              onMouseEnter={e=>e.currentTarget.style.color=T.accent}
-              onMouseLeave={e=>e.currentTarget.style.color=T.muted}>{l}</button>
-          ))}
-        </div>
-      </div>
-      <div style={{maxWidth:1100,margin:"2.5rem auto 0",paddingTop:"1.5rem",borderTop:`1px solid ${T.border}`,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:".5rem"}}>
-        <div style={{fontFamily:T.body,fontSize:12,color:T.dim}}>© 2026 Joshua Steven Brogley · CC BY 4.0 · All papers open access</div>
-        <div style={{fontFamily:T.mono,fontSize:11,color:T.dim}}>unitaryreference.com</div>
       </div>
     </footer>
   );
@@ -760,7 +776,7 @@ function PaperPage({paper,onBack,go}){
               </button>
             ))}
           </div>
-          {claim&&<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1px",background:T.border}}>
+          {claim&&<div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,280px),1fr))",gap:"1px",background:T.border}}>
             <div style={{padding:"1.75rem",background:"rgba(20,10,5,1)",borderTop:`3px solid rgba(139,69,19,.4)`}}>
               <div style={{fontFamily:T.mono,fontSize:9,letterSpacing:".2em",color:"#8B6030",marginBottom:"1rem"}}>TRADITIONAL MATHEMATICS</div>
               <div style={{fontFamily:T.body,fontSize:15,color:"#C8B898",lineHeight:2}}>{claim.trad}</div>
@@ -852,7 +868,7 @@ function HistoryPage({mobile,go}){
           </div>
         </div>
       </div>
-      <div style={{maxWidth:1100,margin:"0 auto",padding:"2rem 3rem 4rem",display:"grid",gridTemplateColumns:person&&!mobile?"360px 1fr":"1fr",gap:"2rem"}}>
+      <div style={{maxWidth:1100,margin:"0 auto",padding:"2rem 3rem 4rem",display:"grid",gridTemplateColumns:person&&!mobile?"min(360px,35vw) 1fr":"1fr",gap:"2rem"}}>
         <div>
           {filtered.map(h=>{
             const idx=HISTORY.indexOf(h),isA=active===idx,isL=h.name==="Brogley";
@@ -922,7 +938,7 @@ function IdeasPage({go}){
       </div>
       <div style={{maxWidth:900,margin:"0 auto",padding:"3rem 3rem 4rem",display:"flex",flexDirection:"column",gap:"2px",background:T.bg}}>
         {ideas.map((idea,i)=>(
-          <div key={idea.n} style={{display:"grid",gridTemplateColumns:"80px 1fr",padding:"2.5rem",border:`1px solid ${T.border}`,background:T.bg1,marginBottom:"1px"}}>
+          <div key={idea.n} style={{display:"grid",gridTemplateColumns:"clamp(48px,8vw,80px) 1fr",padding:"2.5rem",border:`1px solid ${T.border}`,background:T.bg1,marginBottom:"1px"}}>
             <div style={{fontFamily:T.head,fontSize:64,fontWeight:700,color:`rgba(0,255,179,.1)`,lineHeight:1,marginTop:"-0.1em"}}>{idea.n}</div>
             <div>
               <h2 style={{fontFamily:T.head,fontSize:24,fontWeight:700,color:T.text,margin:"0 0 .2rem"}}>{idea.title}</h2>
@@ -1040,7 +1056,7 @@ function AboutPage({go}){
         </div>
       </div>
       <div style={{maxWidth:900,margin:"0 auto",padding:"3rem 3rem 4rem"}}>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 320px",gap:"3rem",alignItems:"start",flexWrap:"wrap"}}>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,300px),1fr))",gap:"3rem",alignItems:"start"}}>
           <div>
             <p style={{fontFamily:T.body,fontSize:16,color:T.muted,lineHeight:2.1,marginBottom:"1.75rem",marginTop:0}}>
               I'm not a professional mathematician. I'm a head baseball coach, a father of two young children, and someone who spent years asking why the foundations of mathematics feel incomplete.
@@ -1069,7 +1085,7 @@ function AboutPage({go}){
             </div>
           </div>
           {/* Sidebar */}
-          <div style={{position:"sticky",top:68}}>
+          <div style={{position:"sticky",top:80,minWidth:0}}>
             <div style={{background:T.bg1,border:`1px solid ${T.border}`,padding:"1.75rem",marginBottom:"1px"}}>
               <div style={{fontFamily:T.mono,fontSize:9,letterSpacing:".2em",color:T.dim,marginBottom:"1rem"}}>THE SERIES</div>
               <div style={{fontFamily:T.body,fontSize:26,fontWeight:700,color:T.accent,marginBottom:".25rem"}}>17</div>
@@ -1434,9 +1450,9 @@ function QuestionsSection({go}) {
        {val:"depends",label:"It depends entirely on what you're counting"},
      ],
      reveal:{
-       abstract:"That's the conventional position. But: 3 metres, 3 seconds, 3 dollars — the 3 changes meaning completely with each context. Without the declared unit, 3 communicates nothing. The URP makes this structural: every number is n/R. Remove the reference and you don't have a number — you have a symbol waiting for meaning.",
-       quantity:"You're close. But quantity of what? The URP's answer: a number is a quantity expressed as a fraction of a declared reference R. 3 metres = 3/R where R = 1 metre. Change R and the meaning changes. The unit isn't optional — it's what makes the number a number.",
-       depends:"Exactly right. The URP formalises this: every number is n/R, where R is the declared reference. The 3 is constant. The meaning changes because R changes. Context isn't optional — it's constitutive.",
+       abstract:"That's the conventional position. But consider: 3 metres, 3 seconds, 3 dollars — the 3 changes meaning completely with each context. The URP makes this structural: every number is n/R, where R is the declared reference you agree on first. If the reference is a journey of 10km, then 3km is 3/10 of R. If the reference is 3km total, then you have 1 complete R. The number 3 means nothing until you declare what R is. Remove the reference and you don't have a number — you have a symbol waiting for meaning.",
+       quantity:"You're close. But quantity of what? The URP's answer: a number is a quantity expressed as a fraction of a declared reference R — where R is whatever total or whole you agree to measure against. 3 out of a group of 10 = 3/10. 3 out of a group of 3 = 1 complete R. The same quantity of 3 can be partial, complete, or surplus — it depends entirely on what you declared as R. The reference isn't a unit label. It's the agreed whole.",
+       depends:"Exactly right. The URP formalises this: every number is n/R, where R is the declared reference — the agreed total or whole you measure against. 3 people in a room of 10 = 3/10. 3 people in a group of 3 = 3/3 = 1, complete. 3 people across two groups of 2 = surplus, a new R begins. The 3 never changes. The meaning changes entirely because R changed. Declaring R first is Step 0 — the step conventional mathematics almost always skips.",
      }},
     {id:"whole",q:"Is 7 a whole number?",
      hint:"You've probably never questioned this.",
@@ -1450,7 +1466,7 @@ function QuestionsSection({go}) {
        depends:"The URP's position. 7/7 = 1 — complete. 7/10 = 0.7 — partial. Whether 7 is whole depends entirely on R. Wholeness isn't a property of the number. It's a relationship between number and reference.",
        no:"The structural answer. 7 is seven complete instances of a declared unit. The wholeness belongs to 1 — to the unit. 7 is a count of wholeness, not a single wholeness.",
      }},
-    {id:"zero",q:"An empty bank account (£0) and a non-existent account — are they the same?",
+    {id:"zero",q:"An empty bank account ($0) and a non-existent account — are they the same?",
      hint:"Most people say no. The mathematical reason why matters enormously.",
      choices:[
        {val:"same",label:"Same — zero is zero either way"},
