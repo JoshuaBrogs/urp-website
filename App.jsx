@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo, memo, lazy, Suspense } from "react";
+import { BrowserRouter, Routes, Route, Link, useParams, useNavigate, useLocation, Navigate } from "react-router-dom";
 
 // ═══════════════════════════════════════════
 // DESIGN SYSTEM
@@ -134,7 +135,8 @@ const HISTORY=[
 ];
 
 const BLOGS=[
-  {id:1,date:"April 22, 2026",readTime:"5 min",tag:"FOUNDATIONS",tagColor:T.accent,
+  {id:1,date:"April 22, 2026",readTime:"5 min",
+   slug:"division-by-zero-unconstructable",tag:"FOUNDATIONS",tagColor:T.accent,
    title:"Division by Zero Is Not 'Undefined' — It's Unconstructable",
    sub:"Your math teacher wasn't wrong. But the reason they gave wasn't quite right. There's a deeper explanation that changes how you see every equation you've ever written.",
    pullQuote:"You cannot divide by what doesn't exist as a frame. It's not a rule. It's a structural impossibility written into the nature of quantity itself.",
@@ -146,7 +148,8 @@ const BLOGS=[
      {h:"What This Reveals About Zero Itself",b:"The Unitary Reference Principle also distinguishes between two kinds of zero that conventional mathematics treats as one. True zero — standalone zero — is non-existence: no declared reference was ever established. But there is a second kind of zero that appears constantly in real measurement: 0/R, which the URP calls contextual depletion. The frame R is declared and active. The content within it has been fully exhausted. The container exists. The content is gone. An empty bank account is not the same as no bank account. A fully discharged battery is not the same as no battery. A signal that has been fully attenuated is not the same as no signal. These are 0/R states: the frame persists, the content is zero. When you encounter 'zero' in the real world, it is almost always 0/R, not non-existence. The two are structurally different. Conflating them — treating the empty bank account as if the account itself doesn't exist — is the source of a surprising number of mathematical and conceptual errors. Division by zero fails because you cannot declare non-existence as a reference. Division by 0/R — zero content within an active frame — is a different matter, and behaves differently. The URP makes this distinction precise."},
      {h:"Why This Should Be Taught From the Start",b:"None of this makes mathematics harder. In many ways it makes it simpler. When a student is told 'division by zero is undefined, memorize the rule,' they receive a fact with no explanation. When they are told 'division requires a declared reference, and zero has no reference to declare,' they receive a reason. Reasons are stickier than rules. Reasons connect to other things. The reason division by zero is unconstructable is the same reason that every measurement requires a unit, the same reason that probability is always between 0 and 1, the same reason that the Riemann Hypothesis's zeros sit at exactly one-half. It all traces to the same structural claim. That claim is what the Unitary Reference Principle proposes. Not as a replacement for conventional mathematics, which gets the right answers. But as a structural explanation for why mathematics gets those answers — and why the ones it can't get are structured the way they are."},
    ]},
-  {id:2,date:"April 24, 2026",readTime:"6 min",tag:"NUMBER THEORY",tagColor:T.blue,
+  {id:2,date:"April 24, 2026",readTime:"6 min",
+   slug:"does-0-999-equal-1",tag:"NUMBER THEORY",tagColor:T.blue,
    title:"Does 0.999... Really Equal 1? The Question Is More Important Than the Answer.",
    sub:"Millions of people have seen the algebraic proof. Millions still don't believe it. This isn't irrationality — it's a correct intuition that conventional mathematics cannot fully address. The URP can.",
    pullQuote:"1 is a destination. 0.999... is a journey. They are not the same thing, and the proof that says they are hides an assumption that deserves scrutiny.",
@@ -158,7 +161,8 @@ const BLOGS=[
      {h:"What the URP Proposes Instead",b:"The URP does not claim that 0.999... = 1 is false. Depending on how you define equality and limits, it is formally true within standard real analysis. What the URP claims is that the proof reveals a structural distinction that conventional mathematics does not make explicit. When we say 1/3 = 0.333..., we are making a claim about equivalence of representation — the fraction and the decimal represent the same quantity. When we say 0.999... = 1, we are making a similar claim. And it is true in the limiting sense: the sequence of partial sums 0.9, 0.99, 0.999... converges to 1. The limit is 1. But the sequence itself — the process — is not 1. It approaches 1. The distinction between 'the limit of the sequence' and 'the sequence' is what the doubters are sensing, and they are not wrong to sense it. The URP's contribution is to give this distinction a name, a framework, and a place in a larger structural account of what numbers are."},
      {h:"Why Any of This Matters",b:"You might reasonably ask: if the conventional answer is formally correct, why does it matter whether we make this distinction? It matters because mathematical intuition is not noise. When millions of people look at a valid proof and feel it is missing something, that feeling is data. It is evidence that the proof is working harder than it needs to, that it is smuggling in an assumption rather than making it explicit. The history of mathematics is full of cases where popular unease about a formal result turned out to be tracking a genuine structural issue — one that later demanded attention. The URP proposes that the 0.999... discomfort is tracking exactly this: the distinction between a process and its limit, between approach and arrival, between the journey and the destination. That distinction, once named, connects to everything from the foundations of calculus to the structure of physical conservation laws. The question 'does 0.999... equal 1' is far more interesting than its answer."},
    ]},
-  {id:3,date:"April 26, 2026",readTime:"7 min",tag:"MILLENNIUM PROBLEMS",tagColor:T.warn,
+  {id:3,date:"April 26, 2026",readTime:"7 min",
+   slug:"riemann-hypothesis-why-one-half",tag:"MILLENNIUM PROBLEMS",tagColor:T.warn,
    title:"The Riemann Hypothesis: Why Nobody Could Answer 'Why Exactly One-Half?'",
    sub:"165 years. Ten trillion verified zeros. The most famous unsolved problem in mathematics. The question everyone asked but nobody could answer. The URP proposes a structural answer.",
    pullQuote:"Only ½ maps to itself under the symmetry of the functional equation. One depletion event. Self-symmetric. No deficit required. Structurally forced.",
@@ -172,7 +176,8 @@ const BLOGS=[
      {h:"Why This Is a Proposal, Not a Proof",b:"It is important to be clear about what the URP offers here. This is a structural argument — a proposed explanation for why the Riemann Hypothesis should be true. It is not a formal mathematical proof in the conventional sense. A proof would require establishing precise connections between the URP's structural claims and the analytic properties of the zeta function in rigorous mathematical terms. That work is ongoing and is part of what the paper series is building toward. What the URP offers right now is something that has been absent from the Riemann Hypothesis literature for 167 years: a conceptual answer to 'why one-half?' Not just 'the functional equation forces it' — which is observation, not explanation — but a structural reason why the symmetry of the functional equation produces exactly this constraint. The URP's answer is: because the fractional domain has only one self-symmetric point, and that point is the only position where a depletion event can occur without creating a deficit. Whether that structural argument can be made rigorous is the open question. The argument itself has been absent."},
    ]},
 
-  {id:4,date:"April 28, 2026",readTime:"7 min",tag:"FOUNDATIONS",tagColor:T.accent,
+  {id:4,date:"April 28, 2026",readTime:"7 min",
+   slug:"what-is-a-number",tag:"FOUNDATIONS",tagColor:T.accent,
    title:"What Is a Number? A Question Mathematics Has Never Fully Answered",
    sub:"We use numbers every day. We have done so since childhood. But ask a mathematician what a number actually is, and the answer is surprisingly unsatisfying. The Unitary Reference Principle proposes a structural definition.",
    seoQueries:["what is a number in mathematics","definition of a number","what does a number mean","why do numbers need context","number theory foundations"],
@@ -186,7 +191,8 @@ const BLOGS=[
      {h:"What This Changes",b:"Taking n/R seriously as the definition of a number restructures many things that conventional mathematics treats separately. The unit — the declared reference R — is not a tag you add after the mathematics. It is constitutive of the mathematics. The arithmetic of fractions, the behaviour of limits, the structure of the number line, the meaning of zero, the properties of integers — all of these follow from the structure of n/R in ways that the URP papers develop in detail. Perhaps most importantly, it changes what it means for two quantities to be equal. 3/4 and 6/8 are equal because they express the same fraction of any declared reference. 0.999... and 1 are not equal in the same sense — one is a process, one is an arrival — a distinction the URP formalises and that conventional mathematics glosses over. The definition n/R is simple. What follows from it is not."},
      {h:"Proof: 1 Is the Only Complete Whole",b:"This follows directly from the definition. Within any declared reference R, the only value where the measured quantity n exactly equals R is n/R = 1. For any n < R, we have n/R < 1: a partial state. For any n > R, we have n/R > 1: a surplus, which initiates a new declared reference (see below). The value 1 = n/R where n = R is the unique completion state. Formally: let R be any declared reference unit. Then the set of values n/R for n ∈ [0, ∞) contains exactly one value equal to 1, occurring at n = R. All values below R yield partial states in (0,1). All values above R yield surplus states initiating new declared references. QED. The integer 7 is not one whole thing. It is seven complete 1-unit references, concatenated. The 'wholeness' is always the unit, always 1, always relative to the declared R."},
    ]},
-  {id:5,date:"April 28, 2026",readTime:"7 min",tag:"FOUNDATIONS",tagColor:T.accent,
+  {id:5,date:"April 28, 2026",readTime:"7 min",
+   slug:"is-zero-a-number",tag:"FOUNDATIONS",tagColor:T.accent,
    title:"Is Zero a Number? The Two Zeros Mathematics Has Always Conflated",
    sub:"Mathematicians treat zero as a number like any other. But zero behaves strangely in ways that have puzzled everyone from Brahmagupta to modern analysts. The URP explains why: there are actually two structurally different zeros, and conflating them is the source of centuries of confusion.",
    seoQueries:["is zero a number","what does zero mean in mathematics","why is zero special","history of zero in math","is zero nothing or a number","what is an empty set"],
@@ -200,7 +206,8 @@ const BLOGS=[
      {h:"Formal Statement: The Two Zeros",b:"Let R be a declared reference. Then: (1) Non-existence zero, written 0, means R has not been declared. There is no frame. No operation that requires a frame (including division) can be performed. (2) Contextual depletion, written 0/R, means R has been declared and is active, but the measured quantity n = 0. The frame persists. Operations that require the frame (including the prospect of future content) remain meaningful. The distinction can be stated formally: 0 ∉ Domain(R) for any R. But 0/R ∈ [0/R, R] for any declared R. The value 0/R is the lower boundary of the URP domain — the depletion state of a declared reference. It is not the same as the absence of any reference. This is the structural distinction that Brahmagupta, Fibonacci, and every mathematician since has been working around without naming."},
      {h:"Implications Across Mathematics",b:"The two-zeros distinction has implications that reach throughout the papers in this series. Division by zero is unconstructable because it requires declaring non-existence as a reference — not because it produces an inconveniently large result (Paper 2). The critical strip of the Riemann Hypothesis is the URP domain (0/R, R), bounded by the two zeros on either side — non-existence at σ = 0, complete wholeness at σ = 1 (Paper 3). Physical conservation laws are structural: a physical quantity can approach 0/R indefinitely but cannot reach standalone zero because that would require a receiving frame of non-existence (Paper 5). The Dehn invariant for a cube is D(cube) = 0/Rθ — the angle frame persists, the irrational content is depleted — and this is why D = 0 does not mean the angle reference doesn't exist (Paper 4). The two zeros distinguish what is empty from what is absent. That distinction is foundational."},
    ]},
-  {id:6,date:"April 28, 2026",readTime:"8 min",tag:"FOUNDATIONS",tagColor:T.accent,
+  {id:6,date:"April 28, 2026",readTime:"8 min",
+   slug:"why-is-1-the-only-whole-number",tag:"FOUNDATIONS",tagColor:T.accent,
    title:"Why Is 1 the Only Whole Number? The URP Answer to a Question Nobody Thought to Ask",
    sub:"We call 1, 2, 3, 4... the 'whole numbers.' But only one of them is structurally whole. The rest are counts. This distinction, once seen, changes how you understand every integer you have ever used.",
    seoQueries:["why is 1 special in mathematics","what makes a whole number whole","is 1 a natural number","what is the number 1","why is 1 not prime","mathematical definition of whole"],
@@ -214,7 +221,8 @@ const BLOGS=[
      {h:"The Surplus State and New Declared References",b:"When n > R — when the measured quantity exceeds the declared reference — the URP describes this as a surplus state, and it requires a new declared reference. 251 apples against a declared R of 250: the 250 constitute one complete R, sealed. The extra 1 begins a new R₂. This is the structural meaning of integers greater than 1: they are not single quantities larger than 1. They are sequences of completed references. 251 = 1 complete R₁ + 1/250 of R₂. Or, declaring R = 1 apple, 251 = 251 complete unit references. The integer representation depends on the declared R. Change R and the integer representation changes. The underlying quantity — 251 apples — does not change. Only the way it is partitioned into complete and partial references changes. The wholeness is always in the unit. The count is always relative to the declared R."},
      {h:"Mathematical Implications",b:"Treating 1 as the unique complete whole, and integers as counts of completed wholes, has structural consequences throughout mathematics. It explains why the multiplicative identity is 1 rather than any other number: multiplying by 1 preserves the declared reference, because 1 is the completion state. It explains why exponentiation to the power 0 yields 1: any base raised to 0 is a count of zero completed self-references, and a count of zero is the identity — not non-existence, but the empty count within a frame where the base is the declared R. It explains why probability is bounded above by 1: a probability of 1 means the event is certain — the reference (the sample space) is fully achieved. Probability > 1 would be a surplus — more certainty than the declared reference allows. The upper bound is structural, not definitional. And it explains why the Riemann Hypothesis's critical line sits at σ = ½: this is the midpoint of the URP domain, the self-symmetric position between 0 and 1. The domain (0,1) is bounded above by complete wholeness. That bound is 1."},
    ]},
-  {id:7,date:"April 28, 2026",readTime:"6 min",tag:"FOUNDATIONS",tagColor:T.accent,
+  {id:7,date:"April 28, 2026",readTime:"6 min",
+   slug:"what-does-0-333-repeating-mean",tag:"FOUNDATIONS",tagColor:T.accent,
    title:"What Does 0.333... Mean? Why the Fraction 1/3 Is More Precise Than Its Decimal",
    sub:"Most people think the decimal 0.333... is the natural way to write one-third. The fraction 1/3 looks like an intermediate step. The URP argues the opposite: the fraction is exact, the decimal is an infinite approximation. This matters more than it seems.",
    seoQueries:["what does 0.333 repeating mean","is 1/3 equal to 0.333","why does 1/3 never terminate","fraction vs decimal which is more accurate","what is a repeating decimal","irrational numbers and fractions"],
@@ -228,7 +236,8 @@ const BLOGS=[
      {h:"Why 0.999... = 1 Is Formally True but Structurally Incomplete",b:"The decimal 0.999... is the sum of the series 9/10 + 9/100 + 9/1000 + ... This series converges to 1. In standard real analysis, the limit of the sequence of partial sums is 1, and the notation 0.999... refers to this limit. So 0.999... = 1 is true as a statement about the limit of a sequence. But it conflates the sequence (a process) with its limit (an arrival). The fraction 1 is exact. The series 0.999... is a process that converges to 1. Under the URP, approach and arrival are structurally different. The sequence approaches 1. The fraction 1 is 1. These are not the same object, even if their values coincide in the limit. The discomfort millions of people feel about the proof that 0.999... = 1 is not irrationality. It is a correct structural intuition that conventional analysis resolves by definitional fiat — the limit is the value — rather than by structural argument."},
      {h:"Practical Implications: When Precision Matters",b:"This is not purely philosophical. In any context where precision matters — scientific measurement, financial calculation, cryptography — working with fractions rather than decimal approximations avoids accumulated rounding error. A fraction carries its exact value through any number of algebraic operations. A decimal approximation accumulates error with each operation. Computer scientists know this well: floating-point arithmetic, which uses binary approximations of decimals, introduces small errors that compound in long calculations. The URP's insistence on fractions as primary is structurally motivated: the fraction n/R is the exact declared relationship. Any representation of it in a finite positional system is an approximation. Keeping fractions exact throughout a calculation and converting to decimals only at the end is not just a computational trick. It is fidelity to the structure of what numbers are."},
    ]},
-  {id:8,date:"April 28, 2026",readTime:"9 min",tag:"MILLENNIUM PROBLEMS",tagColor:T.warn,
+  {id:8,date:"April 28, 2026",readTime:"9 min",
+   slug:"what-is-the-dehn-invariant",tag:"MILLENNIUM PROBLEMS",tagColor:T.warn,
    title:"What Is the Dehn Invariant? And Why Does D(cube) = 0 Not Mean What You Think",
    sub:"The Dehn invariant is one of the most elegant results in geometry — and one of the most misunderstood. When it equals zero, most people assume that means nothing. The URP shows it means the opposite: an active frame with depleted content. The distinction changes everything about scissors congruence in high dimensions.",
    seoQueries:["what is the dehn invariant","hilbert third problem explained","scissors congruence geometry","why cant cube and tetrahedron be cut and reassembled","dehn invariant zero means","hilbert problem solved"],
@@ -248,6 +257,38 @@ const BLOGS=[
 // ═══════════════════════════════════════════
 // UTILITIES
 // ═══════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════════════════════
+//  PAGE META — updates <head> tags for each route (SEO)
+// ═══════════════════════════════════════════════════════════════════════
+function PageMeta({title, description, canonical, type="website"}) {
+  useEffect(()=>{
+    // Title
+    document.title = title ? `${title} | Unitary Reference Principle` : "n/R — Unitary Reference Principle";
+    // Description
+    const setMeta = (name, val, prop=false) => {
+      const sel = prop ? `meta[property="${name}"]` : `meta[name="${name}"]`;
+      let el = document.querySelector(sel);
+      if(!el){ el=document.createElement('meta'); prop?el.setAttribute('property',name):el.setAttribute('name',name); document.head.appendChild(el); }
+      el.setAttribute('content', val);
+    };
+    const desc = description || "Every number is a fraction of a declared reference. The Unitary Reference Principle — 17 papers reforming mathematics foundations.";
+    setMeta('description', desc);
+    setMeta('og:title', title || "n/R — Unitary Reference Principle", true);
+    setMeta('og:description', desc, true);
+    setMeta('og:type', type, true);
+    if(canonical){
+      setMeta('og:url', canonical, true);
+      let canon = document.querySelector('link[rel="canonical"]');
+      if(!canon){ canon=document.createElement('link'); canon.setAttribute('rel','canonical'); document.head.appendChild(canon); }
+      canon.setAttribute('href', canonical);
+    }
+    // Structured data for blog posts
+    return () => { document.title = "n/R — Unitary Reference Principle"; };
+  },[title, description, canonical, type]);
+  return null;
+}
+
 function useBreakpoint(){
   const [bp,setBp]=useState({mobile:false});
   useEffect(()=>{
@@ -303,6 +344,9 @@ function ParticleField(){
 // ═══════════════════════════════════════════
 function Nav({page,go,mobile}){
   const [open,setOpen]=useState(false);
+  const location=useLocation();
+  const pathMap={"Home":"/","Papers":"/papers","History":"/history","Ideas":"/ideas","Blog":"/blog","About":"/about","Demo":"demo"};
+  const isActive=(l)=>l==="Demo"?false:location.pathname===pathMap[l]||location.pathname.startsWith(pathMap[l]+"/")&&pathMap[l]!=="/";
   const links=["Home","Papers","History","Demo","Ideas","Blog","About"];
   return(
     <nav style={{position:"fixed",top:0,left:0,right:0,zIndex:200,background:"rgba(5,8,10,0.96)",
@@ -316,16 +360,16 @@ function Nav({page,go,mobile}){
         <>
           <button onClick={()=>setOpen(o=>!o)} style={{background:"none",border:"none",cursor:"pointer",color:T.sub,fontSize:22,padding:"4px 8px"}}>{open?"✕":"☰"}</button>
           {open&&<div style={{position:"absolute",top:60,left:0,right:0,background:"rgba(5,8,10,.99)",borderBottom:`1px solid ${T.border}`,zIndex:300}}>
-            {links.map(l=><button key={l} onClick={()=>{go(l);setOpen(false);}} style={{display:"block",width:"100%",textAlign:"left",background:"none",border:"none",color:page===l?T.accent:T.muted,fontFamily:T.mono,fontSize:12,letterSpacing:".12em",padding:".9rem 1.5rem",cursor:"pointer",borderBottom:`1px solid ${T.faint}`}}>{l.toUpperCase()}</button>)}
+            {links.map(l=><button key={l} onClick={()=>{go(l);setOpen(false);}} style={{display:"block",width:"100%",textAlign:"left",background:"none",border:"none",color:isActive(l)?T.accent:T.muted,fontFamily:T.mono,fontSize:12,letterSpacing:".12em",padding:".9rem 1.5rem",cursor:"pointer",borderBottom:`1px solid ${T.faint}`}}>{l.toUpperCase()}</button>)}
           </div>}
         </>
       ):(
         <div style={{display:"flex",gap:2,alignItems:"center"}}>
           {links.map(l=>(
             <button key={l} onClick={()=>go(l)} style={{
-              background:page===l?T.accentDim:"transparent",
-              border:`1px solid ${page===l?"rgba(0,255,179,.25)":"transparent"}`,
-              color:page===l?T.accent:T.muted,fontFamily:T.mono,fontSize:10,
+              background:isActive(l)?T.accentDim:"transparent",
+              border:`1px solid ${isActive(l)?"rgba(0,255,179,.25)":"transparent"}`,
+              color:isActive(l)?T.accent:T.muted,fontFamily:T.mono,fontSize:10,
               letterSpacing:".14em",cursor:"pointer",padding:".38rem .9rem",
               transition:"all .15s",borderRadius:2}}
               onMouseEnter={e=>{if(page!==l){e.currentTarget.style.color=T.sub;e.currentTarget.style.background=T.bg1;}}}
@@ -342,7 +386,7 @@ function Nav({page,go,mobile}){
 // ═══════════════════════════════════════════
 // FOOTER
 // ═══════════════════════════════════════════
-function Footer({go}){
+function Footer(){
   return(
     <footer style={{borderTop:`1px solid ${T.border}`,background:T.bg,padding:"3rem 1.5rem 2rem",position:"relative",zIndex:10}}>
       <div style={{maxWidth:1100,margin:"0 auto"}}>
@@ -377,13 +421,19 @@ function Footer({go}){
           <div>
             <div style={{fontFamily:T.mono,fontSize:9,letterSpacing:".2em",color:T.dim,marginBottom:".9rem"}}>NAVIGATE</div>
             <div style={{display:"flex",flexDirection:"column",gap:".1rem"}}>
-              {["Papers","History","Demo","Ideas","Blog","About"].map(l=>(
-                <button key={l} onClick={()=>go(l)}
-                  style={{display:"block",fontFamily:T.body,fontSize:13,color:T.muted,
-                    background:"none",border:"none",cursor:"pointer",
-                    padding:".25rem 0",textAlign:"left",transition:"color .15s"}}
-                  onMouseEnter={e=>e.currentTarget.style.color=T.accent}
-                  onMouseLeave={e=>e.currentTarget.style.color=T.muted}>{l}</button>
+              {[["Papers","/papers"],["History","/history"],["Demo","demo"],["Ideas","/ideas"],["Blog","/blog"],["About","/about"]].map(([l,path])=>(
+                path==="demo"
+                  ? <button key={l} onClick={()=>window.open("/body-explorer.html","_blank")}
+                      style={{display:"block",fontFamily:T.body,fontSize:13,color:T.muted,
+                        background:"none",border:"none",cursor:"pointer",
+                        padding:".25rem 0",textAlign:"left",transition:"color .15s"}}
+                      onMouseEnter={e=>e.currentTarget.style.color=T.accent}
+                      onMouseLeave={e=>e.currentTarget.style.color=T.muted}>{l}</button>
+                  : <Link key={l} to={path}
+                      style={{display:"block",fontFamily:T.body,fontSize:13,color:T.muted,
+                        textDecoration:"none",padding:".25rem 0",transition:"color .15s"}}
+                      onMouseEnter={e=>e.currentTarget.style.color=T.accent}
+                      onMouseLeave={e=>e.currentTarget.style.color=T.muted}>{l}</Link>
               ))}
             </div>
           </div>
@@ -836,7 +886,7 @@ function PaperPage({paper,onBack,go}){
           </div>}
         </>}
       </div>
-      <Footer go={go}/>
+      <Footer/>
     </div>
   );
 }
@@ -889,7 +939,7 @@ function PapersPage({onSelectPaper,mobile,go}){
           ))}
         </div>
       </div>
-      <Footer go={go}/>
+      <Footer/>
     </div>
   );
 }
@@ -962,7 +1012,7 @@ function HistoryPage({mobile,go}){
           </div>
         )}
       </div>
-      <Footer go={go}/>
+      <Footer/>
     </div>
   );
 }
@@ -970,36 +1020,484 @@ function HistoryPage({mobile,go}){
 // ═══════════════════════════════════════════
 // IDEAS
 // ═══════════════════════════════════════════
-function IdeasPage({go}){
-  const ideas=[
-    {n:"I",title:"Every number is n/R",sub:"The minimum unit of meaning",body:"Remove the declared reference and you don't have a smaller number. You have nothing. No measurement, no meaning. Every quantity you have ever measured — a temperature, a price, a probability, a speed — is a fraction of a declared reference, whether you declared it explicitly or not. n/R is the minimum unit of meaningful quantity."},
-    {n:"II",title:"Zero has two forms",sub:"Non-existence and contextual depletion",body:"True zero is non-existence — no declared reference was ever established. The number line doesn't reach it; it is outside all declared domains. 0/R is something entirely different: the frame R is declared and active, but the content within it has been fully exhausted. The container exists. The content is gone. Every mathematical paradox involving zero traces to conflating these two structurally different states."},
-    {n:"III",title:"1 is the only complete whole",sub:"Arrival, not just a number",body:"1 = n/R where n = R. The only value where the measurement equals the reference exactly. Every integer greater than 1 is a count of completed wholes — seven sealed reference frames, not a position at point 7 on an infinite line. Infinity is the direction of unbounded approach. 1 is the arrival. All of mathematics lives between 0 and 1 in this structural sense."},
-  ];
-  return(
+
+// ═══════════════════════════════════════════════════════════════════════
+//  BLOG POST PAGE — /blog/:slug
+// ═══════════════════════════════════════════════════════════════════════
+function BlogPostPage() {
+  const { slug } = useParams();
+  const navigate = useNavigate();
+  const post = BLOGS.find(b => b.slug === slug);
+
+  useEffect(()=>{ window.scrollTo(0,0); },[slug]);
+
+  if(!post) return <Navigate to="/blog" replace/>;
+
+  const canonical = `https://unitaryreference.com/blog/${post.slug}`;
+
+  return (
     <div style={{minHeight:"100vh",paddingTop:60,background:T.bg}}>
-      <div style={{background:`linear-gradient(180deg,rgba(0,255,179,.04) 0%,transparent 100%)`,borderBottom:`1px solid ${T.border}`,padding:"3rem 3rem 2.5rem"}}>
-        <div style={{maxWidth:900,margin:"0 auto"}}>
-          <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".25em",color:T.dim,marginBottom:".6rem"}}>THREE IDEAS</div>
-          <h1 style={{fontFamily:T.head,fontSize:"clamp(26px,4vw,50px)",fontWeight:400,color:T.text,margin:0}}>The Framework in Three Sentences</h1>
+      <PageMeta
+        title={post.title}
+        description={post.sub}
+        canonical={canonical}
+        type="article"
+      />
+      {/* Article JSON-LD */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({
+        "@context":"https://schema.org",
+        "@type":"Article",
+        "headline": post.title,
+        "description": post.sub,
+        "author":{"@type":"Person","name":"Joshua Steven Brogley"},
+        "datePublished": post.date,
+        "url": canonical,
+        "publisher":{"@type":"Person","name":"Joshua Steven Brogley"},
+        "mainEntityOfPage": canonical,
+        "keywords": post.tag + ", Unitary Reference Principle, mathematics, n/R",
+      })}}/>
+
+      <div style={{maxWidth:720,margin:"0 auto",padding:"2.5rem clamp(1.25rem,5vw,3rem) 0"}}>
+        <Link to="/blog" style={{
+          fontFamily:T.mono,fontSize:11,letterSpacing:".1em",color:T.dim,
+          textDecoration:"none",display:"inline-block",marginBottom:"2rem",
+          transition:"color .15s"
+        }}
+        onMouseEnter={e=>e.currentTarget.style.color=T.accent}
+        onMouseLeave={e=>e.currentTarget.style.color=T.dim}>
+          ← BLOG
+        </Link>
+
+        <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".2em",color:post.tagColor,marginBottom:".65rem"}}>
+          {post.tag}
+        </div>
+        <h1 style={{fontFamily:T.head,fontSize:"clamp(22px,3.5vw,38px)",fontWeight:700,
+          color:T.text,margin:"0 0 .75rem",lineHeight:1.2}}>
+          {post.title}
+        </h1>
+        <p style={{fontFamily:T.body,fontSize:"clamp(14px,1.6vw,17px)",color:T.dim,
+          fontStyle:"italic",marginBottom:"1.5rem",lineHeight:1.7}}>
+          {post.sub}
+        </p>
+        <div style={{display:"flex",gap:"1.5rem",fontFamily:T.body,fontSize:13,color:T.dim,
+          marginBottom:"2.5rem",paddingBottom:"1.5rem",borderBottom:`1px solid ${T.border}`,
+          flexWrap:"wrap",alignItems:"center"}}>
+          <span>{post.date}</span>
+          <span style={{color:T.faint}}>·</span>
+          <span>{post.readTime} read</span>
+          <span style={{color:T.faint}}>·</span>
+          <span style={{color:post.tagColor}}>{post.tag}</span>
+          {post.doi&&<a href={`https://doi.org/${post.doi}`} target="_blank" rel="noopener noreferrer"
+            style={{fontFamily:T.mono,fontSize:10,color:T.accent,textDecoration:"none",
+              border:`1px solid rgba(0,255,179,.25)`,padding:"2px 8px",letterSpacing:".1em",marginLeft:"auto"}}>
+            PAPER ↗
+          </a>}
         </div>
       </div>
-      <div style={{maxWidth:900,margin:"0 auto",padding:"3rem 3rem 4rem",display:"flex",flexDirection:"column",gap:"2px",background:T.bg}}>
-        {ideas.map((idea,i)=>(
-          <div key={idea.n} style={{display:"grid",gridTemplateColumns:"clamp(48px,8vw,80px) 1fr",padding:"2.5rem",border:`1px solid ${T.border}`,background:T.bg1,marginBottom:"1px"}}>
-            <div style={{fontFamily:T.head,fontSize:64,fontWeight:700,color:`rgba(0,255,179,.1)`,lineHeight:1,marginTop:"-0.1em"}}>{idea.n}</div>
-            <div>
-              <h2 style={{fontFamily:T.head,fontSize:24,fontWeight:700,color:T.text,margin:"0 0 .2rem"}}>{idea.title}</h2>
-              <div style={{fontFamily:T.body,fontSize:13,color:T.accent,opacity:.8,marginBottom:"1.1rem"}}>{idea.sub}</div>
-              <p style={{fontFamily:T.body,fontSize:15,color:T.muted,lineHeight:2,margin:0}}>{idea.body}</p>
-            </div>
+
+      {/* Pull quote */}
+      <div style={{maxWidth:720,margin:"0 auto",padding:"0 clamp(1.25rem,5vw,3rem) 2.5rem"}}>
+        <blockquote style={{
+          margin:0,padding:"1.25rem 1.75rem",
+          borderLeft:`4px solid ${post.tagColor}`,
+          background:T.bg1,
+          fontFamily:T.head,fontSize:"clamp(15px,2vw,20px)",
+          color:T.text,fontStyle:"italic",lineHeight:1.65
+        }}>
+          "{post.pullQuote}"
+        </blockquote>
+      </div>
+
+      {/* Article body */}
+      <div style={{maxWidth:720,margin:"0 auto",padding:"0 clamp(1.25rem,5vw,3rem) 4rem"}}>
+        {post.sections.map((s,i)=>(
+          <div key={i} style={{marginBottom:"2.75rem"}}>
+            <h2 style={{fontFamily:T.head,fontSize:"clamp(17px,2.2vw,24px)",fontWeight:700,
+              color:T.text,marginBottom:"1rem"}}>{s.h}</h2>
+            <p style={{fontFamily:T.body,fontSize:"clamp(14px,1.5vw,16px)",
+              color:"#9A9590",lineHeight:2.1}}>{s.b}</p>
           </div>
         ))}
+
+        {/* Tags + DOI */}
+        <div style={{paddingTop:"2.5rem",borderTop:`1px solid ${T.border}`,
+          display:"flex",gap:".5rem",flexWrap:"wrap",alignItems:"center"}}>
+          <span style={{fontFamily:T.mono,fontSize:9,color:post.tagColor,
+            border:`1px solid ${post.tagColor}40`,padding:"4px 10px",letterSpacing:".1em"}}>
+            {post.tag}
+          </span>
+          <span style={{fontFamily:T.mono,fontSize:9,color:T.dim,
+            border:`1px solid ${T.border}`,padding:"4px 10px",letterSpacing:".1em"}}>
+            URP SERIES
+          </span>
+          {post.doi&&<a href={`https://doi.org/${post.doi}`} target="_blank" rel="noopener noreferrer"
+            style={{fontFamily:T.mono,fontSize:9,color:T.accent,
+              border:`1px solid rgba(0,255,179,.3)`,padding:"4px 10px",
+              letterSpacing:".1em",textDecoration:"none",marginLeft:"auto"}}>
+            ZENODO ↗ doi.org/{post.doi}
+          </a>}
+        </div>
+
+        {/* Next post */}
+        {(()=>{
+          const idx = BLOGS.findIndex(b=>b.slug===slug);
+          const next = BLOGS[idx+1];
+          if(!next) return null;
+          return (
+            <div style={{marginTop:"3rem",paddingTop:"2rem",borderTop:`1px solid ${T.border}`}}>
+              <div style={{fontFamily:T.mono,fontSize:9,letterSpacing:".2em",color:T.dim,marginBottom:"1rem"}}>
+                NEXT POST
+              </div>
+              <Link to={`/blog/${next.slug}`} style={{textDecoration:"none",display:"block",
+                padding:"1.25rem 1.5rem",border:`1px solid ${T.border}`,
+                background:T.bg1,transition:"all .2s"}}
+                onMouseEnter={e=>{e.currentTarget.style.borderColor=next.tagColor;e.currentTarget.style.background=T.bg2;}}
+                onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.background=T.bg1;}}>
+                <div style={{fontFamily:T.mono,fontSize:9,color:next.tagColor,
+                  letterSpacing:".15em",marginBottom:".5rem"}}>{next.tag}</div>
+                <div style={{fontFamily:T.head,fontSize:"clamp(15px,1.8vw,19px)",
+                  fontWeight:700,color:T.text}}>{next.title} →</div>
+              </Link>
+            </div>
+          );
+        })()}
       </div>
-      <Footer go={go}/>
+      <Footer/>
     </div>
   );
 }
+
+// ═══════════════════════════════════════════════════════════════════════
+//  BLOG INDEX PAGE — /blog
+// ═══════════════════════════════════════════════════════════════════════
+function BlogIndexPage() {
+  useEffect(()=>{ window.scrollTo(0,0); },[]);
+  return (
+    <div style={{minHeight:"100vh",paddingTop:60,background:T.bg}}>
+      <PageMeta
+        title="Blog — Notes on the Framework"
+        description="Plain language essays on the Unitary Reference Principle. Why division by zero is unconstructable. What 0.999... reveals. Why the Riemann zeros sit at one-half."
+        canonical="https://unitaryreference.com/blog"
+      />
+      <div style={{background:`linear-gradient(180deg,rgba(0,100,80,.05) 0%,transparent 100%)`,
+        borderBottom:`1px solid ${T.border}`,padding:"3rem clamp(1.5rem,5vw,3rem) 2.5rem"}}>
+        <div style={{maxWidth:1000,margin:"0 auto"}}>
+          <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".25em",color:T.dim,marginBottom:".6rem"}}>BLOG</div>
+          <h1 style={{fontFamily:T.head,fontSize:"clamp(26px,4vw,50px)",fontWeight:400,color:T.text,margin:"0 0 .5rem"}}>
+            Notes on the Framework
+          </h1>
+          <p style={{fontFamily:T.body,fontSize:15,color:T.muted}}>
+            Plain language. No equations required. The ideas behind the papers.
+          </p>
+        </div>
+      </div>
+      <div style={{maxWidth:1000,margin:"0 auto",padding:"2.5rem clamp(1.5rem,5vw,3rem) 4rem",
+        display:"flex",flexDirection:"column",gap:"1px",background:T.bg}}>
+        {BLOGS.map((post)=>(
+          <Link key={post.id} to={`/blog/${post.slug}`}
+            style={{background:T.bg,padding:"2rem clamp(1.25rem,3vw,2.5rem)",
+              textDecoration:"none",transition:"all .2s",
+              borderLeft:"4px solid transparent",display:"block"}}
+            onMouseEnter={e=>{e.currentTarget.style.background=T.bg1;e.currentTarget.style.borderLeftColor=post.tagColor;}}
+            onMouseLeave={e=>{e.currentTarget.style.background=T.bg;e.currentTarget.style.borderLeftColor="transparent";}}>
+            <div style={{display:"flex",justifyContent:"space-between",
+              alignItems:"center",marginBottom:".65rem",flexWrap:"wrap",gap:".5rem"}}>
+              <span style={{fontFamily:T.mono,fontSize:9,color:post.tagColor,
+                letterSpacing:".18em",border:`1px solid ${post.tagColor}35`,
+                padding:"3px 8px"}}>{post.tag}</span>
+              <span style={{fontFamily:T.body,fontSize:12,color:T.dim}}>
+                {post.date} · {post.readTime} read
+              </span>
+            </div>
+            <h2 style={{fontFamily:T.head,fontSize:"clamp(16px,2vw,22px)",fontWeight:700,
+              color:T.text,margin:"0 0 .5rem",lineHeight:1.3}}>{post.title}</h2>
+            <p style={{fontFamily:T.body,fontSize:14,color:T.muted,lineHeight:1.7,margin:"0 0 .85rem"}}>
+              {post.sub}
+            </p>
+            <div style={{fontFamily:T.head,fontSize:14,color:T.dim,fontStyle:"italic"}}>
+              "{post.pullQuote}"
+            </div>
+          </Link>
+        ))}
+      </div>
+      <Footer/>
+    </div>
+  );
+}
+
+function IdeasPage({go}){
+  useEffect(()=>{ window.scrollTo(0,0); },[]);
+
+  // Demo 1 — n/R calculator
+  const [demoN, setDemoN] = useState(3);
+  const [demoR, setDemoR] = useState(10);
+  const demoVal = demoR > 0 ? demoN / demoR : null;
+  const demoState = demoR === 0 ? "unconstructable" : demoN === 0 ? "depleted" : demoN === demoR ? "complete" : demoN > demoR ? "surplus" : "partial";
+  const stateColors = {unconstructable:T.warn, depleted:T.warn, complete:T.accent, surplus:T.gold, partial:T.blue};
+  const stateDescs = {
+    unconstructable:"Zero has no declared reference. The operation cannot be constructed.",
+    depleted:"0/R — The frame R persists. The content is empty. Not non-existence.",
+    complete:"n/R = 1 — The only complete whole. Measurement equals reference exactly.",
+    surplus:`n/R > 1 — ${Math.floor(demoN/demoR)} complete R${Math.floor(demoN/demoR)>1?"s":""} + ${demoN%demoR}/${demoR} of a new declared R.`,
+    partial:`${demoN}/${demoR} — Living in the domain (0,1). Exact. No approximation needed.`,
+  };
+
+  // Demo 2 — Fraction vs Decimal
+  const [fracN, setFracN] = useState(1);
+  const [fracD, setFracD] = useState(3);
+  const [decPlaces, setDecPlaces] = useState(6);
+  const fracExact = fracD > 0 ? fracN / fracD : null;
+  const fracTerminates = fracD > 0 && (() => {
+    let d = fracD; while(d%2===0) d/=2; while(d%5===0) d/=5; return d===1;
+  })();
+  const decStr = fracExact !== null ? fracExact.toFixed(decPlaces) : "—";
+  const isRepeating = !fracTerminates && fracD > 0;
+
+  // Demo 3 — The Surplus Machine
+  const [surplusItems, setSurplusItems] = useState(13);
+  const [surplusR, setSurplusR] = useState(10);
+  const completeFrames = surplusR > 0 ? Math.floor(surplusItems/surplusR) : 0;
+  const remainder = surplusR > 0 ? surplusItems % surplusR : 0;
+
+  // Demo 4 — Step 0 Calculator
+  const [step0R, setStep0R] = useState("");
+  const [step0N, setStep0N] = useState("");
+  const step0Valid = step0R !== "" && step0N !== "" && parseFloat(step0R) > 0;
+  const step0Result = step0Valid ? parseFloat(step0N)/parseFloat(step0R) : null;
+
+  return (
+    <div style={{minHeight:"100vh",paddingTop:60,background:T.bg}}>
+      <PageMeta
+        title="Ideas — The URP Framework"
+        description="Interactive demonstrations of the Unitary Reference Principle. Explore what every number is, what zero really means, and why 1 is the only complete whole."
+        canonical="https://unitaryreference.com/ideas"
+      />
+      {/* Header */}
+      <div style={{background:`linear-gradient(180deg,rgba(0,255,179,.04) 0%,transparent 100%)`,
+        borderBottom:`1px solid ${T.border}`,padding:"3rem clamp(1.5rem,5vw,3rem) 2.5rem"}}>
+        <div style={{maxWidth:1000,margin:"0 auto"}}>
+          <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".25em",color:T.dim,marginBottom:".6rem"}}>
+            INTERACTIVE FRAMEWORK
+          </div>
+          <h1 style={{fontFamily:T.head,fontSize:"clamp(26px,4vw,48px)",fontWeight:700,
+            color:T.text,margin:"0 0 .6rem"}}>
+            The Ideas. Try Them.
+          </h1>
+          <p style={{fontFamily:T.body,fontSize:16,color:T.muted,maxWidth:540,lineHeight:1.85}}>
+            Each idea below has a live calculator. Change the numbers. The framework responds.
+          </p>
+        </div>
+      </div>
+
+      <div style={{maxWidth:1000,margin:"0 auto",padding:"3rem clamp(1.5rem,5vw,3rem) 5rem",
+        display:"flex",flexDirection:"column",gap:"3rem"}}>
+
+        {/* ── DEMO 1: n/R State Machine ── */}
+        <div style={{border:`1px solid ${T.border}`,background:T.bg1}}>
+          <div style={{padding:"1.5rem 2rem",borderBottom:`1px solid ${T.border}`,
+            display:"flex",justifyContent:"space-between",alignItems:"baseline",flexWrap:"wrap",gap:".5rem"}}>
+            <div>
+              <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".2em",color:T.dim,marginBottom:".3rem"}}>
+                AXIOM I + II + III + IV + V
+              </div>
+              <h2 style={{fontFamily:T.head,fontSize:"clamp(18px,2.5vw,26px)",fontWeight:700,color:T.text}}>
+                The Five States of n/R
+              </h2>
+            </div>
+            <div style={{fontFamily:T.mono,fontSize:10,color:T.dim}}>Drag the sliders</div>
+          </div>
+          <div style={{padding:"2rem"}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"2rem",marginBottom:"1.5rem"}}>
+              <div>
+                <div style={{fontFamily:T.mono,fontSize:10,color:T.dim,letterSpacing:".1em",marginBottom:".5rem"}}>
+                  n (measured quantity)
+                </div>
+                <input type="range" min={0} max={20} value={demoN}
+                  onChange={e=>setDemoN(+e.target.value)}
+                  style={{width:"100%",accentColor:T.accent,marginBottom:".4rem"}}/>
+                <div style={{fontFamily:T.mono,fontSize:28,fontWeight:700,
+                  color:stateColors[demoState]}}>{demoN}</div>
+              </div>
+              <div>
+                <div style={{fontFamily:T.mono,fontSize:10,color:T.dim,letterSpacing:".1em",marginBottom:".5rem"}}>
+                  R (declared reference)
+                </div>
+                <input type="range" min={0} max={20} value={demoR}
+                  onChange={e=>setDemoR(+e.target.value)}
+                  style={{width:"100%",accentColor:T.accent,marginBottom:".4rem"}}/>
+                <div style={{fontFamily:T.mono,fontSize:28,fontWeight:700,
+                  color:demoR===0?T.warn:T.accent}}>{demoR}</div>
+              </div>
+            </div>
+            {/* Result display */}
+            <div style={{padding:"1.5rem 2rem",background:T.bg,
+              border:`2px solid ${stateColors[demoState]}40`,
+              display:"grid",gridTemplateColumns:"auto 1fr",gap:"1.5rem",alignItems:"center"}}>
+              <div style={{textAlign:"center"}}>
+                <div style={{fontFamily:T.mono,fontSize:"clamp(32px,5vw,52px)",
+                  fontWeight:700,color:stateColors[demoState],lineHeight:1}}>
+                  {demoR===0 ? "∅" : demoVal===1 ? "1" : demoN===0 ? "0/R" : demoN > demoR ? `${demoN}/${demoR}` : `${demoN}/${demoR}`}
+                </div>
+                <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".12em",
+                  color:stateColors[demoState],marginTop:".4rem",
+                  textTransform:"uppercase"}}>{demoState}</div>
+              </div>
+              <div>
+                <div style={{fontFamily:T.body,fontSize:"clamp(13px,1.4vw,15px)",
+                  color:T.sub,lineHeight:1.85}}>{stateDescs[demoState]}</div>
+                {demoState==="surplus"&&<div style={{fontFamily:T.mono,fontSize:12,
+                  color:T.gold,marginTop:".6rem"}}>
+                  {completeFrames} × R complete + {remainder}/{demoR} of R₂
+                </div>}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── DEMO 2: Fraction vs Decimal ── */}
+        <div style={{border:`1px solid ${T.border}`,background:T.bg1}}>
+          <div style={{padding:"1.5rem 2rem",borderBottom:`1px solid ${T.border}`}}>
+            <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".2em",color:T.dim,marginBottom:".3rem"}}>
+              AXIOM VI
+            </div>
+            <h2 style={{fontFamily:T.head,fontSize:"clamp(18px,2.5vw,26px)",fontWeight:700,color:T.text}}>
+              The Fraction Is More Precise Than the Decimal
+            </h2>
+          </div>
+          <div style={{padding:"2rem"}}>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"1.5rem",marginBottom:"1.75rem",flexWrap:"wrap"}}>
+              <div>
+                <div style={{fontFamily:T.mono,fontSize:10,color:T.dim,letterSpacing:".1em",marginBottom:".5rem"}}>NUMERATOR</div>
+                <input type="range" min={1} max={20} value={fracN} onChange={e=>setFracN(+e.target.value)} style={{width:"100%",accentColor:T.blue,display:"block",marginBottom:".3rem"}}/>
+                <div style={{fontFamily:T.mono,fontSize:24,fontWeight:700,color:T.blue}}>{fracN}</div>
+              </div>
+              <div>
+                <div style={{fontFamily:T.mono,fontSize:10,color:T.dim,letterSpacing:".1em",marginBottom:".5rem"}}>DENOMINATOR</div>
+                <input type="range" min={1} max={20} value={fracD} onChange={e=>setFracD(+e.target.value)} style={{width:"100%",accentColor:T.blue,display:"block",marginBottom:".3rem"}}/>
+                <div style={{fontFamily:T.mono,fontSize:24,fontWeight:700,color:T.blue}}>{fracD}</div>
+              </div>
+              <div>
+                <div style={{fontFamily:T.mono,fontSize:10,color:T.dim,letterSpacing:".1em",marginBottom:".5rem"}}>DECIMAL PLACES</div>
+                <input type="range" min={1} max={20} value={decPlaces} onChange={e=>setDecPlaces(+e.target.value)} style={{width:"100%",accentColor:T.blue,display:"block",marginBottom:".3rem"}}/>
+                <div style={{fontFamily:T.mono,fontSize:24,fontWeight:700,color:T.dim}}>{decPlaces}</div>
+              </div>
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1px",background:T.border}}>
+              <div style={{padding:"1.25rem 1.5rem",background:T.bg}}>
+                <div style={{fontFamily:T.mono,fontSize:9,letterSpacing:".2em",color:T.blue,marginBottom:".6rem"}}>
+                  THE FRACTION — EXACT
+                </div>
+                <div style={{fontFamily:T.mono,fontSize:"clamp(28px,4vw,42px)",fontWeight:700,
+                  color:T.blue,letterSpacing:"-.02em",wordBreak:"break-all"}}>
+                  {fracN}/{fracD}
+                </div>
+                <div style={{fontFamily:T.body,fontSize:13,color:T.muted,marginTop:".75rem"}}>
+                  A complete declared relationship. Always exact. No information lost.
+                </div>
+              </div>
+              <div style={{padding:"1.25rem 1.5rem",background:T.bg}}>
+                <div style={{fontFamily:T.mono,fontSize:9,letterSpacing:".2em",
+                  color:isRepeating?T.warn:T.accent,marginBottom:".6rem"}}>
+                  THE DECIMAL — {isRepeating?"INFINITE APPROACH":"EXACT"}
+                </div>
+                <div style={{fontFamily:T.mono,fontSize:"clamp(20px,3vw,32px)",fontWeight:700,
+                  color:isRepeating?T.warn:T.accent,wordBreak:"break-all",lineHeight:1.2}}>
+                  {decStr}{isRepeating?"...":""}
+                </div>
+                <div style={{fontFamily:T.body,fontSize:13,color:T.muted,marginTop:".75rem"}}>
+                  {isRepeating
+                    ? `Base-10 cannot represent ${fracN}/${fracD} finitely. Each digit approaches — never arrives.`
+                    : `Terminates exactly in base-10. Denominator ${fracD} has only factors of 2 and 5.`}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── DEMO 3: Step 0 Calculator ── */}
+        <div style={{border:`1px solid ${T.border}`,background:T.bg1}}>
+          <div style={{padding:"1.5rem 2rem",borderBottom:`1px solid ${T.border}`}}>
+            <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".2em",color:T.dim,marginBottom:".3rem"}}>
+              AXIOM VII
+            </div>
+            <h2 style={{fontFamily:T.head,fontSize:"clamp(18px,2.5vw,26px)",fontWeight:700,color:T.text}}>
+              Step 0: Declare Your Reference First
+            </h2>
+          </div>
+          <div style={{padding:"2rem"}}>
+            <p style={{fontFamily:T.body,fontSize:15,color:T.muted,lineHeight:1.85,marginBottom:"1.75rem",maxWidth:560}}>
+              Every calculation has a mandatory first step that conventional mathematics almost always skips.
+              Declare R before you calculate. The meaning of your answer depends on it.
+            </p>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1rem",marginBottom:"1.5rem"}}>
+              <div>
+                <label style={{fontFamily:T.mono,fontSize:10,color:T.dim,letterSpacing:".1em",
+                  display:"block",marginBottom:".5rem"}}>
+                  STEP 0 — DECLARE R (your reference)
+                </label>
+                <input
+                  type="number" value={step0R} onChange={e=>setStep0R(e.target.value)}
+                  placeholder="e.g. 100"
+                  style={{width:"100%",background:T.bg,border:`1px solid ${T.border}`,
+                    color:T.text,fontFamily:T.mono,fontSize:16,padding:".75rem 1rem",
+                    outline:"none",transition:"border-color .15s"}}
+                  onFocus={e=>e.currentTarget.style.borderColor="rgba(0,255,179,.4)"}
+                  onBlur={e=>e.currentTarget.style.borderColor=T.border}
+                />
+              </div>
+              <div>
+                <label style={{fontFamily:T.mono,fontSize:10,color:T.dim,letterSpacing:".1em",
+                  display:"block",marginBottom:".5rem"}}>
+                  STEP 1 — MEASURE n (your quantity)
+                </label>
+                <input
+                  type="number" value={step0N} onChange={e=>setStep0N(e.target.value)}
+                  placeholder="e.g. 73"
+                  style={{width:"100%",background:T.bg,border:`1px solid ${T.border}`,
+                    color:T.text,fontFamily:T.mono,fontSize:16,padding:".75rem 1rem",
+                    outline:"none",transition:"border-color .15s"}}
+                  onFocus={e=>e.currentTarget.style.borderColor="rgba(0,255,179,.4)"}
+                  onBlur={e=>e.currentTarget.style.borderColor=T.border}
+                />
+              </div>
+            </div>
+            {step0Valid ? (
+              <div style={{padding:"1.5rem 2rem",background:T.bg,
+                borderLeft:`4px solid ${step0Result>=1?T.accent:step0Result===0?T.warn:T.blue}`}}>
+                <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".2em",
+                  color:T.dim,marginBottom:".75rem"}}>STEP 2 — RESULT</div>
+                <div style={{display:"flex",alignItems:"baseline",gap:"1rem",flexWrap:"wrap"}}>
+                  <span style={{fontFamily:T.mono,fontSize:"clamp(32px,5vw,52px)",
+                    fontWeight:700,color:step0Result>=1?T.accent:step0Result===0?T.warn:T.blue}}>
+                    {step0Result.toFixed(4).replace(/\.?0+$/,"")}
+                  </span>
+                  <span style={{fontFamily:T.body,fontSize:15,color:T.muted}}>
+                    = {step0N}/{step0R} of your declared reference
+                  </span>
+                </div>
+                <div style={{fontFamily:T.body,fontSize:14,color:T.muted,marginTop:".75rem",lineHeight:1.7}}>
+                  {step0Result===1?"Complete. n = R. The declared reference is exactly achieved."
+                   :step0Result===0?"Depleted. 0/R. The frame exists. The content is zero."
+                   :step0Result>1?`Surplus. ${parseFloat(step0N)} exceeds R = ${parseFloat(step0R)}. ${Math.floor(step0Result)} complete frame${Math.floor(step0Result)>1?"s":""} + ${(step0Result%1).toFixed(4).replace(/\.?0+$/,"")} of a new R.`
+                   :`Partial state. ${(step0Result*100).toFixed(1)}% of the declared reference.`}
+                </div>
+              </div>
+            ) : (
+              <div style={{padding:"1.25rem 1.5rem",background:T.bg,
+                border:`1px dashed ${T.border}`,fontFamily:T.mono,fontSize:12,color:T.faint,
+                textAlign:"center",letterSpacing:".1em"}}>
+                ENTER R AND n ABOVE TO SEE THE RESULT
+              </div>
+            )}
+          </div>
+        </div>
+
+      </div>
+      <Footer/>
+    </div>
+  );
+}
+
 
 // ═══════════════════════════════════════════
 // BLOG
@@ -1055,7 +1553,7 @@ function BlogPage({go}){
             </a>}
           </div>
         </div>
-        <Footer go={go}/>
+        <Footer/>
       </div>
     );
   }
@@ -1085,7 +1583,7 @@ function BlogPage({go}){
           </div>
         ))}
       </div>
-      <Footer go={go}/>
+      <Footer/>
     </div>
   );
 }
@@ -1153,7 +1651,7 @@ function AboutPage({go}){
           </div>
         </div>
       </div>
-      <Footer go={go}/>
+      <Footer/>
     </div>
   );
 }
@@ -2048,22 +2546,88 @@ function URPChatbot() {
 
 export default function App(){
   const {mobile}=useBreakpoint();
-  const [page,setPage]=useState("Home");
+  return(
+    <BrowserRouter>
+      <GlobalStyles/>
+      <AppInner mobile={mobile}/>
+    </BrowserRouter>
+  );
+}
+
+function AppInner({mobile}){
+  const navigate = useNavigate();
   const [selectedPaper,setSelectedPaper]=useState(null);
-  const go=useCallback((p)=>{if(p==="Demo"){window.open("/body-explorer.html","_blank");return;}setPage(p);setSelectedPaper(null);window.scrollTo(0,0);},[]);
-  const handleSelectPaper=(paper)=>{setSelectedPaper(paper);setPage("PaperDetail");window.scrollTo(0,0);};
+
+  const go=useCallback((p)=>{
+    if(p==="Demo"){window.open("/body-explorer.html","_blank");return;}
+    const routes={
+      "Home":"/","Papers":"/papers","History":"/history",
+      "Ideas":"/ideas","Blog":"/blog","About":"/about"
+    };
+    navigate(routes[p]||"/");
+  },[navigate]);
+
+  const handleSelectPaper=(paper)=>{
+    setSelectedPaper(paper);
+    navigate(`/papers/${paper.num}`);
+  };
+
   return(
     <div style={{background:T.bg,minHeight:"100vh",color:T.text,fontFamily:T.body}}>
-      <GlobalStyles/>
-      <Nav page={page} go={go} mobile={mobile}/>
-      {page==="Home"&&<><HeroSection go={go}/><WhatSection/><AxiomsSection go={go}/><QuestionsSection go={go}/><Footer go={go}/></>}
-      {page==="Papers"&&<PapersPage onSelectPaper={handleSelectPaper} mobile={mobile} go={go}/>}
-      {page==="PaperDetail"&&selectedPaper&&<PaperPage paper={selectedPaper} onBack={()=>go("Papers")} go={go}/>}
-      {page==="History"&&<HistoryPage mobile={mobile} go={go}/>}
-      
-      {page==="Ideas"&&<IdeasPage go={go}/>}
-      {page==="Blog"&&<BlogPage go={go}/>}
-      {page==="About"&&<AboutPage go={go}/>}
+      <Nav mobile={mobile} go={go}/>
+      {/* <URPChatbot/> */}
+      <Routes>
+        <Route path="/" element={
+          <>
+            <PageMeta
+              title="n/R — Unitary Reference Principle"
+              description="Every number is a fraction of a declared reference. 17 papers reforming the foundations of mathematics. From primes to quantum gravity."
+              canonical="https://unitaryreference.com"
+            />
+            <HeroSection go={go}/>
+            <WhatSection/>
+            <AxiomsSection go={go}/>
+            <QuestionsSection go={go}/>
+            <Footer/>
+          </>
+        }/>
+        <Route path="/papers" element={<PapersPage onSelectPaper={handleSelectPaper} mobile={mobile} go={go}/>}/>
+        <Route path="/papers/:num" element={<PaperDetailRoute go={go}/>}/>
+        <Route path="/history" element={<HistoryPage mobile={mobile} go={go}/>}/>
+        <Route path="/ideas" element={<IdeasPage go={go}/>}/>
+        <Route path="/blog" element={<BlogIndexPage/>}/>
+        <Route path="/blog/:slug" element={<BlogPostPage/>}/>
+        <Route path="/about" element={<AboutPage go={go}/>}/>
+        <Route path="*" element={<NotFoundPage go={go}/>}/>
+      </Routes>
+    </div>
+  );
+}
+
+function PaperDetailRoute({go}){
+  const {num}=useParams();
+  const paper=PAPERS.find(p=>p.num===num);
+  const navigate=useNavigate();
+  if(!paper) return <Navigate to="/papers" replace/>;
+  return <PaperPage paper={paper} onBack={()=>navigate("/papers")} go={go}/>;
+}
+
+function NotFoundPage({go}){
+  useEffect(()=>{ window.scrollTo(0,0); },[]);
+  return(
+    <div style={{minHeight:"100vh",paddingTop:60,display:"flex",flexDirection:"column",
+      alignItems:"center",justifyContent:"center",background:T.bg,padding:"2rem"}}>
+      <PageMeta title="404 — Page Not Found"/>
+      <div style={{fontFamily:T.mono,fontSize:80,fontWeight:700,color:T.faint,lineHeight:1}}>404</div>
+      <div style={{fontFamily:T.head,fontSize:24,color:T.sub,margin:"1rem 0 .5rem"}}>Page not found</div>
+      <div style={{fontFamily:T.body,fontSize:15,color:T.muted,marginBottom:"2rem",textAlign:"center",maxWidth:400}}>
+        This URL doesn't exist. The reference was declared but the content is missing. 0/R.
+      </div>
+      <button onClick={()=>go("Home")}
+        style={{background:T.accent,color:T.bg,border:"none",fontFamily:T.body,
+          fontSize:14,fontWeight:700,padding:".85rem 2rem",cursor:"pointer"}}>
+        Return Home
+      </button>
     </div>
   );
 }
