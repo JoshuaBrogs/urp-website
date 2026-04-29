@@ -1254,207 +1254,403 @@ function AxiomsSection({go}){
 function Provocations({go}){
   const [active,setActive]=useState(null);
   const [answered,setAnswered]=useState({});
+  const sectionRef=useRef();
+  const questionRef=useRef();
+
+  const scrollToQuestion=useCallback(()=>{
+    setTimeout(()=>{
+      if(questionRef.current){
+        const el=questionRef.current;
+        const top=el.getBoundingClientRect().top+window.scrollY-80;
+        window.scrollTo({top,behavior:"smooth"});
+      }
+    },80);
+  },[]);
 
   const questions=[
     {
-      id:"whole",
-      q:"Is 7 a whole number?",
-      hint:"Most people say yes immediately.",
+      id:"what_is_number",
+      q:"What does the number 3 mean?",
+      hint:"Just a number — or is there something it depends on?",
       choices:[
-        {val:"yes",label:"Yes — 7 is a whole number"},
-        {val:"no",label:"No — it depends on context"},
+        {val:"abstract",label:"It's an abstract symbol — it just means 3"},
+        {val:"quantity",label:"It means a quantity of something"},
+        {val:"depends",label:"It depends entirely on what you're counting"},
       ],
       reveal:{
-        yes:`Your answer is conventional and completely reasonable. But consider what "whole" means structurally. The URP proposes that 1 is the only complete whole — the only value where a measurement exactly equals its declared reference. 7 is not one whole thing. It is seven completed reference frames, stacked. 7 apples is seven complete 1-apple references. 7 kilometres is seven complete 1-km references. The "7" is a count of completed wholes, not a whole itself. This isn't saying you're wrong — it's asking: what does "whole" actually mean? And the answer changes what integers are.`,
-        no:`You're already thinking structurally. The URP formalises exactly this intuition: "whole" requires a declared reference, and whether 7 is whole depends entirely on what that reference is. 7/7 = 1, which is complete. 7/10 = 0.7, which is partial. 7/3 creates a surplus — more than one complete frame. The number 7 has no wholeness on its own. It is a count of completed units of a declared reference. This is the starting point of the Unitary Reference Principle.`,
+        abstract:"That's the conventional position — and it works for most purposes. But consider: 3 metres, 3 seconds, 3 dollars. The 3 changes meaning completely with each context. Without knowing what unit you're using, the number 3 communicates nothing. The URP makes this structural: every number is n/R, a fraction of a declared reference. Remove the reference and you don't have a number — you have a symbol waiting for meaning.",
+        quantity:"You're on the right track. But quantity of what? The URP's answer is precise: a number is a quantity expressed as a fraction of a declared reference unit. 3 means 3/R where R is the declared unit — metres, seconds, dollars. Change R and the meaning changes. The number is inseparable from its reference. This is the foundational axiom of the Unitary Reference Principle.",
+        depends:"Exactly. And this is not a limitation — it's the structure. The URP formalises your intuition: every number is n/R, where R is the declared reference. 3 metres is 3/R where R=1 metre. 3 dollars is 3/R where R=1 dollar. The 3 is the same. The meaning changes because R changes. Mathematics has been treating numbers as context-free objects for centuries. The URP says: context isn't optional. It's what makes a number a number.",
+      }
+    },
+    {
+      id:"one",
+      q:"Is 7 a whole number?",
+      hint:"You've probably never questioned this before.",
+      choices:[
+        {val:"yes",label:"Yes — it's a whole number, obviously"},
+        {val:"sometimes",label:"Only if we say the unit is 1"},
+        {val:"no",label:"7 is a count, not a whole"},
+      ],
+      reveal:{
+        yes:"The conventional answer — and it's reasonable. But here's what the URP asks: what does 'whole' actually mean? If 1 is the measure of complete wholeness — the only value where a quantity exactly equals its declared reference — then 7 is not one whole thing. It's seven complete units, counted. The 'whole' is always the unit. 7 is a count of wholeness, not a single wholeness. This matters because it changes what integers are: not points on a line, but records of how many times a declared reference has been completed.",
+        sometimes:"You've landed on the URP's position. 7/7 = 1 — complete, whole. 7/10 = 0.7 — partial. 7/3 = 2.333... — surplus plus fraction. Whether 7 is 'whole' depends entirely on the declared reference. The URP states this as an axiom: 1 is the only complete whole within any declared reference. Not because 1 is special arbitrarily, but because 1 = n/R is the only state where measurement equals reference exactly.",
+        no:"You've arrived at the structural answer. 7 is seven complete instances of whatever unit you've declared. It's a count. The wholeness belongs to the unit — to 1. This is what the URP means by '1 is the only complete whole': within any declared reference, exactly one state is fully complete. Everything else is either partial, depleted, or a count of completed wholes. 7 is seven. But each of those sevens is a complete 1.",
       }
     },
     {
       id:"zero",
-      q:"What is zero?",
-      hint:"There might be more than one answer.",
+      q:"An empty bank account has £0 in it. A bank account that doesn't exist also has £0. Are these the same?",
+      hint:"Most people say no. The reason why matters enormously.",
       choices:[
-        {val:"nothing",label:"Nothing — the absence of quantity"},
-        {val:"number",label:"A number like any other"},
-        {val:"placeholder",label:"A placeholder — an empty position"},
+        {val:"same",label:"They're the same — zero is zero"},
+        {val:"different",label:"Different — one has a frame, one doesn't"},
+        {val:"practical",label:"Practically the same, technically different"},
       ],
       reveal:{
-        nothing:`This intuition is structurally correct in one sense, and the URP preserves it. Standalone zero — true zero — is non-existence: no declared reference was ever established. But there is a second kind of zero the URP calls 0/R, or contextual depletion. An empty bank account is not the same as no bank account. A fully discharged battery is not the same as no battery. In both cases, the frame persists — the account, the battery — but the content is exhausted. 0/R is "nothing within a declared frame." It behaves differently from non-existence. Conflating them is the source of centuries of mathematical confusion, including why division by zero has never been properly explained.`,
-        number:`Convention treats zero this way, but the URP challenges it. If zero is a number like 3 or 7, then it should be expressible as n/R for some reference R. But what is the reference for zero? There is none — zero is the absence of any declared reference. This is why dividing by zero is not just "undefined" but structurally unconstructable: you cannot declare non-existence as a reference frame. Zero has a legitimate role in the URP, but not as a number. It is the boundary condition: the state before any reference is declared.`,
-        placeholder:`You're thinking of 0/R — contextual depletion — which is one of the two zeros the URP distinguishes. The placeholder zero in positional notation (the "0" in 104 or 0.3) is exactly this: the frame exists (the positional column is declared), but the content is empty. This is structurally different from non-existence. The URP formalises the placeholder intuition: 0/R means the reference persists, the content is zero. Fibonacci was using this concept correctly in 1202 without having a name for it. You just named it.`,
+        same:"This is the mathematical convention — zero is zero. But consider: you can deposit money into the empty account. You cannot deposit into an account that doesn't exist. The operations available are different. One has infrastructure. The other doesn't. The URP formalises this as two distinct zeros: standalone zero (non-existence — no reference declared) and 0/R (contextual depletion — the frame exists, the content is zero). The empty account is 0/R. The non-existent account is standalone zero. This distinction is why division by zero has never been properly explained.",
+        different:"This is the URP's answer. The empty account is 0/R: the reference frame (the account, the account number, the bank's ledger entry) exists and is active. The content is zero. The non-existent account has no reference frame at all. These are structurally different. The URP calls them contextual depletion (0/R) and non-existence (standalone zero). Mathematics has one symbol for both. That conflation is the source of every paradox involving zero — including why dividing by zero causes problems.",
+        practical:"The practical difference is real, and the URP makes it structural. An empty account is 0/R: the frame persists. A non-existent account is standalone zero: no frame. These two states behave differently in mathematics just as they behave differently in life. You can make a deposit into an empty account. You can approach zero along a number line. But you cannot perform operations that require a frame when no frame exists — which is exactly why dividing by zero is not just undefined but unconstructable.",
       }
     },
     {
-      id:"division",
-      q:"Why is division by zero 'undefined'?",
-      hint:"You were probably taught a rule without a reason.",
+      id:"division_zero",
+      q:"Your teacher told you dividing by zero is 'undefined.' Were they right?",
+      hint:"They gave you the correct answer. But maybe not the complete reason.",
       choices:[
-        {val:"rule",label:"It just is — that's the rule"},
-        {val:"infinity",label:"Because it would be infinite"},
-        {val:"noframe",label:"There's no reference frame to divide into"},
+        {val:"yes",label:"Yes — it's a rule, it works, end of story"},
+        {val:"partial",label:"Partially — the answer is right but the reason is incomplete"},
+        {val:"no",label:"No — 'undefined' implies it could be defined. It can't."},
       ],
       reveal:{
-        rule:`This is what most of us were taught, and there's nothing wrong with accepting it. But "undefined" is an administrative answer. It says we haven't defined it, not that it cannot be defined. Some systems do assign a value — IEEE arithmetic returns "infinity" or NaN. The URP goes deeper: division requires a declared reference R. When you divide 12 by 4, you declare R = 4 and ask how many times R fits into 12. When you try to divide by zero, you are attempting to declare R = 0. But zero has no declared reference to be a frame for. The operation is not undefined — it is unconstructable. The conditions for the operation's existence are not met, and cannot be met.`,
-        infinity:`This is the limit argument: as the divisor approaches zero, the quotient grows without bound. It's a meaningful observation and has applications in analysis. But it confuses the limit of a process with the value at a point. The limit of 1/x as x→0 from the right is +∞. But that's the limit of the approach — it doesn't assign a value to 1/0 itself. The URP's answer is different: the problem is not that the result is too large to name. The problem is that the operation requires declaring R = 0 as a reference frame, and zero cannot be a reference frame. The issue is structural, not a matter of the result being large.`,
-        noframe:`You've arrived at the URP answer directly. Every division operation requires a declared reference — a frame to divide into. Zero cannot be that reference because zero is the absence of any declared reference. There is no frame. The operation cannot be constructed. This is why the URP describes division by zero not as "undefined" but as "unconstructable" — a structural impossibility, not a definitional gap. The distinction matters: an undefined thing might be definable with more thought. An unconstructable thing cannot be constructed because the structural requirements for its existence are not satisfied.`,
+        yes:"Fair enough — it works as a rule. But consider: some calculators return infinity when you divide by zero. Others return an error. Neither is satisfying. 'Undefined' suggests someone could define it if they tried hard enough. The URP offers a reason: dividing by zero requires declaring zero as your reference frame R. But zero has no reference — it's the absence of any declared frame. The operation isn't undefined. It's unconstructable. The conditions for it to exist are not met structurally, not just definitionally.",
+        partial:"This is the honest position, and the URP agrees. The teacher gave the right answer. But 'undefined' is administrative — it says we haven't defined it, not that we can't or shouldn't. The URP provides the structural reason: every division requires a declared reference R. To divide by zero, you'd need to declare R = 0. But zero has no declared reference. It is the absence of any frame. The operation cannot be constructed, not just defined. The word that fits is 'unconstructable' — a structural impossibility, not a definitional gap.",
+        no:"Exactly. 'Undefined' implies that with enough thought, someone could assign a value. Some systems do — engineers sometimes define 1/0 = infinity for practical purposes. But that's a workaround, not a solution. The URP's answer: division requires a declared reference R. Zero cannot be that reference because zero is the absence of any declared frame. The operation is unconstructable: the structural prerequisites don't exist. It's not that no one has defined it. It's that no one can, because the question requires something that cannot structurally exist.",
+      }
+    },
+    {
+      id:"third",
+      q:"1/3 = 0.333... — which is more precise?",
+      hint:"Most people assume the decimal is just how fractions look when written out.",
+      choices:[
+        {val:"decimal",label:"They're equal — same number, two notations"},
+        {val:"fraction",label:"The fraction — 0.333... never actually arrives"},
+        {val:"decimal2",label:"The decimal — it shows the actual value in numbers"},
+      ],
+      reveal:{
+        decimal:"Formally, in standard real analysis, they represent the same value — the limit of 0.333... is 1/3. But consider: the fraction 1/3 is a complete, static declared relationship between 1 and 3. The decimal 0.333... is a process — base-10 arithmetic running forever, generating 3s, never terminating. The URP distinguishes between the arrival (the fraction) and the approach (the decimal). They point to the same quantity. But one is the destination; the other is an infinite journey toward it. The non-termination of the decimal is base-10's limitation, not a property of one-third.",
+        fraction:"This is the URP's answer. The fraction 1/3 is exact: a complete declared relationship between numerator and denominator. The decimal 0.333... is base-10 arithmetic's attempt to represent that relationship — and base-10 cannot do it finitely, because 3 is not a factor of 10. Each additional 3 is a closer approximation. None is the answer. The fraction contains more information than any decimal approximation of it. Fractions are primary. Decimals are representations — and sometimes, representations that never fully succeed.",
+        decimal2:"Actually, the opposite is true. The decimal 0.333... is less precise than the fraction 1/3, not more. The fraction states exactly: the numerator is 1, the denominator is 3. Nothing is lost. The decimal is base-10 struggling to express this relationship — and failing to do so in finite digits. Every additional 3 gets closer but never arrives. If you calculated with 0.333 instead of 1/3, you'd introduce a rounding error. The fraction carries exact information through any calculation. The decimal accumulates error. The URP's principle: the fraction is the arrival. The decimal is the approach.",
+      }
+    },
+    {
+      id:"complete",
+      q:"Is there a number that is 100% complete — a perfect, total whole?",
+      hint:"Think about what 'complete' would actually mean for a number.",
+      choices:[
+        {val:"none",label:"No — every number is just a position on a line"},
+        {val:"infinity",label:"Infinity — the largest possible number"},
+        {val:"one",label:"1 — the only state where measurement equals reference"},
+      ],
+      reveal:{
+        none:"This is the conventional view — numbers are positions, and no position is special. But position relative to what? The URP asks: what does it mean for a quantity to be 'complete'? The answer: n/R = 1, where the measured quantity exactly equals the declared reference. That's completeness — the measurement fills the reference exactly. No more, no less. It's not a moral concept. It's a structural one. And exactly one value achieves it: 1.",
+        infinity:"Infinity is not completeness — it's the opposite. Infinity is unbounded approach without arrival. You never get there. The URP treats infinity as a direction, not a value. You cannot declare infinity as a reference R, because infinity is not a quantity you can fill. Complete wholeness requires a frame that can be exactly filled. Only n/R = 1 achieves this — the measurement equals the reference. Infinity is endless departure from any reference. 1 is the arrival.",
+        one:"Yes. The URP states this as Axiom II: 1 is the only complete whole within any declared reference. The reason is structural: n/R = 1 if and only if n = R. The measurement exactly equals the reference. This is the unique completion state. For any n < R, you have a partial state. For any n > R, you have a surplus — which means the reference has been exceeded and a new one begins. Only at n = R is the frame exactly filled. 1 is not special by convention. It's the arrival point of every declared reference.",
       }
     },
     {
       id:"riemann",
-      q:"The Riemann Hypothesis says all non-trivial zeros sit at exactly σ = ½. Why one-half?",
-      hint:"165 years of mathematics hasn't answered this.",
+      q:"The most famous unsolved math problem: why do the Riemann zeros all land at exactly σ = ½? Nobody has answered this in 167 years.",
+      hint:"You don't need to know what a Riemann zero is. Just think about what ½ means structurally.",
       choices:[
-        {val:"symmetry",label:"Because of the functional equation's symmetry"},
         {val:"unknown",label:"Nobody knows — that's why it's unsolved"},
-        {val:"domain",label:"Because ½ is the midpoint of the fractional domain (0,1)"},
+        {val:"symmetry",label:"Because of a symmetry in the equation"},
+        {val:"midpoint",label:"Because ½ is the self-symmetric midpoint of the domain (0,1)"},
       ],
       reveal:{
-        symmetry:`This is the standard mathematical observation, and it's true. The functional equation of the zeta function relates ζ(s) to ζ(1-s), creating a symmetry that pairs zeros at σ with zeros at 1-σ. But symmetry is an observation, not an explanation. Why does the symmetry force σ = ½ specifically? The URP's answer: because at any other position, the symmetric pairing creates two distinct depletion events in the same declared frame, forcing the frame into a deficit state. A deficit state cannot serve as a declared reference. Only σ = ½ maps to itself under the symmetry — one depletion event, self-symmetric, no deficit required.`,
-        unknown:`That's exactly right, and it's been the honest answer for 167 years. But the URP proposes a structural reason. The critical strip 0 < σ < 1 is the domain of fractional reality: σ = 0 is non-existence, σ = 1 is complete wholeness, everything in between is a partial state. Zeros of the zeta function are 0/R depletion events — the function's frame persists, but its content momentarily exhausts. The only position in the strip where a depletion event is self-symmetric under the functional equation — where it doesn't require a partner depletion creating a structural deficit — is exactly σ = ½. That's the proposed structural answer. It's not a proof. But it's the first attempt at a reason.`,
-        domain:`You're thinking structurally, and this is close to the URP's answer. The critical strip is indeed the fractional domain (0,1) in the URP framework — σ = 0 is non-existence, σ = 1 is complete wholeness. And ½ is the unique self-symmetric point of this domain under the functional equation's symmetry. More precisely: a depletion event at any σ ≠ ½ creates a symmetric partner at 1-σ, producing two distinct depletion events that force a structural deficit. Only ½ avoids this. The URP calls this self-symmetry without deficit: one depletion event that maps to itself, requiring no partner, creating no deficit. Structurally forced.`,
+        unknown:"That's been the honest answer for 167 years. But the URP proposes a structural reason — the first time one has been offered. The zeta function operates in the strip 0 < σ < 1, which the URP identifies as the fractional domain: σ = 0 is non-existence, σ = 1 is complete wholeness. Zeros of the function are 0/R depletion events. The only position where a depletion event is self-symmetric — where it doesn't require a partner creating a structural deficit — is σ = ½. One depletion. Self-symmetric. No deficit required. Structurally forced.",
+        symmetry:"The symmetry observation is correct — the functional equation maps σ to 1−σ. But symmetry is a description, not an explanation. The URP asks: why does that symmetry force exactly σ = ½? The answer: a depletion event at any other σ creates a mirror event at 1−σ. Two depletion events in one declared frame require the frame to go into deficit. A deficit state cannot serve as a declared reference — the frame breaks. Only at σ = ½ does the depletion event map to itself. One event. No partner. No deficit. The half isn't just symmetric. It's the only position that doesn't create a structural impossibility.",
+        midpoint:"You've landed close to the URP's structural answer. The domain (0,1) is the fractional domain — non-existence at 0, complete wholeness at 1. Every value in between is a partial state. Zeros of the zeta function are depletion events within this domain. The functional equation pairs every σ with 1−σ. At σ = ½, the point maps to itself: 1 − ½ = ½. One depletion event, no partner, no structural deficit created. At any other σ, there are two distinct events, and the frame goes into deficit — an unconstructable state. The URP calls this structural forcing: σ = ½ is not the most likely position. It is the only structurally valid one.",
+      }
+    },
+    {
+      id:"surplus",
+      q:"You have a box that holds exactly 10 oranges. You have 13. What do you do with the extra 3?",
+      hint:"This is more interesting than it sounds mathematically.",
+      choices:[
+        {val:"ignore",label:"Leave them aside — the box is full"},
+        {val:"crush",label:"Force them in — 13/10 is just a bigger number"},
+        {val:"newbox",label:"Get a new box — the first reference is complete, the next begins"},
+      ],
+      reveal:{
+        ignore:"Reasonable, but notice what you just did: you sealed one complete reference (10/10 = 1) and set the remaining 3 aside as something requiring a new context. This is exactly what the URP calls surplus. n/R > 1 means the declared reference is complete. The surplus doesn't disappear — it initiates a new declared reference R₂. You intuitively did the structural operation the URP formalises.",
+        crush:"This is what conventional mathematics does — 13/10 is just 1.3, a bigger number on the line. But consider: the box is full. Something structural has happened at 10. The URP says: 1 is the only complete whole within a declared reference. 10/10 = 1 means the reference is sealed. 13 is not 1.3 of the original box. It is 1 complete box + 3/10 of a new declared box. The number 13, under the URP, is a count of completed wholes — not a single thing of magnitude 13.",
+        newbox:"You've landed on the URP's structural answer. The first reference R₁ = 10 is complete. 10/10 = 1 — sealed. The remaining 3 begin a new declared reference R₂. 3/R₂ = 3/10 of the new box. This is what the URP means by surplus: n/R > 1 does not mean you have a larger number. It means you have one complete declared reference and a new partial state beginning. Every integer greater than 1 is, structurally, a count of completed reference frames plus possibly a partial final frame.",
+      }
+    },
+    {
+      id:"physical",
+      q:"A phone battery at 0% — is it the same as a phone that doesn't exist?",
+      hint:"This might seem trivial. The mathematical implications are not.",
+      choices:[
+        {val:"same",label:"Same — both have zero energy, zero function"},
+        {val:"different",label:"Different — the phone still exists, only the charge is gone"},
+        {val:"philosophy",label:"This is philosophy, not mathematics"},
+      ],
+      reveal:{
+        same:"This is the conventional position — zero is zero. But consider: you can charge the 0% battery. You cannot charge a phone that doesn't exist. The operations available are different. One has a frame (the battery, the phone, the charging circuit) that persists. The other has no frame at all. The URP formalises this as the distinction between 0/R (contextual depletion — the frame R persists, content = 0) and standalone zero (no frame declared). This is not philosophy. It is why conservation laws in physics hold: a physical system can reach 0/R but cannot reach standalone zero — because reaching non-existence would require a receiving frame that doesn't exist.",
+        different:"This is the URP's answer. The 0% battery is 0/R: the declared reference (the battery's capacity) persists, the content (charge) is zero. The non-existent phone is standalone zero: no frame declared. The URP calls this distinction contextual depletion versus non-existence. It is the same distinction that explains why division by zero is unconstructable (zero has no frame), why mathematical limits approach but never arrive at zero (they approach 0/R, not non-existence), and why physical conservation laws are structural rather than empirical: the frame cannot reach non-existence from an existing state.",
+        philosophy:"The distinction has direct mathematical consequences. In physics, the difference between a depleted system and a non-existent one determines whether conservation laws apply. In mathematics, it determines whether division is constructable (dividing into 0/R makes sense in some contexts; dividing by non-existence does not). In computation, the difference between a register containing zero (0/R) and an unallocated register (no frame) is fundamental to memory management. The URP names what you already knew from life: empty and non-existent are different. Making that precise in mathematics turns out to matter.",
       }
     },
   ];
 
-  const q=questions[active!==null?active:0];
-  const currentAnswer=active!==null?answered[q.id]:null;
+  const q=active!==null?questions[active]:null;
+  const currentAnswer=q?answered[q.id]:null;
 
   return(
-    <section style={{background:T.bg,padding:"5rem 3rem",position:"relative",zIndex:1,borderTop:`1px solid ${T.border}`}}>
+    <section ref={sectionRef} style={{background:T.bg,padding:"5rem 3rem 6rem",position:"relative",zIndex:1,borderTop:`1px solid ${T.border}`}}>
       <div style={{maxWidth:860,margin:"0 auto"}}>
         {/* Section header */}
-        <div style={{textAlign:"center",marginBottom:"3.5rem"}}>
-          <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".3em",color:T.dim,marginBottom:".75rem"}}>BEFORE YOU READ THE PAPERS</div>
-          <h2 style={{fontFamily:T.head,fontSize:"clamp(24px,3.5vw,42px)",fontWeight:700,color:T.text,margin:"0 0 1rem",lineHeight:1.15}}>What Does Your Intuition Say?</h2>
-          <p style={{fontFamily:T.body,fontSize:17,color:T.muted,maxWidth:560,margin:"0 auto",lineHeight:1.9}}>The URP doesn't ask you to abandon what you know. It asks: what does your existing answer reveal about the structure underneath? Answer each question, then see what the framework finds there.</p>
+        <div style={{textAlign:"center",marginBottom:"3rem"}}>
+          <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".3em",color:T.dim,marginBottom:".75rem"}}>TEST YOUR INTUITIONS</div>
+          <h2 style={{fontFamily:T.head,fontSize:"clamp(24px,3.5vw,44px)",fontWeight:700,color:T.text,margin:"0 0 1rem",lineHeight:1.15}}>What Does Your Gut Say?</h2>
+          <p style={{fontFamily:T.body,fontSize:17,color:T.muted,maxWidth:560,margin:"0 auto",lineHeight:1.9}}>Nine questions. No wrong answers — every response reveals something. The URP doesn't ask you to abandon your intuition. It asks what your intuition is already tracking.</p>
         </div>
 
         {/* Question tabs */}
-        <div style={{display:"flex",gap:0,marginBottom:"2rem",borderBottom:`1px solid ${T.border}`,overflowX:"auto"}}>
-          {questions.map((q,i)=>(
-            <button key={q.id} onClick={()=>setActive(i)} style={{
-              padding:".75rem 1.25rem",background:"transparent",
-              border:"none",borderBottom:`2px solid ${active===i?T.accent:"transparent"}`,
-              color:active===i?T.text:T.dim,fontFamily:T.body,fontSize:13,
-              cursor:"pointer",transition:"all .2s",whiteSpace:"nowrap",flexShrink:0,
-              fontWeight:active===i?600:400}}>
-              {answered[q.id]&&<span style={{color:T.accent,marginRight:".4rem",fontSize:10}}>✓</span>}
-              {`Q${i+1}`}
+        <div style={{display:"flex",gap:0,marginBottom:"2.5rem",borderBottom:`1px solid ${T.border}`,overflowX:"auto"}}>
+          {questions.map((qq,i)=>(
+            <button key={qq.id} onClick={()=>{setActive(i);scrollToQuestion();}} style={{
+              padding:".7rem 1.1rem",background:"transparent",
+              border:"none",borderBottom:`2px solid ${active===i?T.accent:answered[qq.id]?"rgba(0,255,179,.3)":"transparent"}`,
+              color:active===i?T.text:answered[qq.id]?T.accent:T.dim,
+              fontFamily:T.mono,fontSize:10,cursor:"pointer",transition:"all .2s",
+              whiteSpace:"nowrap",flexShrink:0,letterSpacing:".08em"}}>
+              {answered[qq.id]?"✓ ":""}{`Q${i+1}`}
             </button>
           ))}
         </div>
 
-        {/* Active question */}
-        {active!==null&&(()=>{
-          const q=questions[active];
-          const ans=answered[q.id];
-          return(
-            <div>
-              <div style={{marginBottom:"2rem"}}>
-                <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".2em",color:T.dim,marginBottom:".75rem"}}>QUESTION {active+1} OF {questions.length}</div>
-                <h3 style={{fontFamily:T.head,fontSize:"clamp(20px,2.8vw,32px)",fontWeight:700,color:T.text,margin:"0 0 .5rem",lineHeight:1.2}}>{q.q}</h3>
-                <div style={{fontFamily:T.body,fontSize:14,color:T.muted,fontStyle:"italic"}}>{q.hint}</div>
+        {/* Question area */}
+        <div ref={questionRef}>
+          {active===null&&(
+            <div style={{textAlign:"center",padding:"3rem 2rem",border:`1px solid ${T.border}`,background:T.bg1}}>
+              <div style={{fontFamily:T.body,fontSize:17,color:T.muted,marginBottom:"1.75rem",lineHeight:1.8}}>
+                Nine questions. Every answer reveals something about the structure of mathematics you already knew — and never had a name for.
               </div>
-              {!ans&&<div style={{display:"flex",flexDirection:"column",gap:".65rem",marginBottom:"1.5rem"}}>
-                {q.choices.map(ch=>(
-                  <button key={ch.val} onClick={()=>setAnswered(prev=>({...prev,[q.id]:ch.val}))} style={{
-                    textAlign:"left",padding:"1.1rem 1.5rem",
-                    background:T.bg1,border:`1px solid ${T.border}`,
-                    color:T.sub,fontFamily:T.body,fontSize:15,cursor:"pointer",
-                    transition:"all .2s",lineHeight:1.5}}
-                    onMouseEnter={e=>{e.currentTarget.style.borderColor=T.accent;e.currentTarget.style.color=T.text;}}
-                    onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.color=T.sub;}}>
-                    {ch.label}
-                  </button>
-                ))}
-              </div>}
-              {ans&&<>
-                <div style={{padding:".6rem 1rem",background:T.bg1,border:`1px solid ${T.border}`,display:"inline-flex",alignItems:"center",gap:".75rem",marginBottom:"1.5rem"}}>
-                  <span style={{fontFamily:T.mono,fontSize:10,color:T.dim,letterSpacing:".1em"}}>YOUR ANSWER</span>
-                  <span style={{fontFamily:T.body,fontSize:14,color:T.accent}}>
-                    {q.choices.find(c=>c.val===ans)?.label}
-                  </span>
-                </div>
-                <div style={{padding:"1.75rem 2rem",background:"rgba(0,20,12,.4)",borderLeft:`4px solid ${T.accent}`,marginBottom:"1.75rem"}}>
-                  <div style={{fontFamily:T.mono,fontSize:9,letterSpacing:".2em",color:T.accent,marginBottom:".85rem"}}>WHAT THE URP FINDS IN YOUR ANSWER</div>
-                  <div style={{fontFamily:T.body,fontSize:15,color:"#B8D8C8",lineHeight:2.05}}>{q.reveal[ans]}</div>
-                </div>
-                <div style={{display:"flex",gap:".75rem",alignItems:"center",flexWrap:"wrap"}}>
-                  {active<questions.length-1&&<button onClick={()=>setActive(active+1)} style={{background:T.accent,color:T.bg,border:"none",fontFamily:T.body,fontSize:13,fontWeight:700,padding:".65rem 1.5rem",cursor:"pointer"}}>Next Question →</button>}
-                  {active===questions.length-1&&Object.keys(answered).length===questions.length&&<button onClick={()=>go("Papers")} style={{background:T.accent,color:T.bg,border:"none",fontFamily:T.body,fontSize:13,fontWeight:700,padding:".65rem 1.75rem",cursor:"pointer"}}>Explore the Papers →</button>}
-                  <button onClick={()=>setAnswered(prev=>{const n={...prev};delete n[q.id];return n;})} style={{background:"transparent",color:T.dim,border:`1px solid ${T.border}`,fontFamily:T.body,fontSize:13,padding:".65rem 1.25rem",cursor:"pointer"}}>Change my answer</button>
-                </div>
-              </>}
+              <button onClick={()=>{setActive(0);scrollToQuestion();}} style={{background:T.accent,color:T.bg,border:"none",fontFamily:T.body,fontSize:15,fontWeight:700,padding:".9rem 2.25rem",cursor:"pointer",letterSpacing:".03em",transition:"all .2s"}}
+                onMouseEnter={e=>e.currentTarget.style.background="#00DDA0"}
+                onMouseLeave={e=>e.currentTarget.style.background=T.accent}>
+                Start Question 1 →
+              </button>
             </div>
-          );
-        })()}
+          )}
 
-        {/* Start prompt if none active */}
-        {active===null&&<div style={{textAlign:"center",padding:"2.5rem",border:`1px solid ${T.border}`,background:T.bg1}}>
-          <div style={{fontFamily:T.body,fontSize:16,color:T.muted,marginBottom:"1.25rem"}}>Four questions. Your answers reveal the structure underneath your intuitions.</div>
-          <button onClick={()=>setActive(0)} style={{background:T.accent,color:T.bg,border:"none",fontFamily:T.body,fontSize:14,fontWeight:700,padding:".8rem 2rem",cursor:"pointer"}}>Start with Question 1</button>
-        </div>}
+          {active!==null&&(()=>{
+            const qq=questions[active];
+            const ans=answered[qq.id];
+            return(
+              <div>
+                <div style={{marginBottom:"2rem"}}>
+                  <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".2em",color:T.dim,marginBottom:".85rem"}}>
+                    QUESTION {active+1} OF {questions.length}
+                    <span style={{marginLeft:"1rem",color:T.faint}}>{Object.keys(answered).length}/{questions.length} answered</span>
+                  </div>
+                  <h3 style={{fontFamily:T.head,fontSize:"clamp(19px,2.8vw,30px)",fontWeight:700,color:T.text,margin:"0 0 .6rem",lineHeight:1.25}}>{qq.q}</h3>
+                  <div style={{fontFamily:T.body,fontSize:14,color:T.muted,fontStyle:"italic"}}>{qq.hint}</div>
+                </div>
+
+                {!ans&&(
+                  <div style={{display:"flex",flexDirection:"column",gap:".6rem",marginBottom:"1.5rem"}}>
+                    {qq.choices.map(ch=>(
+                      <button key={ch.val}
+                        onClick={()=>{setAnswered(prev=>({...prev,[qq.id]:ch.val}));}}
+                        style={{textAlign:"left",padding:"1.1rem 1.5rem",
+                          background:T.bg1,border:`1px solid ${T.border}`,
+                          color:T.sub,fontFamily:T.body,fontSize:15,cursor:"pointer",
+                          transition:"all .2s",lineHeight:1.5}}
+                        onMouseEnter={e=>{e.currentTarget.style.borderColor=T.borderHov;e.currentTarget.style.color=T.text;e.currentTarget.style.background=T.accentDim;}}
+                        onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.color=T.sub;e.currentTarget.style.background=T.bg1;}}>
+                        {ch.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {ans&&(
+                  <>
+                    <div style={{display:"inline-flex",alignItems:"center",gap:".75rem",padding:".6rem 1.1rem",background:T.bg1,border:`1px solid ${T.border}`,marginBottom:"1.5rem"}}>
+                      <span style={{fontFamily:T.mono,fontSize:9,color:T.dim,letterSpacing:".12em"}}>YOU SAID</span>
+                      <span style={{fontFamily:T.body,fontSize:14,color:T.accent}}>{qq.choices.find(c=>c.val===ans)?.label}</span>
+                    </div>
+                    <div style={{padding:"1.75rem 2rem",background:"rgba(0,20,12,.45)",borderLeft:`4px solid ${T.accent}`,marginBottom:"1.75rem"}}>
+                      <div style={{fontFamily:T.mono,fontSize:9,letterSpacing:".2em",color:T.accent,marginBottom:".85rem"}}>WHAT THE URP FINDS IN YOUR ANSWER</div>
+                      <div style={{fontFamily:T.body,fontSize:15,color:"#B8D8C8",lineHeight:2.05}}>{qq.reveal[ans]}</div>
+                    </div>
+                    <div style={{display:"flex",gap:".75rem",alignItems:"center",flexWrap:"wrap"}}>
+                      {active<questions.length-1&&(
+                        <button onClick={()=>{setActive(active+1);scrollToQuestion();}}
+                          style={{background:T.accent,color:T.bg,border:"none",fontFamily:T.body,fontSize:14,fontWeight:700,padding:".75rem 1.75rem",cursor:"pointer",transition:"all .2s",letterSpacing:".03em"}}
+                          onMouseEnter={e=>e.currentTarget.style.background="#00DDA0"}
+                          onMouseLeave={e=>e.currentTarget.style.background=T.accent}>
+                          Next Question →
+                        </button>
+                      )}
+                      {active===questions.length-1&&Object.keys(answered).length===questions.length&&(
+                        <button onClick={()=>go("Papers")}
+                          style={{background:T.accent,color:T.bg,border:"none",fontFamily:T.body,fontSize:14,fontWeight:700,padding:".75rem 1.75rem",cursor:"pointer",transition:"all .2s"}}
+                          onMouseEnter={e=>e.currentTarget.style.background="#00DDA0"}
+                          onMouseLeave={e=>e.currentTarget.style.background=T.accent}>
+                          Explore the Papers →
+                        </button>
+                      )}
+                      <button onClick={()=>setAnswered(prev=>{const n={...prev};delete n[qq.id];return n;})}
+                        style={{background:"transparent",color:T.dim,border:`1px solid ${T.border}`,fontFamily:T.body,fontSize:13,padding:".75rem 1.25rem",cursor:"pointer",transition:"all .2s"}}
+                        onMouseEnter={e=>e.currentTarget.style.color=T.sub}
+                        onMouseLeave={e=>e.currentTarget.style.color=T.dim}>
+                        Change answer
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            );
+          })()}
+        </div>
       </div>
     </section>
   );
 }
 
 
+
 // ═══════════════════════════════════════════
-// HERO
+// SCROLL-JACKED HERO
 // ═══════════════════════════════════════════
 function Hero({go}){
-  const [loaded,setLoaded]=useState(false);
-  useEffect(()=>{setTimeout(()=>setLoaded(true),100);},[]);
-  return(
-    <section style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",
-      justifyContent:"center",padding:"0 3rem",position:"relative",zIndex:1,textAlign:"center",
-      background:`radial-gradient(ellipse at 50% 60%,rgba(0,255,179,.06) 0%,transparent 65%)`}}>
-      <div style={{opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(20px)",transition:"all 1.2s ease"}}>
-        <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".4em",color:"rgba(0,255,179,.5)",marginBottom:"2rem"}}>
-          UNITARY REFERENCE PRINCIPLE
-        </div>
-        <div style={{fontFamily:T.head,fontSize:"clamp(72px,14vw,130px)",fontWeight:700,color:T.text,
-          lineHeight:.9,marginBottom:".5rem",letterSpacing:"-.03em",
-          textShadow:"0 0 80px rgba(245,240,232,.06)"}}>
-          n/R
-        </div>
-        <div style={{fontFamily:T.body,fontSize:18,color:"rgba(0,255,179,.45)",letterSpacing:".1em",marginBottom:"3rem",fontStyle:"italic"}}>
-          = meaning
-        </div>
-        <p style={{fontSize:"clamp(15px,1.8vw,19px)",color:T.muted,lineHeight:1.95,maxWidth:520,marginBottom:"3.5rem",fontFamily:T.body}}>
-          Every number is a fraction of a declared reference.<br/>
-          Every formula follows from one declaration.<br/>
-          17 papers. From primes to quantum gravity.
-        </p>
-        <div style={{display:"flex",gap:"1rem",flexWrap:"wrap",justifyContent:"center",marginBottom:"5rem"}}>
-          <button onClick={()=>go("Papers")} style={{background:T.accent,color:"#020A06",border:"none",fontFamily:T.body,fontSize:14,fontWeight:700,letterSpacing:".05em",padding:"1rem 2.5rem",cursor:"pointer",transition:"all .2s"}}
-            onMouseEnter={e=>e.currentTarget.style.background="#00DDA0"}
-            onMouseLeave={e=>e.currentTarget.style.background=T.accent}>
-            Explore the Papers
-          </button>
-          <button onClick={()=>go("History")} style={{background:"transparent",color:T.accent,border:`1px solid rgba(0,255,179,.35)`,fontFamily:T.body,fontSize:14,letterSpacing:".05em",padding:"1rem 2.5rem",cursor:"pointer",transition:"all .2s"}}
-            onMouseEnter={e=>e.currentTarget.style.borderColor=T.accent}
-            onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(0,255,179,.35)"}>
-            14 Mathematicians
-          </button>
-        </div>
-        <div style={{display:"flex",gap:"4rem",flexWrap:"wrap",justifyContent:"center"}}>
-          {[{n:"5",l:"Papers Published"},{n:"17",l:"Total Series"},{n:"14",l:"Mathematicians"}].map(({n,l})=>(
-            <div key={l} style={{textAlign:"center"}}>
-              <div style={{fontFamily:T.head,fontSize:40,fontWeight:700,color:T.accent,lineHeight:1}}>{n}</div>
-              <div style={{fontFamily:T.body,fontSize:13,color:T.dim,marginTop:".3rem"}}>{l}</div>
-            </div>
-          ))}
-        </div>
+  const [slide,setSlide]=useState(0);
+  const [animating,setAnimating]=useState(false);
+  const containerRef=useRef();
+  const SLIDES=4;
+
+  const goToSlide=useCallback((next)=>{
+    if(animating||next===slide||next<0||next>=SLIDES)return;
+    setAnimating(true);
+    setTimeout(()=>{setSlide(next);setAnimating(false);},480);
+  },[slide,animating]);
+
+  useEffect(()=>{
+    const el=containerRef.current;
+    if(!el)return;
+    let ticking=false;
+    const onWheel=(e)=>{
+      e.preventDefault();
+      if(ticking)return;
+      ticking=true;
+      setTimeout(()=>{
+        if(e.deltaY>18)goToSlide(slide+1);
+        else if(e.deltaY<-18)goToSlide(slide-1);
+        ticking=false;
+      },80);
+    };
+    let touchStartY=0;
+    const onTouchStart=(e)=>{touchStartY=e.touches[0].clientY;};
+    const onTouchEnd=(e)=>{
+      const diff=touchStartY-e.changedTouches[0].clientY;
+      if(Math.abs(diff)>40){if(diff>0)goToSlide(slide+1);else goToSlide(slide-1);}
+    };
+    el.addEventListener("wheel",onWheel,{passive:false});
+    el.addEventListener("touchstart",onTouchStart,{passive:true});
+    el.addEventListener("touchend",onTouchEnd,{passive:true});
+    return()=>{el.removeEventListener("wheel",onWheel);el.removeEventListener("touchstart",onTouchStart);el.removeEventListener("touchend",onTouchEnd);};
+  },[slide,goToSlide]);
+
+  const C2=`clamp`;
+  const slides=[
+    <div key={0} style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"100%",textAlign:"center",padding:"0 3rem"}}>
+      <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".4em",color:"rgba(0,255,179,.45)",marginBottom:"1.75rem"}}>UNITARY REFERENCE PRINCIPLE</div>
+      <div style={{fontFamily:T.head,fontSize:"clamp(80px,15vw,140px)",fontWeight:700,color:T.text,lineHeight:.85,letterSpacing:"-.04em",marginBottom:".5rem",textShadow:"0 0 120px rgba(0,255,179,.08)"}}>n/R</div>
+      <div style={{fontFamily:T.body,fontSize:18,color:"rgba(0,255,179,.5)",letterSpacing:".08em",marginBottom:"2.5rem",fontStyle:"italic"}}>=&nbsp;&nbsp;meaning</div>
+      <p style={{fontFamily:T.body,fontSize:"clamp(15px,1.6vw,18px)",color:T.muted,lineHeight:2,maxWidth:480,marginBottom:"3rem"}}>A new mathematical framework.<br/>17 papers. One declaration.<br/>From primes to physical reality.</p>
+      <div style={{display:"flex",gap:".85rem",flexWrap:"wrap",justifyContent:"center"}}>
+        <button onClick={()=>go("Papers")} style={{background:T.accent,color:"#020A06",border:"none",fontFamily:T.body,fontSize:14,fontWeight:700,padding:"1rem 2.5rem",cursor:"pointer",transition:"all .2s"}} onMouseEnter={e=>e.currentTarget.style.background="#00DDA0"} onMouseLeave={e=>e.currentTarget.style.background=T.accent}>Explore the Papers</button>
+        <button onClick={()=>goToSlide(1)} style={{background:"transparent",color:T.accent,border:`1px solid rgba(0,255,179,.3)`,fontFamily:T.body,fontSize:14,padding:"1rem 2.5rem",cursor:"pointer",transition:"all .2s"}} onMouseEnter={e=>e.currentTarget.style.borderColor=T.accent} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(0,255,179,.3)"}>What Is This? ↓</button>
       </div>
-    </section>
+    </div>,
+    <div key={1} style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"100%",padding:"0 clamp(1.5rem,5vw,6rem)",maxWidth:900,margin:"0 auto",width:"100%"}}>
+      <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".35em",color:T.dim,marginBottom:"1rem",textAlign:"center"}}>WHAT IS THE URP?</div>
+      <h2 style={{fontFamily:T.head,fontSize:"clamp(24px,4vw,48px)",fontWeight:700,color:T.text,margin:"0 0 .5rem",lineHeight:1.1,textAlign:"center"}}>The Unitary Reference Principle</h2>
+      <p style={{fontFamily:T.body,fontSize:16,color:T.muted,textAlign:"center",maxWidth:520,lineHeight:1.85,marginBottom:"2rem"}}>A single structural claim — <span style={{color:T.accent,fontWeight:600}}>every number is a fraction of a declared reference</span> — resolves questions that have been open for centuries.</p>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"1px",background:T.bg2,width:"100%",maxWidth:780,marginBottom:"2rem"}}>
+        {[{q:"Why can't you divide by zero?",a:"Zero has no declared reference. The operation is unconstructable."},
+          {q:"Does 0.999... equal 1?",a:"Approach and arrival are different. The fraction 1 is the arrival."},
+          {q:"Why is the Riemann zero line exactly ½?",a:"It's the only self-symmetric position in the domain (0,1)."},
+          {q:"What does zero actually mean?",a:"There are two zeros. Mathematics has conflated them for 2,500 years."},
+        ].map((item,i)=>(
+          <div key={i} style={{background:T.bg,padding:"1.5rem 1.75rem"}}>
+            <div style={{fontFamily:T.body,fontSize:12,color:T.dim,marginBottom:".5rem",fontStyle:"italic"}}>"{item.q}"</div>
+            <div style={{fontFamily:T.body,fontSize:14,color:T.sub,lineHeight:1.75}}>{item.a}</div>
+          </div>
+        ))}
+      </div>
+    </div>,
+    <div key={2} style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"100%",padding:"0 clamp(1.5rem,5vw,5rem)",maxWidth:860,margin:"0 auto",width:"100%",textAlign:"center"}}>
+      <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".35em",color:T.dim,marginBottom:"1rem"}}>THE CENTRAL CLAIM</div>
+      <h2 style={{fontFamily:T.head,fontSize:"clamp(22px,3.5vw,44px)",fontWeight:700,color:T.text,margin:"0 0 2rem",lineHeight:1.15}}>Every number is a fraction of a declared reference.</h2>
+      <div style={{display:"flex",flexDirection:"column",gap:"1px",background:T.bg2,width:"100%",maxWidth:640,marginBottom:"2rem",textAlign:"left"}}>
+        {[{b:"3",a:"Three of what? Without a declared R, this symbol has no meaning."},
+          {b:"0",a:"Not a small number. The absence of any declared reference."},
+          {b:"1",a:"The only complete whole — where measurement equals reference exactly."},
+          {b:"0.333...",a:"Not the answer. The fraction 1/3 is exact. The decimal is infinite approach."},
+        ].map((r,i)=>(
+          <div key={i} style={{background:T.bg,display:"grid",gridTemplateColumns:"64px 1fr",alignItems:"center"}}>
+            <div style={{padding:"1.1rem",borderRight:`1px solid ${T.border}`,fontFamily:T.mono,fontSize:22,fontWeight:700,color:T.accent,textAlign:"center"}}>{r.b}</div>
+            <div style={{padding:".9rem 1.25rem",fontFamily:T.body,fontSize:14,color:T.muted,lineHeight:1.7}}>{r.a}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{fontFamily:T.body,fontSize:15,color:T.dim}}>Scroll to continue ↓</div>
+    </div>,
+    <div key={3} style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"100%",padding:"0 3rem",textAlign:"center"}}>
+      <div style={{fontFamily:T.mono,fontSize:10,letterSpacing:".35em",color:T.dim,marginBottom:"1.5rem"}}>THE SERIES</div>
+      <h2 style={{fontFamily:T.head,fontSize:"clamp(24px,4vw,52px)",fontWeight:700,color:T.text,margin:"0 0 3rem",lineHeight:1.1}}>17 Papers. 5 Published.<br/>One Framework.</h2>
+      <div style={{display:"flex",gap:"3rem",flexWrap:"wrap",justifyContent:"center",marginBottom:"3.5rem"}}>
+        {[{n:"5",l:"Papers Published",c:T.accent},{n:"17",l:"Total Series",c:T.sub},{n:"14",l:"Mathematicians",c:T.sub}].map(({n,l,c})=>(
+          <div key={l} style={{textAlign:"center"}}>
+            <div style={{fontFamily:T.head,fontSize:48,fontWeight:700,color:c,lineHeight:1}}>{n}</div>
+            <div style={{fontFamily:T.body,fontSize:12,color:T.dim,marginTop:".35rem"}}>{l}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{display:"flex",gap:"1rem",flexWrap:"wrap",justifyContent:"center"}}>
+        <button onClick={()=>go("Papers")} style={{background:T.accent,color:"#020A06",border:"none",fontFamily:T.body,fontSize:14,fontWeight:700,padding:"1rem 2.5rem",cursor:"pointer",transition:"all .2s"}} onMouseEnter={e=>e.currentTarget.style.background="#00DDA0"} onMouseLeave={e=>e.currentTarget.style.background=T.accent}>Read the Papers →</button>
+        <button onClick={()=>go("History")} style={{background:"transparent",color:T.accent,border:`1px solid rgba(0,255,179,.3)`,fontFamily:T.body,fontSize:14,padding:"1rem 2.25rem",cursor:"pointer",transition:"all .2s"}} onMouseEnter={e=>e.currentTarget.style.borderColor=T.accent} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(0,255,179,.3)"}>14 Mathematicians</button>
+      </div>
+    </div>,
+  ];
+
+  return(
+    <div ref={containerRef} style={{position:"relative",height:"100vh",overflow:"hidden",background:T.bg,zIndex:1}}>
+      <ParticleField/>
+      <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",
+        transform:`translateY(${-slide*100}%)`,
+        transition:animating?"transform 0.5s cubic-bezier(0.77,0,0.18,1)":"none"}}>
+        {slides.map((s,i)=>(
+          <div key={i} style={{height:"100vh",flexShrink:0,paddingTop:60,display:"flex",flexDirection:"column"}}>{s}</div>
+        ))}
+      </div>
+      <div style={{position:"absolute",right:"1.5rem",top:"50%",transform:"translateY(-50%)",display:"flex",flexDirection:"column",gap:".65rem",zIndex:50}}>
+        {Array.from({length:SLIDES},(_,i)=>(
+          <button key={i} onClick={()=>goToSlide(i)} style={{width:8,height:8,borderRadius:"50%",border:"none",cursor:"pointer",padding:0,background:slide===i?T.accent:"rgba(255,255,255,0.15)",transition:"all .3s",transform:slide===i?"scale(1.5)":"scale(1)"}}/>
+        ))}
+      </div>
+      {slide===0&&<div style={{position:"absolute",bottom:"2rem",left:"50%",transform:"translateX(-50%)",fontFamily:T.mono,fontSize:9,color:T.dim,letterSpacing:".2em",animation:"bounce 2s ease infinite"}}>SCROLL ↓</div>}
+      <style>{`@keyframes bounce{0%,100%{opacity:.4;transform:translateX(-50%) translateY(0)}50%{opacity:.8;transform:translateX(-50%) translateY(6px)}}`}</style>
+    </div>
   );
 }
 
-// ═══════════════════════════════════════════
-// APP
-// ═══════════════════════════════════════════
 export default function App(){
   const {mobile}=useBreakpoint();
   const [page,setPage]=useState("Home");
