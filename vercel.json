@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/((?!api|og-image|robots\\.txt|sitemap\\.xml|body-explorer\\.html).*)", "destination": "/index.html" }
+  ]
+}
