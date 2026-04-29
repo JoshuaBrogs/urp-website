@@ -1219,7 +1219,7 @@ export default function App(){
   const {mobile}=useBreakpoint();
   const [page,setPage]=useState("Home");
   const [selectedPaper,setSelectedPaper]=useState(null);
-  const go=useCallback((p)=>{setPage(p);setSelectedPaper(null);window.scrollTo(0,0);},[]);
+  const go=useCallback((p)=>{if(p==="Demo"){window.open("/body-explorer.html","_blank");return;}setPage(p);setSelectedPaper(null);window.scrollTo(0,0);},[]);
   const handleSelectPaper=(paper)=>{setSelectedPaper(paper);setPage("PaperDetail");window.scrollTo(0,0);};
   return(
     <div style={{background:T.bg,minHeight:"100vh",color:T.text,fontFamily:T.body}}>
@@ -1229,7 +1229,7 @@ export default function App(){
       {page==="Papers"&&<PapersPage onSelectPaper={handleSelectPaper} mobile={mobile} go={go}/>}
       {page==="PaperDetail"&&selectedPaper&&<PaperPage paper={selectedPaper} onBack={()=>go("Papers")} go={go}/>}
       {page==="History"&&<HistoryPage mobile={mobile} go={go}/>}
-      {page==="Demo"&&<BodyExplorer/>}
+      
       {page==="Ideas"&&<IdeasPage go={go}/>}
       {page==="Blog"&&<BlogPage go={go}/>}
       {page==="About"&&<AboutPage go={go}/>}
