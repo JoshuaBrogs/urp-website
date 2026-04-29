@@ -246,6 +246,7 @@ function ParticleField(){
           {p.char}
         </div>
       ))}
+      <URPChatbot/>
     </div>
   );
 }
@@ -1702,6 +1703,295 @@ function QuestionsSection({go}) {
         </div>
       </div>
     </section>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════
+//  URP CHATBOT — floating button, fixed bottom-right, every page
+//  Messages go to /api/chat (Vercel serverless) — key never in frontend
+// ═══════════════════════════════════════════════════════════════════════
+function URPChatbot() {
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    { role: 'assistant', content: 'Ask me anything about the Unitary Reference Principle — the framework, the papers, the axioms, or how it applies to a mathematical question you have.' }
+  ]);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const bottomRef = useRef();
+  const inputRef = useRef();
+
+  // Scroll to bottom on new message
+  useEffect(() => {
+    if (open && bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, open]);
+
+  // Focus input when opened
+  useEffect(() => {
+    if (open && inputRef.current) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [open]);
+
+  const send = async () => {
+    const text = input.trim();
+    if (!text || loading) return;
+
+    const userMsg = { role: 'user', content: text };
+    const newMessages = [...messages, userMsg];
+    setMessages(newMessages);
+    setInput('');
+    setLoading(true);
+    setError(null);
+
+    // Build history for API (exclude the initial greeting)
+    const history = newMessages.slice(1, -1).map(m => ({
+      role: m.role,
+      content: m.content,
+    }));
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, history }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.error) {
+        throw new Error(data.error || 'Something went wrong');
+      }
+
+      setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
+    } catch (err) {
+      setError(err.message || 'Could not reach the server. Please try again.');
+      setMessages(prev => prev.slice(0, -1)); // remove user msg on error
+      setInput(text); // restore input
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onKey = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      send();
+    }
+  };
+
+  const suggestions = [
+    "Why can't you divide by zero?",
+    "What makes 1 special?",
+    "What is 0/R?",
+    "Explain the Riemann Hypothesis connection",
+  ];
+
+  return (
+    <>
+      {/* Floating button */}
+      <button
+        onClick={() => setOpen(o => !o)}
+        aria-label={open ? "Close URP Assistant" : "Open URP Assistant"}
+        style={{
+          position: 'fixed', bottom: '1.5rem', right: '1.5rem',
+          width: 52, height: 52, borderRadius: '50%',
+          background: open ? T.bg : T.accent,
+          border: `2px solid ${open ? 'rgba(0,255,179,0.3)' : T.accent}`,
+          cursor: 'pointer', zIndex: 1000,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: `0 0 24px rgba(0,255,179,${open ? '.15' : '.35'})`,
+          transition: 'all .25s',
+          fontFamily: T.mono, fontSize: 18, fontWeight: 700,
+          color: open ? T.accent : T.bg,
+        }}
+        onMouseEnter={e => { if (!open) e.currentTarget.style.background = '#00DDA0'; }}
+        onMouseLeave={e => { if (!open) e.currentTarget.style.background = T.accent; }}
+      >
+        {open ? '✕' : 'n/R'}
+      </button>
+
+      {/* Chat panel */}
+      {open && (
+        <div style={{
+          position: 'fixed', bottom: '5rem', right: '1.5rem',
+          width: 'min(380px, calc(100vw - 2rem))',
+          height: 'min(520px, calc(100vh - 8rem))',
+          background: '#06090C',
+          border: `1px solid rgba(0,255,179,0.2)`,
+          boxShadow: '0 8px 48px rgba(0,0,0,.7), 0 0 0 1px rgba(0,255,179,0.05)',
+          zIndex: 999,
+          display: 'flex', flexDirection: 'column',
+          overflow: 'hidden',
+        }}>
+          {/* Header */}
+          <div style={{
+            padding: '.9rem 1.25rem',
+            borderBottom: `1px solid ${T.border}`,
+            display: 'flex', alignItems: 'center', gap: '.75rem',
+            background: 'rgba(0,255,179,0.04)',
+            flexShrink: 0,
+          }}>
+            <div style={{
+              width: 8, height: 8, borderRadius: '50%',
+              background: T.accent,
+              boxShadow: '0 0 8px rgba(0,255,179,.6)',
+            }}/>
+            <div>
+              <div style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 700, color: T.accent, letterSpacing: '.1em' }}>
+                URP ASSISTANT
+              </div>
+              <div style={{ fontFamily: T.body, fontSize: 11, color: T.dim }}>
+                Ask about the framework & papers
+              </div>
+            </div>
+          </div>
+
+          {/* Messages */}
+          <div style={{
+            flex: 1, overflowY: 'auto', padding: '1rem 1.25rem',
+            display: 'flex', flexDirection: 'column', gap: '.85rem',
+            scrollbarWidth: 'none',
+          }}>
+            {messages.map((m, i) => (
+              <div key={i} style={{
+                display: 'flex',
+                justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start',
+              }}>
+                <div style={{
+                  maxWidth: '88%',
+                  padding: '.7rem 1rem',
+                  background: m.role === 'user'
+                    ? 'rgba(0,255,179,0.12)'
+                    : 'rgba(255,255,255,0.04)',
+                  border: `1px solid ${m.role === 'user' ? 'rgba(0,255,179,0.25)' : T.border}`,
+                  fontFamily: T.body,
+                  fontSize: 13,
+                  color: m.role === 'user' ? T.accent : T.sub,
+                  lineHeight: 1.75,
+                  whiteSpace: 'pre-wrap',
+                  wordBreak: 'break-word',
+                }}>
+                  {m.content}
+                </div>
+              </div>
+            ))}
+
+            {/* Suggestions — show only on first message */}
+            {messages.length === 1 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '.4rem', marginTop: '.25rem' }}>
+                {suggestions.map((s, i) => (
+                  <button key={i} onClick={() => { setInput(s); inputRef.current?.focus(); }}
+                    style={{
+                      textAlign: 'left', padding: '.5rem .85rem',
+                      background: 'transparent',
+                      border: `1px solid ${T.border}`,
+                      color: T.muted, fontFamily: T.body, fontSize: 12,
+                      cursor: 'pointer', transition: 'all .15s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(0,255,179,.3)'; e.currentTarget.style.color = T.sub; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = T.border; e.currentTarget.style.color = T.muted; }}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Loading indicator */}
+            {loading && (
+              <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                <div style={{
+                  padding: '.7rem 1rem',
+                  background: 'rgba(255,255,255,0.04)',
+                  border: `1px solid ${T.border}`,
+                  display: 'flex', gap: '.3rem', alignItems: 'center',
+                }}>
+                  {[0,1,2].map(i => (
+                    <div key={i} style={{
+                      width: 5, height: 5, borderRadius: '50%',
+                      background: T.accent, opacity: .6,
+                      animation: `urpPulse 1.2s ease ${i * .2}s infinite`,
+                    }}/>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Error */}
+            {error && (
+              <div style={{
+                padding: '.6rem .85rem',
+                background: 'rgba(255,107,107,0.08)',
+                border: '1px solid rgba(255,107,107,0.25)',
+                fontFamily: T.body, fontSize: 12, color: '#FF9999',
+              }}>
+                {error}
+              </div>
+            )}
+
+            <div ref={bottomRef}/>
+          </div>
+
+          {/* Input area */}
+          <div style={{
+            padding: '.75rem 1rem',
+            borderTop: `1px solid ${T.border}`,
+            display: 'flex', gap: '.6rem', alignItems: 'flex-end',
+            flexShrink: 0,
+            background: 'rgba(0,0,0,.2)',
+          }}>
+            <textarea
+              ref={inputRef}
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={onKey}
+              placeholder="Ask about the URP..."
+              rows={1}
+              disabled={loading}
+              style={{
+                flex: 1, background: 'rgba(255,255,255,0.04)',
+                border: `1px solid ${T.border}`,
+                color: T.text, fontFamily: T.body, fontSize: 13,
+                padding: '.6rem .85rem', resize: 'none',
+                outline: 'none', lineHeight: 1.5,
+                maxHeight: 100, overflowY: 'auto',
+                scrollbarWidth: 'none',
+                transition: 'border-color .15s',
+              }}
+              onFocus={e => e.currentTarget.style.borderColor = 'rgba(0,255,179,.35)'}
+              onBlur={e => e.currentTarget.style.borderColor = T.border}
+            />
+            <button
+              onClick={send}
+              disabled={loading || !input.trim()}
+              aria-label="Send message"
+              style={{
+                width: 36, height: 36, borderRadius: '50%',
+                background: input.trim() && !loading ? T.accent : T.faint,
+                border: 'none', cursor: input.trim() && !loading ? 'pointer' : 'default',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: T.bg, fontSize: 14, flexShrink: 0,
+                transition: 'all .2s',
+              }}
+            >
+              ↑
+            </button>
+          </div>
+
+          {/* Keyframe style */}
+          <style>{`
+            @keyframes urpPulse {
+              0%,100%{transform:scale(1);opacity:.6}
+              50%{transform:scale(1.4);opacity:1}
+            }
+          `}</style>
+        </div>
+      )}
+    </>
   );
 }
 
