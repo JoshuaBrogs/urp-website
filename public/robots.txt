@@ -2,3 +2,16 @@ User-agent: *
 Allow: /
 
 Sitemap: https://unitaryreference.com/sitemap.xml
+
+# Allow all major crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
