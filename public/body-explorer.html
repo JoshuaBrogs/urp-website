@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Body Explorer — Unitary Reference Principle</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000812;overflow:hidden;font-family:'Space Mono',monospace;color:#E0F4FF;}
+canvas{display:block;position:fixed;inset:0;width:100%;height:100%;touch-action:none;}
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap');
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pls{0%,100%{opacity:1}50%{opacity:0.2}}
+@keyframes spn{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes scanline{0%{top:-4px}100%{top:100%}}
+.fade{animation:fadeUp 0.4s ease both;}
+.pulse{animation:pls 2.8s ease infinite;}
+
+/* HUD */
+#hud{position:fixed;top:0;left:0;right:0;z-index:30;padding:.75rem 1.4rem;
+  background:linear-gradient(180deg,rgba(0,8,18,.97) 0%,transparent 100%);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;pointer-events:none;}
+#hud>*{pointer-events:auto;}
+#logo{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;
+  background:linear-gradient(135deg,#00FFB3,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 12px rgba(0,255,179,.6));}
+#bc{display:flex;align-items:center;gap:.35rem;font-size:9px;letter-spacing:.15em;}
+.bci{color:#0a1a24;cursor:default;transition:all .3s;}
+.bci.active{color:#00D4FF;text-shadow:0 0 12px rgba(0,212,255,.8);}
+.bci.past{color:#1a4455;cursor:pointer;} .bci.past:hover{color:#00D4FF;}
+.bcs{color:#081418;}
+#backbtn{background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.22);color:#00D4FF;
+  font-size:9px;letter-spacing:.12em;padding:.4rem 1rem;cursor:pointer;
+  font-family:'Space Mono',monospace;transition:all .2s;display:none;}
+#backbtn:hover{background:rgba(0,212,255,.14);}
+
+/* GROUP BAR */
+#groupbar{position:fixed;top:58px;left:50%;transform:translateX(-50%);
+  z-index:30;display:flex;gap:2px;pointer-events:auto;}
+.gbtn{background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.12);
+  color:#1a4455;font-size:9px;letter-spacing:.12em;padding:.4rem .9rem;
+  cursor:pointer;font-family:'Space Mono',monospace;transition:all .22s;white-space:nowrap;}
+.gbtn:hover{color:#00D4FF;border-color:rgba(0,212,255,.32);}
+.gbtn.on{background:rgba(0,212,255,.1);border-color:#00D4FF;color:#00D4FF;
+  box-shadow:0 0 14px rgba(0,212,255,.22);}
+
+/* PANEL */
+#panel{position:fixed;bottom:0;left:0;width:min(350px,100vw);z-index:30;
+  background:linear-gradient(0deg,rgba(0,8,18,.98) 0%,rgba(0,8,18,.86) 82%,transparent 100%);
+  padding:2rem 1.4rem 1.4rem;pointer-events:auto;transition:opacity .4s ease;
+  max-height:60vh;overflow-y:auto;}
+#panel::-webkit-scrollbar{width:2px;}
+#panel::-webkit-scrollbar-thumb{background:#0a1a24;}
+.pt{font-size:9px;letter-spacing:.28em;color:#00D4FF;margin-bottom:.6rem;}
+.ph{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#E0F4FF;margin-bottom:.8rem;line-height:1.1;}
+.ub{border:1px solid rgba(0,212,255,.14);background:rgba(0,212,255,.05);padding:.9rem;margin-bottom:.9rem;}
+.uv{font-family:'JetBrains Mono',monospace;font-size:26px;color:#00FFB3;font-weight:700;
+  text-shadow:0 0 20px rgba(0,255,179,.5);}
+input[type=range]{width:100%;accent-color:#00D4FF;height:3px;cursor:pointer;margin-bottom:.9rem;}
+.sl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;}
+.slb{font-size:9px;color:#1a4455;letter-spacing:.1em;}
+.slv{font-family:'JetBrains Mono',monospace;font-size:22px;color:#00D4FF;font-weight:700;}
+.ps{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap;}
+.pb{background:rgba(0,212,255,.05);color:#00D4FF;border:1px solid rgba(0,212,255,.18);
+  padding:.3rem .65rem;font-size:11px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-weight:700;transition:all .15s;}
+.pb.on,.pb:hover{background:#00D4FF;color:#000812;}
+.ht{font-size:9px;color:#1a4455;letter-spacing:.1em;}
+.slist{display:flex;flex-direction:column;gap:2px;margin-bottom:.9rem;}
+.srow{padding:.55rem .75rem;cursor:pointer;transition:all .15s;border:1px solid transparent;}
+.srow:hover{border-color:rgba(255,255,255,.08);}
+.sri{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;}
+.sn{font-size:10px;color:#8ab4c8;} .sp{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;}
+.sbg{height:3px;background:rgba(224,244,255,.05);border-radius:1px;}
+.sbf{height:100%;border-radius:1px;}
+.ci{padding:.5rem .75rem;background:rgba(224,244,255,.02);border:1px solid rgba(224,244,255,.05);
+  margin-bottom:2px;display:flex;justify-content:space-between;align-items:center;}
+.cl{font-size:8px;color:#1a2a34;letter-spacing:.08em;}
+.cv{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;}
+
+/* URP side overlay */
+#urp-ov{position:fixed;right:1.4rem;top:50%;transform:translateY(-50%);
+  z-index:30;display:flex;flex-direction:column;gap:3px;pointer-events:none;}
+.utag{background:rgba(0,8,18,.9);border:1px solid rgba(0,212,255,.2);
+  padding:.45rem .8rem;font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:#00D4FF;letter-spacing:.08em;white-space:nowrap;}
+
+/* Tooltip */
+#tip{position:fixed;pointer-events:none;z-index:40;
+  background:rgba(0,8,18,.94);border:1px solid rgba(0,212,255,.3);
+  padding:.4rem .9rem;font-size:10px;color:#00D4FF;letter-spacing:.1em;
+  display:none;white-space:nowrap;box-shadow:0 0 16px rgba(0,212,255,.2);}
+
+/* Loading */
+#loading{position:fixed;inset:0;background:#000812;display:flex;align-items:center;
+  justify-content:center;z-index:100;flex-direction:column;gap:1.2rem;}
+#lspn{width:44px;height:44px;border:2px solid rgba(0,212,255,.08);
+  border-top-color:#00D4FF;border-radius:50%;animation:spn .8s linear infinite;}
+#ltxt{font-family:'JetBrains Mono',monospace;font-size:12px;color:#00D4FF;letter-spacing:.25em;}
+</style>
+</head>
+<body>
+<div id="loading"><div id="lspn"></div><div id="ltxt">INITIALIZING</div></div>
+
+<div style="position:fixed;top:0;right:1rem;z-index:100;padding:.5rem 0;">
+  <a href="/" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;
+    color:#00D4FF;text-decoration:none;border:1px solid rgba(0,212,255,.25);
+    padding:.35rem .9rem;background:rgba(0,8,18,.9);">← BACK TO SITE</a>
+</div>
+
+<canvas id="c"></canvas>
+
+<div id="hud">
+  <div id="logo">n/R</div>
+  <div id="bc">
+    <span class="bci active" id="bc-crowd" data-l="crowd">CROWD</span><span class="bcs">›</span>
+    <span class="bci" id="bc-body" data-l="body">BODY</span><span class="bcs">›</span>
+    <span class="bci" id="bc-system" data-l="system">SYSTEM</span><span class="bcs">›</span>
+    <span class="bci" id="bc-micro" data-l="micro">MICRO</span>
+  </div>
+  <button id="backbtn">← BACK</button>
+</div>
+
+<div id="groupbar">
+  <button class="gbtn on" id="gb-all" onclick="setGroup('all')">ALL</button>
+  <button class="gbtn" id="gb-gender" onclick="setGroup('gender')">BY GENDER</button>
+  <button class="gbtn" id="gb-height" onclick="setGroup('height')">BY HEIGHT</button>
+</div>
+
+<div id="urp-ov"></div>
+<div id="panel"></div>
+<div id="tip"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ─────────────────────────────────────────────────────────────────
+//  DATA
+// ─────────────────────────────────────────────────────────────────
+const SYS=[
+  {id:"skeleton",label:"Skeleton",col:0xE8D5B7,hex:"#E8D5B7",n:206,unit:"bones",icon:"🦴",
+   desc:"206 bones — the structural declared whole.",
+   subs:[{l:"Skull",n:22,c:"#F0E0C0"},{l:"Spine",n:33,c:"#DDD0A8"},{l:"Ribs",n:24,c:"#E8D5B7"},
+         {l:"Arms",n:64,c:"#D4C090"},{l:"Legs",n:60,c:"#C8B880"},{l:"Other",n:3,c:"#BCA870"}]},
+  {id:"muscles",label:"Muscles",col:0xFF6B6B,hex:"#FF6B6B",n:640,unit:"muscles",icon:"💪",
+   desc:"~640 named skeletal muscles.",
+   subs:[{l:"Head & Neck",n:68,c:"#FF9999"},{l:"Torso",n:112,c:"#FF8080"},{l:"Arms",n:72,c:"#FF6B6B"},
+         {l:"Legs",n:200,c:"#FF5555"},{l:"Back",n:140,c:"#FF7070"},{l:"Other",n:48,c:"#FF9090"}]},
+  {id:"organs",label:"Organs",col:0xFF6B9D,hex:"#FF6B9D",n:78,unit:"organs",icon:"❤️",
+   desc:"78 organs keep you alive.",
+   subs:[{l:"Brain",n:1,c:"#FFB3C6"},{l:"Heart",n:1,c:"#FF2255"},{l:"Lungs",n:2,c:"#FF85A1"},
+         {l:"Liver",n:1,c:"#C97C5A"},{l:"Kidneys",n:2,c:"#A86B4A"},{l:"Other",n:71,c:"#CC7799"}]},
+  {id:"cells",label:"Cells",col:0x00FFB3,hex:"#00FFB3",n:37200000000000,unit:"cells",icon:"🔬",
+   desc:"37.2 trillion cells — each a declared whole.",
+   subs:[{l:"Red Blood",n:25000000000000,c:"#FF3333"},{l:"Platelets",n:5000000000000,c:"#FFAA33"},
+         {l:"White Blood",n:50000000000,c:"#DDDDFF"},{l:"Muscle",n:3000000000000,c:"#FF6B6B"},
+         {l:"Fat",n:2400000000000,c:"#FFDD88"},{l:"Other",n:1750000000000,c:"#88FFCC"}]},
+  {id:"dna",label:"DNA",col:0xC77DFF,hex:"#C77DFF",n:3200000000,unit:"base pairs",icon:"🧬",
+   desc:"3.2 billion base pairs per cell.",
+   subs:[{l:"Protein-coding",n:48000000,c:"#DD99FF"},{l:"Regulatory",n:640000000,c:"#BB77EE"},
+         {l:"Repetitive",n:1120000000,c:"#9955CC"},{l:"Introns",n:1152000000,c:"#7733AA"},
+         {l:"Non-coding",n:240000000,c:"#AA66DD"}]},
+];
+function fmt(n){if(n>=1e12)return(n/1e12).toFixed(1)+"T";if(n>=1e9)return(n/1e9).toFixed(1)+"B";if(n>=1e6)return(n/1e6).toFixed(1)+"M";if(n>=1e3)return(n/1e3).toFixed(0)+"K";return""+n;}
+
+// ─────────────────────────────────────────────────────────────────
+//  RNG + PERSON DATA
+// ─────────────────────────────────────────────────────────────────
+function rngF(seed){let s=(seed*1664525+1013904223)&0xffffffff;return function(){s=(s*1664525+1013904223)&0xffffffff;return(s>>>0)/0xffffffff;};}
+
+function personData(idx){
+  const r=rngF(idx*37+11);
+  return{
+    idx,
+    female:(idx%2===0)||(r()>0.5),
+    height:0.80+r()*0.32,
+    build:0.72+r()*0.30,
+    hue:Math.floor(r()*360),       // body hologram hue
+    hairStyle:Math.floor(r()*3),
+    walkSpeed:0.55+r()*0.9,
+    walkPhase:r()*Math.PI*2,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────────────────────────
+const ST={level:"crowd",crowdSize:16,person:null,system:null,sub:null,group:"all"};
+
+// ─────────────────────────────────────────────────────────────────
+//  RENDERER
+// ─────────────────────────────────────────────────────────────────
+const canvas=document.getElementById("c");
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:"high-performance"});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setClearColor(0x000812,1);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.1;
+
+const scene=new THREE.Scene();
+scene.fog=new THREE.FogExp2(0x000812,0.005);
+
+const camera=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.05,600);
+camera.position.set(0,14,38);
+camera.lookAt(0,0,0);
+
+window.addEventListener("resize",()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();});
+renderer.setSize(innerWidth,innerHeight);
+
+// ─────────────────────────────────────────────────────────────────
+//  LIGHTS  — cool blue medical key + accent lights
+// ─────────────────────────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0x0a1a2a,3.0));
+const kl=new THREE.DirectionalLight(0x88ccff,1.8);kl.position.set(8,24,14);kl.castShadow=true;scene.add(kl);
+const kl2=new THREE.DirectionalLight(0x4488aa,1.0);kl2.position.set(-12,18,-10);scene.add(kl2);
+const fl=new THREE.DirectionalLight(0x66aacc,0.7);fl.position.set(0,6,28);scene.add(fl);
+const ol=new THREE.PointLight(0x22aaff,3.0,200);ol.position.set(0,40,0);scene.add(ol);
+const cl=new THREE.PointLight(0x00ffcc,1.5,120);cl.position.set(0,6,18);scene.add(cl);
+
+// ─────────────────────────────────────────────────────────────────
+//  ENVIRONMENT
+// ─────────────────────────────────────────────────────────────────
+// Reflective dark floor
+const flr=new THREE.Mesh(new THREE.PlaneGeometry(300,300),
+  new THREE.MeshStandardMaterial({color:0x000d1a,roughness:0.12,metalness:0.9}));
+flr.rotation.x=-Math.PI/2;flr.position.y=-3.15;flr.receiveShadow=true;scene.add(flr);
+// Grid
+const grd=new THREE.GridHelper(300,140,0x003355,0x001a2a);
+grd.material.opacity=0.4;grd.material.transparent=true;grd.position.y=-3.12;scene.add(grd);
+// Stars
+(()=>{const g=new THREE.BufferGeometry();const n=5000,p=new Float32Array(n*3);for(let i=0;i<n*3;i++)p[i]=(Math.random()-.5)*600;g.setAttribute("position",new THREE.BufferAttribute(p,3));scene.add(new THREE.Points(g,new THREE.PointsMaterial({color:0x112233,size:.18,transparent:true,opacity:.55,blending:THREE.AdditiveBlending})));})();
+// Ambient data particles
+const ambG=new THREE.BufferGeometry();const aP=new Float32Array(700*3);for(let i=0;i<700;i++){const r=22+Math.random()*90,t=Math.random()*Math.PI*2,p=Math.random()*Math.PI;aP[i*3]=r*Math.sin(p)*Math.cos(t);aP[i*3+1]=r*Math.cos(p);aP[i*3+2]=r*Math.sin(p)*Math.sin(t);}
+ambG.setAttribute("position",new THREE.BufferAttribute(aP,3));
+const ambCloud=new THREE.Points(ambG,new THREE.PointsMaterial({color:0x0066aa,size:.14,transparent:true,opacity:.22,blending:THREE.AdditiveBlending}));
+scene.add(ambCloud);
+
+// ─────────────────────────────────────────────────────────────────
+//  HOLOGRAM BODY BUILDER
+//  Approach: translucent outer shell (LatheGeometry) +
+//  glowing internal organ spheres + circuit/vein lines +
+//  rim glow edges — exactly like the medical scan reference
+// ─────────────────────────────────────────────────────────────────
+//  HOLOGRAM PERSON — translucent shell + glowing organs
+// ─────────────────────────────────────────────────────────────────
+
+// Smooth lathe helper
+function latheGeo(pts, segs) {
+  return new THREE.LatheGeometry(
+    pts.map(function(p){ return new THREE.Vector2(p[0], p[1]); }),
+    segs || 28
+  );
+}
+
+// Tube along spline points
+function splineTube(pts3, r, segs) {
+  var curve = new THREE.CatmullRomCurve3(pts3);
+  return new THREE.TubeGeometry(curve, segs || 8, r, 7, false);
+}
+
+function buildAnatomicalPerson(pd, sel) {
+  sel = sel || false;
+  var g = new THREE.Group();
+
+  // ── PER-PERSON COLOUR TINT ──────────────────────────────────────
+  // Each person has a slightly different hologram hue so the crowd
+  // reads as individuals, not a uniform mass.
+  var rr = function(seed) {
+    var s = (seed * 1664525 + 1013904223) & 0xffffffff;
+    return (s >>> 0) / 0xffffffff;
+  };
+  var tintSeed = pd.idx * 7 + 3;
+  var hueShift  = rr(tintSeed) * 60 - 30; // -30..+30 degrees
+  // Base hue: 195 (cyan-blue like medical scan)
+  var baseHue  = ((195 + hueShift) + 360) % 360;
+  // Convert to hex colour  (s=0.85, l=0.55 for shell; l=0.72 for bright)
+  function hsl(h, s, l) {
+    var c = (1 - Math.abs(2*l - 1)) * s;
+    var x = c * (1 - Math.abs((h/60) % 2 - 1));
+    var m = l - c/2, r=0, gg=0, b=0;
+    if(h<60){r=c;gg=x;}else if(h<120){r=x;gg=c;}
+    else if(h<180){gg=c;b=x;}else if(h<240){gg=x;b=c;}
+    else if(h<300){r=x;b=c;}else{r=c;b=x;}
+    return ((Math.round((r+m)*255)<<16)|(Math.round((gg+m)*255)<<8)|Math.round((b+m)*255));
+  }
+  var shellCol  = hsl(baseHue, 0.90, 0.52);
+  var brightCol = hsl(baseHue, 1.00, 0.72);
+  var innerCol  = hsl(baseHue, 0.80, 0.35);
+
+  // Selected = pure green
+  if (sel) { shellCol = 0x00FFB3; brightCol = 0x00FFD4; innerCol = 0x004422; }
+
+  // ── MATERIALS ───────────────────────────────────────────────────
+  // Outer shell — translucent like the medical scan image
+  var shellMat = new THREE.MeshStandardMaterial({
+    color: shellCol,
+    emissive: shellCol,
+    emissiveIntensity: 0.55,
+    roughness: 0.15,
+    metalness: 0.05,
+    transparent: true,
+    opacity: 0.22,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+  });
+  // Inner bright — for edges/wireframe
+  var edgeMat = new THREE.MeshBasicMaterial({
+    color: brightCol,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.18,
+  });
+  // Solid bright lines on body surface  
+  var rimMat = new THREE.MeshStandardMaterial({
+    color: brightCol,
+    emissive: brightCol,
+    emissiveIntensity: 1.2,
+    roughness: 0.1,
+    metalness: 0.0,
+    transparent: true,
+    opacity: 0.85,
+  });
+  // Organ glow
+  function organMat(col, op) {
+    return new THREE.MeshBasicMaterial({
+      color: col, transparent: true, opacity: op || 0.75,
+      blending: THREE.AdditiveBlending
+    });
+  }
+
+  var female = pd.female;
+  var hs     = pd.height;
+  var bs     = pd.build;
+
+  // Helper: add translucent shell + wireframe overlay
+  function addShell(geo, yOff, xOff, zOff, scaleX) {
+    yOff = yOff || 0; xOff = xOff || 0; zOff = zOff || 0; scaleX = scaleX || 1;
+    var m1 = new THREE.Mesh(geo, shellMat);
+    m1.position.set(xOff, yOff, zOff);
+    m1.scale.x = scaleX;
+    m1.castShadow = false;
+    g.add(m1);
+    var m2 = new THREE.Mesh(geo, edgeMat);
+    m2.position.set(xOff, yOff, zOff);
+    m2.scale.x = scaleX;
+    g.add(m2);
+    return m1;
+  }
+
+  // Helper: add a bright rim/edge line  
+  function addRim(geo, yOff, xOff, zOff) {
+    yOff=yOff||0; xOff=xOff||0; zOff=zOff||0;
+    var m = new THREE.Mesh(geo, rimMat);
+    m.position.set(xOff, yOff, zOff);
+    g.add(m);
+  }
+
+  // ── HEAD ─────────────────────────────────────────────────────────
+  var HW = female ? 0.36 : 0.40;
+  var HH = female ? 0.45 : 0.50;
+  var HY = 3.55;
+  var headGeo = new THREE.SphereGeometry(HW, 24, 18);
+  addShell(headGeo, HY);
+  // Skull rim line at equator
+  addRim(new THREE.TorusGeometry(HW * 0.98, 0.012, 6, 32), HY, 0, 0);
+  // Crown line
+  addRim(new THREE.TorusGeometry(HW * 0.65, 0.010, 6, 24), HY + HH * 0.35, 0, 0);
+
+  // Face features — subtle bright dots
+  // Eyes
+  [-1, 1].forEach(function(s) {
+    var eye = new THREE.Mesh(
+      new THREE.SphereGeometry(0.048, 8, 8),
+      organMat(0xAADDFF, 0.90)
+    );
+    eye.position.set(s * HW * 0.48, HY + 0.05, HW * 0.82);
+    g.add(eye);
+    // Eye glow
+    var eyeGlow = new THREE.Mesh(
+      new THREE.SphereGeometry(0.09, 6, 6),
+      organMat(brightCol, 0.20)
+    );
+    eyeGlow.position.copy(eye.position);
+    g.add(eyeGlow);
+  });
+
+  // ── NECK ─────────────────────────────────────────────────────────
+  var NR = female ? 0.125 : 0.158;
+  var NY = HY - HH - 0.04;
+  var neckGeo = latheGeo([
+    [NR * 0.88, NY + 0.28],
+    [NR,        NY + 0.14],
+    [NR * 1.05, NY + 0.00],
+    [NR * 1.15, NY - 0.10],
+  ], 20);
+  addShell(neckGeo, 0);
+  // Neck rim ring
+  addRim(new THREE.TorusGeometry(NR * 1.05, 0.010, 6, 24), NY, 0, 0);
+
+  // ── TORSO ────────────────────────────────────────────────────────
+  var TY = NY - 0.10;
+
+  if (female) {
+    var sw=0.50*bs, bw=0.39*bs, ww=0.285*bs, hw=0.48*bs;
+    var tProf = [
+      [sw*0.50, TY      ], [sw*0.84, TY-0.12],
+      [sw,      TY-0.32 ], [sw*0.95, TY-0.52],
+      [bw*1.01, TY-0.78 ], [bw,      TY-0.94],
+      [ww*1.03, TY-1.10 ], [ww,      TY-1.28],
+      [ww*1.06, TY-1.44 ], [hw*0.88, TY-1.64],
+      [hw,      TY-1.80 ], [hw*0.94, TY-1.96],
+      [hw*0.78, TY-2.10 ],
+    ];
+    addShell(latheGeo(tProf, 28), 0);
+    addShell(latheGeo(tProf, 28), 0); // double for opacity
+    // Horizontal rim lines at key silhouette points
+    [
+      [sw,  TY-0.32], [ww, TY-1.28], [hw, TY-1.80]
+    ].forEach(function(p) {
+      addRim(new THREE.TorusGeometry(p[0]*0.98, 0.011, 6, 28), p[1]);
+    });
+    // Bust surface rims
+    [-1,1].forEach(function(s) {
+      var bustRim = new THREE.Mesh(
+        new THREE.TorusGeometry(0.135*bs, 0.011, 6, 20),
+        rimMat
+      );
+      bustRim.position.set(s*0.185*bs, TY-0.60, sw*0.68);
+      bustRim.rotation.y = s * 0.4;
+      bustRim.rotation.x = 0.5;
+      g.add(bustRim);
+    });
+  } else {
+    var msw=0.61*bs, mcw=0.57*bs, mww=0.44*bs, mhw=0.46*bs;
+    var mProf = [
+      [msw*0.42, TY      ], [msw*0.78, TY-0.10],
+      [msw,      TY-0.28 ], [mcw*1.01, TY-0.50],
+      [mcw,      TY-0.70 ], [mcw*0.93, TY-0.90],
+      [mww*1.01, TY-1.10 ], [mww,      TY-1.28],
+      [mww*1.03, TY-1.42 ], [mhw*0.94, TY-1.60],
+      [mhw,      TY-1.74 ], [mhw*0.90, TY-1.92],
+      [mhw*0.76, TY-2.06 ],
+    ];
+    addShell(latheGeo(mProf, 28), 0);
+    addShell(latheGeo(mProf, 28), 0);
+    [
+      [msw, TY-0.28], [mww, TY-1.28], [mhw, TY-1.74]
+    ].forEach(function(p) {
+      addRim(new THREE.TorusGeometry(p[0]*0.98, 0.012, 6, 28), p[1]);
+    });
+  }
+
+  // ── INTERNAL ORGANS (visible through shell) ────────────────────
+  var OY = TY - 0.58;
+
+  // Heart — bright red-pink, pulsing
+  var heartOrb = new THREE.Mesh(
+    new THREE.SphereGeometry(0.098, 14, 12),
+    organMat(0xFF1144, 0.90)
+  );
+  heartOrb.position.set(0.12*bs, OY+0.20, 0.08);
+  heartOrb.userData.isHeart = true;
+  g.add(heartOrb);
+  // Heart outer glow
+  var heartGlow = new THREE.Mesh(
+    new THREE.SphereGeometry(0.22, 8, 8),
+    organMat(0xFF1144, 0.18)
+  );
+  heartGlow.position.copy(heartOrb.position);
+  heartGlow.userData.isHeartGlow = true;
+  g.add(heartGlow);
+
+  // Lungs — softer red-pink
+  [-1, 1].forEach(function(s) {
+    var lung = new THREE.Mesh(
+      new THREE.SphereGeometry(0.165*bs, 12, 10),
+      organMat(0xFF6688, 0.45)
+    );
+    lung.scale.set(0.65, 1.0, 0.62);
+    lung.position.set(s*0.22*bs, OY+0.22, 0.05);
+    lung.userData.isLung = true;
+    g.add(lung);
+    // Lung glow
+    var lGlow = new THREE.Mesh(
+      new THREE.SphereGeometry(0.28*bs, 6, 6),
+      organMat(0xFF6688, 0.08)
+    );
+    lGlow.scale.set(0.65, 1.0, 0.62);
+    lGlow.position.copy(lung.position);
+    g.add(lGlow);
+  });
+
+  // Ribcage — bright lines
+  for (var ri = 0; ri < 5; ri++) {
+    [-1,1].forEach(function(s) {
+      var ribW = (female ? sw : msw) * (0.88 - ri*0.04);
+      var ribY = TY - 0.38 - ri * 0.22;
+      var ribGeo = new THREE.TorusGeometry(ribW*0.82, 0.013, 5, 22, Math.PI*0.72);
+      var ribM = new THREE.Mesh(ribGeo, rimMat.clone());
+      ribM.material.opacity = 0.50 - ri*0.06;
+      ribM.position.set(0, ribY, 0.05);
+      ribM.rotation.y = s > 0 ? -0.22 : Math.PI + 0.22;
+      ribM.rotation.x = 0.18;
+      g.add(ribM);
+    });
+  }
+
+  // Spine — bright dots along centre
+  for (var spi = 0; spi < 14; spi++) {
+    var spineOrb = new THREE.Mesh(
+      new THREE.SphereGeometry(0.030, 6, 6),
+      organMat(brightCol, 0.70)
+    );
+    spineOrb.position.set(0, TY - 0.08 - spi*0.165, -0.34*bs);
+    g.add(spineOrb);
+  }
+
+  // Aorta / major vessel — bright line down centre
+  var aortaPts = [
+    new THREE.Vector3(0, OY+0.32, 0.06),
+    new THREE.Vector3(0, OY+0.10, 0.07),
+    new THREE.Vector3(0, OY-0.12, 0.07),
+    new THREE.Vector3(0, OY-0.40, 0.06),
+    new THREE.Vector3(0, OY-0.70, 0.05),
+  ];
+  var aortaGeo = new THREE.TubeGeometry(
+    new THREE.CatmullRomCurve3(aortaPts), 8, 0.022, 6, false
+  );
+  g.add(new THREE.Mesh(aortaGeo, organMat(0xFF2244, 0.75)));
+  // Aorta glow
+  var aortaGlowGeo = new THREE.TubeGeometry(
+    new THREE.CatmullRomCurve3(aortaPts), 8, 0.052, 6, false
+  );
+  g.add(new THREE.Mesh(aortaGlowGeo, organMat(0xFF2244, 0.10)));
+
+  // Side vessels branching off aorta
+  [-1,1].forEach(function(s) {
+    var vPts = [
+      new THREE.Vector3(0, OY, 0.07),
+      new THREE.Vector3(s*0.18, OY-0.08, 0.07),
+      new THREE.Vector3(s*0.28, OY-0.20, 0.06),
+    ];
+    g.add(new THREE.Mesh(
+      new THREE.TubeGeometry(new THREE.CatmullRomCurve3(vPts), 4, 0.014, 5, false),
+      organMat(0xFF4466, 0.55)
+    ));
+  });
+
+  // Intestine hint — lower abdomen
+  var intGeo = new THREE.TorusGeometry(0.14*bs, 0.038*bs, 6, 18);
+  g.add(new THREE.Mesh(intGeo, organMat(0xFF9944, 0.30)));
+  var intM = g.children[g.children.length-1];
+  intM.position.set(0, TY-1.65, 0.04);
+  intM.rotation.x = 0.3;
+
+  // ── SHOULDERS ────────────────────────────────────────────────────
+  var shW = female ? 0.50*bs : 0.60*bs;
+  [-1,1].forEach(function(s) {
+    addShell(new THREE.SphereGeometry(0.175*bs, 14, 12), TY-0.24, s*shW, 0);
+    addRim(new THREE.TorusGeometry(0.175*bs*0.95, 0.011, 6, 20), TY-0.24, s*shW, 0);
+  });
+
+  // ── ARMS ─────────────────────────────────────────────────────────
+  var aw = female ? 0.085*bs : 0.110*bs;
+  var afw = female ? 0.065*bs : 0.085*bs;
+  [-1,1].forEach(function(s) {
+    var aOff = female ? 0.50*bs : 0.59*bs;
+
+    // Upper arm shell (lathe)
+    var uaProf = [
+      [aw*0.92, TY-0.18], [aw,      TY-0.38],
+      [aw*0.97, TY-0.62], [aw*0.88, TY-0.86],
+      [aw*0.80, TY-1.02],
+    ];
+    addShell(latheGeo(uaProf, 14), 0, s*aOff, 0, s);
+    // Upper arm rim rings
+    addRim(new THREE.TorusGeometry(aw*0.96, 0.010, 5, 18), TY-0.38, s*aOff, 0);
+    addRim(new THREE.TorusGeometry(aw*0.86, 0.009, 5, 18), TY-0.86, s*(aOff+0.03), 0);
+
+    // Elbow
+    addShell(new THREE.SphereGeometry(aw*0.84, 10, 8), TY-1.04, s*(aOff+0.04), 0.0);
+
+    // Forearm — tube along spline
+    var faPts = [
+      new THREE.Vector3(s*(aOff+0.04), TY-1.04, 0.0),
+      new THREE.Vector3(s*(aOff+0.07), TY-1.30, 0.04),
+      new THREE.Vector3(s*(aOff+0.11), TY-1.58, 0.08),
+      new THREE.Vector3(s*(aOff+0.13), TY-1.80, 0.09),
+    ];
+    var faGeo = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(faPts), 8, afw*0.86, 7, false);
+    g.add(new THREE.Mesh(faGeo, shellMat));
+    g.add(new THREE.Mesh(faGeo, edgeMat));
+
+    // Hand — flattened sphere shell
+    addShell(new THREE.SphereGeometry(afw*1.18, 10, 8), TY-1.94, s*(aOff+0.13), 0.09);
+
+    // Bone inside upper arm
+    var bonePts = [
+      new THREE.Vector3(s*aOff, TY-0.22, 0),
+      new THREE.Vector3(s*(aOff+0.03), TY-1.00, 0),
+    ];
+    g.add(new THREE.Mesh(
+      new THREE.TubeGeometry(new THREE.CatmullRomCurve3(bonePts), 5, aw*0.30, 5, false),
+      organMat(0xEEDDBB, 0.45)
+    ));
+  });
+
+  // ── LEGS ─────────────────────────────────────────────────────────
+  var hipY = TY - 2.10;
+  var lSep = female ? 0.180*bs : 0.222*bs;
+  var thW  = female ? 0.195*bs : 0.176*bs;
+  var caW  = female ? 0.122*bs : 0.108*bs;
+
+  [-1,1].forEach(function(s) {
+    // Thigh shell (lathe, mirrored)
+    var thProf = [
+      [thW*1.00, hipY     ], [thW*0.98, hipY-0.18],
+      [thW*0.95, hipY-0.42], [thW*0.90, hipY-0.68],
+      [thW*0.83, hipY-0.92], [thW*0.74, hipY-1.10],
+    ];
+    var thG = latheGeo(thProf, 16);
+    addShell(thG, 0, s*lSep, 0, s);
+    // Thigh rim rings
+    addRim(new THREE.TorusGeometry(thW*0.97, 0.011, 5, 20), hipY-0.18, s*lSep, 0);
+    addRim(new THREE.TorusGeometry(thW*0.83, 0.010, 5, 18), hipY-0.92, s*lSep, 0);
+    // Femur bone
+    var femPts = [
+      new THREE.Vector3(s*lSep, hipY-0.06, 0),
+      new THREE.Vector3(s*lSep*(female?0.88:0.96), hipY-1.06, 0.02),
+    ];
+    g.add(new THREE.Mesh(
+      new THREE.TubeGeometry(new THREE.CatmullRomCurve3(femPts), 5, thW*0.33, 5, false),
+      organMat(0xEEDDBB, 0.50)
+    ));
+
+    // Knee
+    addShell(new THREE.SphereGeometry(thW*0.75, 12, 10), hipY-1.12, s*lSep*(female?0.88:0.96), 0.04);
+    addRim(new THREE.TorusGeometry(thW*0.73, 0.011, 5, 18), hipY-1.12, s*lSep*(female?0.88:0.96), 0.04);
+
+    // Calf shell (lathe)
+    var caProf = [
+      [caW*0.92, hipY-1.12], [caW,      hipY-1.30],
+      [caW*1.01, hipY-1.50], [caW*0.93, hipY-1.72],
+      [caW*0.80, hipY-1.90], [caW*0.64, hipY-2.08],
+    ];
+    var caG = latheGeo(caProf, 14);
+    addShell(caG, 0, s*lSep*(female?0.87:0.93), 0.02, s);
+    addRim(new THREE.TorusGeometry(caW*0.99, 0.010, 5, 18), hipY-1.50, s*lSep*(female?0.87:0.93), 0.02);
+    // Tibia bone
+    var tibPts = [
+      new THREE.Vector3(s*lSep*(female?0.88:0.94), hipY-1.14, 0.06),
+      new THREE.Vector3(s*lSep*(female?0.86:0.92), hipY-2.06, 0.08),
+    ];
+    g.add(new THREE.Mesh(
+      new THREE.TubeGeometry(new THREE.CatmullRomCurve3(tibPts), 5, caW*0.29, 5, false),
+      organMat(0xEEDDBB, 0.45)
+    ));
+
+    // Ankle
+    addShell(new THREE.SphereGeometry(caW*0.74, 10, 8), hipY-2.12, s*lSep*(female?0.84:0.91), 0.04);
+
+    // Foot — tube
+    var fPts = [
+      new THREE.Vector3(s*lSep*(female?0.84:0.91)-s*0.07, hipY-2.16, 0.03),
+      new THREE.Vector3(s*lSep*(female?0.84:0.91)-s*0.03, hipY-2.22, 0.22),
+      new THREE.Vector3(s*lSep*(female?0.84:0.91),         hipY-2.24, 0.44),
+      new THREE.Vector3(s*lSep*(female?0.84:0.91)+s*0.02,  hipY-2.22, 0.58),
+    ];
+    var footGeo = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(fPts), 5, caW*0.56, 7, false);
+    g.add(new THREE.Mesh(footGeo, shellMat.clone()));
+    g.add(new THREE.Mesh(footGeo, edgeMat.clone()));
+    // Foot rim
+    addRim(new THREE.TorusGeometry(caW*0.54, 0.010, 5, 16), hipY-2.22, s*lSep*(female?0.84:0.91), 0.30);
+  });
+
+  // ── SELECTION EFFECTS ─────────────────────────────────────────
+  if (sel) {
+    var selY = TY - 0.95;
+    [0.95, 1.30].forEach(function(r, i) {
+      var ring = new THREE.Mesh(
+        new THREE.TorusGeometry(r, 0.055 - i*0.02, 8, 56),
+        new THREE.MeshBasicMaterial({color:0x00FFB3,transparent:true,opacity:0.85-i*0.45,blending:THREE.AdditiveBlending})
+      );
+      ring.position.y = selY; ring.rotation.x = Math.PI/2; g.add(ring);
+    });
+    for (var scanI = 0; scanI < 7; scanI++) {
+      var scanR = new THREE.Mesh(
+        new THREE.TorusGeometry(0.52 + scanI*0.1, 0.013, 5, 28),
+        new THREE.MeshBasicMaterial({color:0x00FFB3,transparent:true,opacity:0.06-scanI*0.006,blending:THREE.AdditiveBlending})
+      );
+      scanR.position.y = TY - scanI*0.40; scanR.rotation.x = Math.PI/2; g.add(scanR);
+    }
+    var mk = new THREE.Mesh(new THREE.SphereGeometry(0.10, 8, 8),
+      new THREE.MeshBasicMaterial({color:0x00FFB3,blending:THREE.AdditiveBlending}));
+    mk.position.y = HY + 0.50; g.add(mk);
+  }
+
+  // ── BASE DISC ─────────────────────────────────────────────────
+  var baseMesh = new THREE.Mesh(
+    new THREE.CircleGeometry(sel ? 1.55 : 1.05, 40),
+    new THREE.MeshBasicMaterial({
+      color: sel ? 0x00FFB3 : brightCol,
+      transparent: true,
+      opacity: sel ? 0.30 : 0.16,
+      side: THREE.DoubleSide,
+      blending: THREE.AdditiveBlending,
+    })
+  );
+  baseMesh.rotation.x = -Math.PI/2; baseMesh.position.y = 0.01;
+  g.add(baseMesh);
+
+  // Outer base ring
+  var baseRing = new THREE.Mesh(
+    new THREE.TorusGeometry(sel ? 1.6 : 1.08, 0.025, 5, 44),
+    new THREE.MeshBasicMaterial({
+      color: brightCol, transparent: true, opacity: sel ? 0.70 : 0.40,
+      blending: THREE.AdditiveBlending,
+    })
+  );
+  baseRing.rotation.x = -Math.PI/2; baseRing.position.y = 0.02; g.add(baseRing);
+
+  // ── CLICKABLE PROXY ───────────────────────────────────────────
+  var proxy = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.68, 0.68, 4.0, 8),
+    new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false})
+  );
+  proxy.position.y = 2.0;
+  proxy.userData = {
+    type: "person",
+    index: pd.idx,
+    label: (pd.female ? "♀" : "♂") + " Person " + (pd.idx+1),
+    female: pd.female,
+    height: pd.height,
+  };
+  g.add(proxy);
+
+  g.scale.setScalar(hs * 0.82);
+  return g;
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  GROUPS / WALK
+// ─────────────────────────────────────────────────────────────────
+let G={};
+const clickables=[];
+let personMeshes=[];
+let allPDs=[];
+
+function clearAll(){
+  Object.keys(G).forEach(function(k){
+    if(!G[k])return;
+    G[k].traverse(function(c){if(!c.isMesh&&!c.isLine)return;
+      if(c.geometry)c.geometry.dispose();
+      (Array.isArray(c.material)?c.material:[c.material]).forEach(function(m){if(m)m.dispose();});});
+    scene.remove(G[k]);G[k]=null;});
+  clickables.length=0;personMeshes=[];
+}
+
+function getTargets(pds,mode){
+  const n=pds.length,pos=[];
+  if(mode==="all"){
+    const cols=Math.ceil(Math.sqrt(n)*1.5),spX=4.4,spZ=5.6,W=(cols-1)*spX;
+    pds.forEach(function(_,i){
+      const col=i%cols,row=Math.floor(i/cols);
+      pos[i]={x:col*spX-W/2+(row%2?spX*.5:0),z:row*spZ-(Math.ceil(n/cols)-1)*spZ/2};});
+  } else if(mode==="gender"){
+    const fem=pds.filter(function(p){return p.female;}),mal=pds.filter(function(p){return!p.female;});
+    const spX=4.2,spZ=5.4;
+    function grid(arr,baseX){
+      const cols=Math.ceil(Math.sqrt(arr.length)*1.4),W=(cols-1)*spX;
+      arr.forEach(function(p,i){
+        const col=i%cols,row=Math.floor(i/cols);
+        pos[p.idx]={x:baseX+col*spX-W/2+(row%2?spX*.5:0),z:row*spZ-(Math.ceil(arr.length/cols)-1)*spZ/2};});
+    }
+    grid(fem,-14);grid(mal,14);
+  } else if(mode==="height"){
+    const sorted=[].concat(pds).sort(function(a,b){return b.height-a.height;});
+    const cols=Math.ceil(Math.sqrt(n)*1.5),spX=4.4,spZ=5.6,W=(cols-1)*spX;
+    sorted.forEach(function(p,i){
+      const col=i%cols,row=Math.floor(i/cols);
+      pos[p.idx]={x:col*spX-W/2+(row%2?spX*.5:0),z:row*spZ-(Math.ceil(n/cols)-1)*spZ/2};});
+  }
+  return pos;
+}
+
+function buildCrowd(){
+  clearAll();
+  const g=new THREE.Group();G.crowd=g;scene.add(g);
+  allPDs=Array.from({length:ST.crowdSize},function(_,i){return personData(i);});
+  const tgts=getTargets(allPDs,ST.group);
+  allPDs.forEach(function(pd){
+    const sel=(ST.person===pd.idx);
+    const p=buildAnatomicalPerson(pd,sel);
+    const sx=(Math.random()-.5)*70,sz=(Math.random()-.5)*70;
+    p.position.set(sx,-3.15,sz);
+    const tp=tgts[pd.idx]||{x:0,z:0};
+    const dx=tp.x-sx,dz=tp.z-sz;
+    p.rotation.y=Math.atan2(dx,dz);
+    g.add(p);
+    const prx=p.children.find(function(c){return c.userData.type==="person";});
+    if(prx)clickables.push(prx);
+    personMeshes.push({grp:p,pd,tx:tp.x,tz:tp.z,cx:sx,cz:sz,arrived:false,walkT:0});
+  });
+  camTo({x:0,y:16,z:42+ST.crowdSize*.32},{x:0,y:0,z:0},1400);
+  updateURPOv();
+}
+
+function walkToNew(){
+  const tgts=getTargets(allPDs,ST.group);
+  personMeshes.forEach(function(pm){
+    const tp=tgts[pm.pd.idx]||{x:0,z:0};
+    pm.tx=tp.x;pm.tz=tp.z;pm.arrived=false;pm.walkT=0;
+    const dx=tp.x-pm.cx,dz=tp.z-pm.cz;
+    if(Math.abs(dx)+Math.abs(dz)>.1)pm.grp.rotation.y=Math.atan2(dx,dz);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  BODY / SYSTEM / MICRO  (same core as before, condensed)
+// ─────────────────────────────────────────────────────────────────
+function buildBody(pd){
+  clearAll();
+  const g=new THREE.Group();G.body=g;scene.add(g);
+  const bigP=buildAnatomicalPerson(Object.assign({},pd,{height:1.18,build:pd.build*1.08}),false);
+  bigP.scale.setScalar(1.1);bigP.position.y=-3.15;g.add(bigP);
+
+  // Orbit particle cloud
+  const og=new THREE.BufferGeometry();const op=new Float32Array(500*3);
+  for(let i=0;i<500;i++){const r=6+Math.random()*6,t=Math.random()*Math.PI*2,p=Math.random()*Math.PI;
+    op[i*3]=r*Math.sin(p)*Math.cos(t);op[i*3+1]=r*Math.cos(p)*.5+1;op[i*3+2]=r*Math.sin(p)*Math.sin(t);}
+  og.setAttribute("position",new THREE.BufferAttribute(op,3));
+  g.add(new THREE.Points(og,new THREE.PointsMaterial({color:0x0088ff,size:.07,transparent:true,opacity:.28,blending:THREE.AdditiveBlending})));
+
+  // System orbs
+  SYS.forEach(function(sys,i){
+    const ang=(i/SYS.length)*Math.PI*2,dist=9.5;
+    const og2=new THREE.Group();og2.position.set(Math.cos(ang)*dist,(i%2?2.2:-.6),Math.sin(ang)*dist);
+    const om=new THREE.Mesh(new THREE.SphereGeometry(.70,28,28),
+      new THREE.MeshStandardMaterial({color:sys.col,emissive:sys.col,emissiveIntensity:.80,roughness:.12,metalness:.82}));
+    om.userData={type:"system",system:sys,label:sys.label};og2.add(om);clickables.push(om);
+    [.92,1.22].forEach(function(r,ri){
+      const ring=new THREE.Mesh(new THREE.TorusGeometry(r,.042,8,56),
+        new THREE.MeshBasicMaterial({color:sys.col,transparent:true,opacity:.55-ri*.15,blending:THREE.AdditiveBlending}));
+      ring.rotation.x=ri*.9+.4;ring.rotation.z=ri*.5;og2.add(ring);
+    });
+    og2.add(new THREE.Mesh(new THREE.SphereGeometry(1.3,10,10),
+      new THREE.MeshBasicMaterial({color:sys.col,transparent:true,opacity:.07,blending:THREE.AdditiveBlending})));
+    g.add(og2);
+  });
+
+  const scanM=new THREE.MeshBasicMaterial({color:0x00D4FF,transparent:true,opacity:.18,side:THREE.DoubleSide,blending:THREE.AdditiveBlending});
+  const scan=new THREE.Mesh(new THREE.CylinderGeometry(1.9,1.9,.07,64,1,true),scanM);
+  scan.userData.scan=true;g.add(scan);
+  camTo({x:0,y:5,z:23},{x:0,y:2,z:0},1000);
+}
+
+function buildSystem(sys){
+  clearAll();const g=new THREE.Group();G.system=g;scene.add(g);const col=sys.col;
+  g.add(new THREE.Mesh(new THREE.SphereGeometry(1.65,56,56),new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:.65,roughness:.14,metalness:.86,transparent:true,opacity:.9})));
+  g.add(new THREE.Mesh(new THREE.SphereGeometry(1.65,28,28),new THREE.MeshBasicMaterial({color:col,wireframe:true,transparent:true,opacity:.09})));
+  g.add(new THREE.Mesh(new THREE.SphereGeometry(.72,14,14),new THREE.MeshBasicMaterial({color:0xFFFFFF,transparent:true,opacity:.20,blending:THREE.AdditiveBlending})));
+  g.add(new THREE.Mesh(new THREE.TorusGeometry(2.25,.052,8,80),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.24,blending:THREE.AdditiveBlending})));
+  sys.subs.forEach(function(sub,i){
+    const pct=sub.n/sys.n,ang=(i/sys.subs.length)*Math.PI*2,dist=5+pct*10,sz=Math.min(.48+pct*3.5,1.85);
+    const sc=parseInt(sub.c.replace("#",""),16);
+    const og=new THREE.Group();og.position.set(Math.cos(ang)*dist,Math.sin(i*1.2)*2.2,Math.sin(ang)*dist);
+    const om=new THREE.Mesh(new THREE.SphereGeometry(sz,24,24),new THREE.MeshStandardMaterial({color:sc,emissive:sc,emissiveIntensity:.62,roughness:.18,metalness:.78}));
+    om.userData={type:"sub",sub:sub,system:sys,label:sub.l};og.add(om);clickables.push(om);
+    og.add(new THREE.Mesh(new THREE.SphereGeometry(sz*2,8,8),new THREE.MeshBasicMaterial({color:sc,transparent:true,opacity:.07,blending:THREE.AdditiveBlending})));
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(sz*1.5,.042,6,40),new THREE.MeshBasicMaterial({color:sc,transparent:true,opacity:.38,blending:THREE.AdditiveBlending}));
+    ring.rotation.x=Math.random()*Math.PI;og.add(ring);
+    g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),og.position.clone()]),new THREE.LineBasicMaterial({color:sc,transparent:true,opacity:.12,blending:THREE.AdditiveBlending})));
+    g.add(og);
+  });
+  const pgeo=new THREE.BufferGeometry();const pp=new Float32Array(1500*3);
+  for(let i=0;i<1500;i++){const r=2+Math.random()*18,t=Math.random()*Math.PI*2,p=Math.random()*Math.PI;pp[i*3]=r*Math.sin(p)*Math.cos(t);pp[i*3+1]=r*Math.cos(p)*.45;pp[i*3+2]=r*Math.sin(p)*Math.sin(t);}
+  pgeo.setAttribute("position",new THREE.BufferAttribute(pp,3));
+  g.add(new THREE.Points(pgeo,new THREE.PointsMaterial({color:col,size:.09,transparent:true,opacity:.20,blending:THREE.AdditiveBlending})));
+  if(sys.id==="dna")addDNA(g);
+  camTo({x:0,y:5,z:27},{x:0,y:0,z:0},1000);
+}
+
+function buildMicro(sub){
+  clearAll();const g=new THREE.Group();G.system=g;scene.add(g);
+  const c=parseInt(sub.c.replace("#",""),16);
+  g.add(new THREE.Mesh(new THREE.SphereGeometry(3.2,72,72),new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:.72,roughness:.10,metalness:.90,transparent:true,opacity:.94})));
+  g.add(new THREE.Mesh(new THREE.SphereGeometry(3.2,32,32),new THREE.MeshBasicMaterial({color:c,wireframe:true,transparent:true,opacity:.07})));
+  g.add(new THREE.Mesh(new THREE.SphereGeometry(1.2,20,20),new THREE.MeshBasicMaterial({color:0xFFFFFF,transparent:true,opacity:.20,blending:THREE.AdditiveBlending})));
+  [[3.7,.055,.30,.10,0],[4.5,.050,.15,.90,.5],[5.6,.045,.10,.40,1.2],[7.0,.040,.07,1.1,2.0]].forEach(function(p){
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(p[0],p[1],10,120),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:p[2],blending:THREE.AdditiveBlending}));
+    ring.rotation.set(p[3],p[4],0);ring.userData.autoRing=true;ring.userData.rs={x:.003-Math.random()*.002,y:.002+Math.random()*.002};g.add(ring);});
+  const pgeo=new THREE.BufferGeometry();const pp=new Float32Array(4000*3);
+  for(let i=0;i<4000;i++){const r=3.3+Math.random()*10,t=Math.random()*Math.PI*2,p2=Math.random()*Math.PI;pp[i*3]=r*Math.sin(p2)*Math.cos(t);pp[i*3+1]=r*Math.cos(p2)*.42;pp[i*3+2]=r*Math.sin(p2)*Math.sin(t);}
+  pgeo.setAttribute("position",new THREE.BufferAttribute(pp,3));
+  g.add(new THREE.Points(pgeo,new THREE.PointsMaterial({color:c,size:.10,transparent:true,opacity:.40,blending:THREE.AdditiveBlending})));
+  g.add(new THREE.Mesh(new THREE.SphereGeometry(6.5,12,12),new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:.04,blending:THREE.AdditiveBlending,side:THREE.BackSide})));
+  if(ST.system&&ST.system.id==="dna")addDNA(g,3.5,80);
+  camTo({x:0,y:4,z:22},{x:0,y:0,z:0},900);
+}
+
+function addDNA(parent,radius,turns){
+  radius=radius||3;turns=turns||70;
+  const pts1=[],pts2=[];
+  for(let i=0;i<turns;i++){const a=i*.22,y=i*.2-turns*.1;pts1.push(new THREE.Vector3(Math.cos(a)*radius,y,Math.sin(a)*radius));pts2.push(new THREE.Vector3(Math.cos(a+Math.PI)*radius,y,Math.sin(a+Math.PI)*radius));}
+  [pts1,pts2].forEach(function(pts,ci){
+    const geo=new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),turns*3,.065,8,false);
+    parent.add(new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:ci?0xDD99FF:0xC77DFF,emissive:ci?0xDD99FF:0xC77DFF,emissiveIntensity:.62,roughness:.2,metalness:.72,transparent:true,opacity:.82})));
+  });
+  for(let i=0;i<turns;i+=4){
+    const p1=pts1[i],p2=pts2[i],mid=p1.clone().add(p2).multiplyScalar(.5),len=p1.distanceTo(p2);
+    const rg=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,len,6),new THREE.MeshBasicMaterial({color:0xFFFFFF,transparent:true,opacity:.30,blending:THREE.AdditiveBlending}));
+    rg.position.copy(mid);rg.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),p2.clone().sub(p1).normalize());parent.add(rg);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  CAMERA
+// ─────────────────────────────────────────────────────────────────
+function camTo(tp,la,dur){
+  const sp={x:camera.position.x,y:camera.position.y,z:camera.position.z};
+  const t0=performance.now();
+  (function tick(){const t=Math.min((performance.now()-t0)/dur,1);const e=t<.5?4*t*t*t:(t-1)*(2*t-2)*(2*t-2)+1;
+    camera.position.set(sp.x+(tp.x-sp.x)*e,sp.y+(tp.y-sp.y)*e,sp.z+(tp.z-sp.z)*e);
+    camera.lookAt(la.x,la.y,la.z);if(t<1)requestAnimationFrame(tick);})();
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  ORBIT + TOUCH
+// ─────────────────────────────────────────────────────────────────
+let sph={theta:.1,phi:1.05,r:42},isDrag=false,lastM={x:0,y:0},touchD=0;
+canvas.addEventListener("pointerdown",function(e){isDrag=true;lastM={x:e.clientX,y:e.clientY};});
+canvas.addEventListener("pointerup",function(){isDrag=false;});
+canvas.addEventListener("pointermove",function(e){
+  if(isDrag){sph.theta-=(e.clientX-lastM.x)*.009;sph.phi=Math.max(.12,Math.min(Math.PI*.78,sph.phi+(e.clientY-lastM.y)*.007));lastM={x:e.clientX,y:e.clientY};}
+  const r=canvas.getBoundingClientRect();mouse.x=((e.clientX-r.left)/r.width)*2-1;mouse.y=-((e.clientY-r.top)/r.height)*2+1;checkHover();
+});
+canvas.addEventListener("wheel",function(e){sph.r=Math.max(5,Math.min(90,sph.r+e.deltaY*.05));},{passive:true});
+canvas.addEventListener("touchstart",function(e){isDrag=true;lastM={x:e.touches[0].clientX,y:e.touches[0].clientY};if(e.touches.length===2)touchD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);},{passive:true});
+canvas.addEventListener("touchend",function(){isDrag=false;},{passive:true});
+canvas.addEventListener("touchmove",function(e){
+  if(e.touches.length===1&&isDrag){sph.theta-=(e.touches[0].clientX-lastM.x)*.01;sph.phi=Math.max(.12,Math.min(Math.PI*.78,sph.phi+(e.touches[0].clientY-lastM.y)*.008));lastM={x:e.touches[0].clientX,y:e.touches[0].clientY};}
+  if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);sph.r=Math.max(5,Math.min(90,sph.r+(touchD-d)*.1));touchD=d;}
+},{passive:true});
+
+// ─────────────────────────────────────────────────────────────────
+//  RAYCASTER
+// ─────────────────────────────────────────────────────────────────
+const raycaster=new THREE.Raycaster(),mouse=new THREE.Vector2();
+const tip=document.getElementById("tip");
+function checkHover(){
+  raycaster.setFromCamera(mouse,camera);
+  const hits=raycaster.intersectObjects(clickables,false);
+  if(hits.length){
+    const ud=hits[0].object.userData;tip.style.display="block";
+    const r=canvas.getBoundingClientRect();
+    tip.style.left=Math.min(((mouse.x+1)/2)*r.width+16,r.width-200)+"px";
+    tip.style.top=Math.max(((1-mouse.y)/2)*r.height-20,10)+"px";
+    tip.textContent=ud.label||"";canvas.style.cursor="pointer";
+  }else{tip.style.display="none";canvas.style.cursor="default";}
+}
+function handleClick(){
+  raycaster.setFromCamera(mouse,camera);
+  const hits=raycaster.intersectObjects(clickables,false);
+  if(!hits.length)return;
+  const ud=hits[0].object.userData;
+  if(ud.type==="person"){ST.person=ud.index;goTo("body");}
+  else if(ud.type==="system"){ST.system=ud.system;goTo("system");}
+  else if(ud.type==="sub"){ST.sub=ud.sub;goTo("micro");}
+}
+canvas.addEventListener("click",handleClick);
+canvas.addEventListener("touchend",function(e){
+  if(!e.changedTouches.length)return;
+  const t=e.changedTouches[0],r=canvas.getBoundingClientRect();
+  mouse.x=((t.clientX-r.left)/r.width)*2-1;mouse.y=-((t.clientY-r.top)/r.height)*2+1;
+  handleClick();
+},{passive:false});
+
+// ─────────────────────────────────────────────────────────────────
+//  GROUP & NAVIGATION
+// ─────────────────────────────────────────────────────────────────
+function updateURPOv(){
+  const ov=document.getElementById("urp-ov");
+  if(ST.level!=="crowd"){ov.innerHTML="";return;}
+  const n=ST.crowdSize;let h="";
+  if(ST.group==="all"){
+    h=`<div class="utag" style="color:#00FFB3">R = ${n} people</div><div class="utag">1 / ${n} = <b>${(100/n).toFixed(2)}%</b></div>`;
+  }else if(ST.group==="gender"){
+    const f=allPDs.filter(function(p){return p.female;}).length,m=n-f;
+    h=`<div class="utag" style="color:#FF88CC">♀ ${f}/${n} = ${(f/n*100).toFixed(1)}%</div><div class="utag" style="color:#88CCFF">♂ ${m}/${n} = ${(m/n*100).toFixed(1)}%</div><div class="utag">R = ${n}</div>`;
+  }else if(ST.group==="height"){
+    const tall=allPDs.filter(function(p){return p.height>.96;}).length;
+    h=`<div class="utag" style="color:#FFDD88">Tall: ${tall}/${n}</div><div class="utag" style="color:#AADDFF">Short: ${n-tall}/${n}</div><div class="utag">R = ${n}</div>`;
+  }
+  ov.innerHTML=h;
+}
+window.setGroup=function(mode){
+  ST.group=mode;
+  document.querySelectorAll(".gbtn").forEach(function(b){b.classList.remove("on");});
+  document.getElementById("gb-"+mode).classList.add("on");
+  if(ST.level==="crowd"){walkToNew();updateURPOv();updatePanel();}
+};
+
+function goTo(lvl){
+  const p=document.getElementById("panel");p.style.opacity="0";
+  const gb=document.getElementById("groupbar");
+  setTimeout(function(){
+    ST.level=lvl;
+    const defs={crowd:{r:42+ST.crowdSize*.32,phi:1.05},body:{r:22,phi:.95},system:{r:27,phi:.90},micro:{r:22,phi:.85}};
+    const d=defs[lvl]||defs.crowd;sph.r=d.r;sph.phi=d.phi;
+    if(lvl==="crowd"){buildCrowd();gb.style.display="flex";}
+    else{gb.style.display="none";
+      const pd=allPDs[ST.person||0]||personData(0);
+      if(lvl==="body")buildBody(pd);
+      else if(lvl==="system")buildSystem(ST.system);
+      else if(lvl==="micro")buildMicro(ST.sub);
+    }
+    updateBC();updatePanel();updateURPOv();
+    document.getElementById("backbtn").style.display=lvl==="crowd"?"none":"block";
+    setTimeout(function(){p.style.opacity="1";},120);
+  },280);
+}
+document.getElementById("backbtn").addEventListener("click",function(){
+  if(ST.level==="micro"){ST.sub=null;goTo("system");}
+  else if(ST.level==="system"){ST.system=null;goTo("body");}
+  else if(ST.level==="body"){ST.person=null;goTo("crowd");}
+});
+document.getElementById("bc").addEventListener("click",function(e){
+  const t=e.target.closest(".bci");if(!t||!t.classList.contains("past"))return;
+  const l=t.dataset.l,order=["crowd","body","system","micro"],ci=order.indexOf(ST.level);
+  if(order.indexOf(l)<ci){
+    if(l==="crowd"){ST.person=null;ST.system=null;ST.sub=null;goTo("crowd");}
+    else if(l==="body"){ST.system=null;ST.sub=null;goTo("body");}
+    else if(l==="system"){ST.sub=null;goTo("system");}
+  }
+});
+function updateBC(){
+  const order=["crowd","body","system","micro"],ci=order.indexOf(ST.level);
+  const labels={crowd:"CROWD",body:ST.person!==null?"P."+(ST.person+1):"BODY",system:ST.system?ST.system.label.toUpperCase():"SYSTEM",micro:ST.sub?ST.sub.l.toUpperCase():"MICRO"};
+  order.forEach(function(l,i){const el=document.getElementById("bc-"+l);if(!el)return;
+    el.textContent=labels[l];el.className="bci";
+    if(i===ci)el.classList.add("active");else if(i<ci)el.classList.add("past");});
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  PANEL
+// ─────────────────────────────────────────────────────────────────
+function updatePanel(){
+  const p=document.getElementById("panel");const n=ST.crowdSize,sys=ST.system,sub=ST.sub;
+  let h="";
+  if(ST.level==="crowd"){
+    h=`<div class="pt">STEP 0 — DECLARE R</div>
+    <div class="ph">How big is<br>your crowd?</div>
+    <div class="sl"><span class="slb">R = DECLARED REFERENCE</span><span class="slv" id="sv">${n}</span></div>
+    <input type="range" min="4" max="40" value="${n}" id="csl">
+    <div class="ps">${[4,8,16,24,40].map(function(x){return`<button class="pb${x===n?" on":""}" onclick="setCS(${x})">${x}</button>`;}).join("")}</div>
+    <div class="ub"><div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#E0F4FF;line-height:1.9">
+      <span style="color:#FFB347">1</span> / <span style="color:#00D4FF">${n}</span> = <span style="color:#00FFB3;font-size:20px;font-weight:700">${(100/n).toFixed(2)}%</span></div>
+      <div style="font-size:9px;color:#1a4455;margin-top:4px">each person's declared fraction of R</div></div>
+    <div class="ht pulse">↑ CLICK ANY PERSON TO ZOOM IN</div>`;
+  }else if(ST.level==="body"){
+    const pd=allPDs[ST.person||0]||personData(0);
+    h=`<div class="pt" style="color:#FFB347">${pd.female?"♀":"♂"} PERSON ${(ST.person||0)+1} OF ${n}</div>
+    <div class="ph">Inside<br>this person</div>
+    <div class="ub" style="border-color:rgba(255,179,70,.2);background:rgba(255,179,70,.05)">
+      <div style="font-size:9px;color:#664422;margin-bottom:4px;letter-spacing:.1em">n/R IN CROWD</div>
+      <div class="uv" style="color:#FFB347;font-size:28px">${(100/n).toFixed(2)}%</div></div>
+    <div style="font-size:10px;color:#8ab4c8;line-height:1.75;margin-bottom:.9rem">
+      Now R = 1. Select a glowing orb to explore this body's systems.</div>
+    <div class="ht pulse">↑ CLICK A GLOWING ORB</div>`;
+  }else if(ST.level==="system"&&sys){
+    h=`<div class="pt" style="color:${sys.hex}">${sys.icon} ${sys.label.toUpperCase()}</div>
+    <div class="ph">${fmt(sys.n)}<br><span style="font-size:13px;font-weight:400;color:#556677">${sys.unit}</span></div>
+    <div style="font-size:10px;color:#7a9aaa;margin-bottom:.9rem;line-height:1.65">${sys.desc}</div>
+    <div class="slist">${sys.subs.map(function(s,i){const pct=s.n/sys.n;const pd=(pct*100)<.1?"<0.1":(pct*100).toFixed((pct*100)>=10?0:1);
+      return`<div class="srow" style="background:${s.c}0A" onclick="clickSub(${i})">
+        <div class="sri"><span class="sn">${s.l}</span><div style="display:flex;gap:.6rem;align-items:center">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#334">${fmt(s.n)}</span>
+          <span class="sp" style="color:${s.c};min-width:40px;text-align:right">${pd}%</span></div></div>
+        <div class="sbg"><div class="sbf" style="width:${Math.min(pct*100,100)}%;background:${s.c};box-shadow:0 0 6px ${s.c}55"></div></div></div>`;
+    }).join("")}</div><div class="ht pulse">↑ CLICK ORBS OR LIST ITEMS</div>`;
+  }else if(ST.level==="micro"&&sub&&sys){
+    const pct=sub.n/sys.n*100;const ps=pct<.001?pct.toFixed(4):pct.toFixed(2);
+    h=`<div class="pt" style="color:${sub.c}">${sub.l.toUpperCase()}</div>
+    <div class="ph">${fmt(sub.n)}</div>
+    <div class="ub" style="border-color:${sub.c}30;background:${sub.c}08">
+      <div style="font-size:9px;color:#446644;margin-bottom:4px;letter-spacing:.1em">n/R — ${sys.label}</div>
+      <div class="uv" style="color:${sub.c};font-size:30px">${ps}%</div>
+      <div style="font-size:9px;color:#335533;margin-top:4px">${fmt(sub.n)} / ${fmt(sys.n)} ${sys.unit}</div></div>
+    <div style="font-size:9px;color:#1a2a1a;letter-spacing:.15em;margin-bottom:.5rem">FULL REFERENCE CHAIN</div>
+    <div class="ci"><span class="cl">CROWD LEVEL</span><span class="cv" style="color:#00FFB3">${(100/n).toFixed(2)}%</span></div>
+    <div class="ci"><span class="cl">${sys.label.toUpperCase()}</span><span class="cv" style="color:${sys.hex}">${ps}%</span></div>
+    <div class="ci" style="border-color:rgba(199,125,255,.12);background:rgba(199,125,255,.04)">
+      <span class="cl" style="color:#3a1a4a">COMPOUND</span>
+      <span class="cv" style="color:#C77DFF">${((1/n)*(sub.n/sys.n)*100).toFixed(5)}%</span></div>`;
+  }
+  p.innerHTML=h;p.classList.remove("fade");void p.offsetWidth;p.classList.add("fade");
+  if(ST.level==="crowd"){
+    const csl=document.getElementById("csl");
+    if(csl)csl.addEventListener("input",function(e){ST.crowdSize=Number(e.target.value);document.getElementById("sv").textContent=ST.crowdSize;buildCrowd();updatePanel();updateURPOv();});
+  }
+}
+window.setCS=function(n){ST.crowdSize=n;buildCrowd();updatePanel();updateURPOv();};
+window.clickSub=function(i){ST.sub=ST.system.subs[i];goTo("micro");};
+
+// ─────────────────────────────────────────────────────────────────
+//  WALK SYSTEM
+// ─────────────────────────────────────────────────────────────────
+const WALK_SPD=3.2,ARRIVE=.18;
+function updateWalk(dt){
+  if(ST.level!=="crowd")return;
+  personMeshes.forEach(function(pm){
+    if(pm.arrived)return;
+    const dx=pm.tx-pm.cx,dz=pm.tz-pm.cz,dist=Math.sqrt(dx*dx+dz*dz);
+    if(dist<ARRIVE){pm.cx=pm.tx;pm.cz=pm.tz;pm.arrived=true;pm.grp.position.x=pm.tx;pm.grp.position.z=pm.tz;pm.grp.rotation.y=0;return;}
+    const spd=Math.min(dist,WALK_SPD*pm.pd.walkSpeed*dt);
+    pm.cx+=dx/dist*spd;pm.cz+=dz/dist*spd;
+    pm.grp.position.x=pm.cx;pm.grp.position.z=pm.cz;
+    pm.grp.rotation.y=Math.atan2(dx,dz);
+    pm.walkT+=dt*pm.pd.walkSpeed*2.5;
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  MAIN LOOP
+// ─────────────────────────────────────────────────────────────────
+let clock=0,lastT=performance.now();
+function animate(){
+  requestAnimationFrame(animate);
+  const now=performance.now(),dt=Math.min((now-lastT)/1000,.05);lastT=now;clock+=dt;
+
+  // Orbit camera
+  if(!isDrag)sph.theta+=.0008;
+  const cy=sph.r*Math.cos(sph.phi),cxz=sph.r*Math.sin(sph.phi);
+  camera.position.x+=(Math.cos(sph.theta)*cxz-camera.position.x)*.05;
+  camera.position.z+=(Math.sin(sph.theta)*cxz-camera.position.z)*.05;
+  camera.position.y+=(cy-camera.position.y)*.05;
+  camera.lookAt(0,ST.level==="body"?2:0,0);
+
+  ambCloud.rotation.y=clock*.015;
+
+  updateWalk(dt);
+
+  if(ST.level==="crowd"){
+    personMeshes.forEach(function(pm,pi){
+      const walking=!pm.arrived;
+      const wt=pm.walkT;
+
+      // Leg walk animation
+      pm.grp.children.forEach(function(c){
+        if(!c.userData.isLeg)return;
+        const s=c.userData.legSide,part=c.userData.legPart;
+        const phase=s>0?0:Math.PI;
+        if(part==="upper")c.rotation.x=Math.sin(wt+phase)*(walking?.40:0);
+        if(part==="lower")c.rotation.x=Math.max(0,Math.sin(wt+phase+.6)*.32)*(walking?1:0);
+      });
+
+      // Breathing when idle
+      if(pm.arrived){const bs=1+Math.sin(clock*1.4+pi*.5)*.012;pm.grp.scale.y=pm.pd.height*.80*bs;}
+
+      // Scan ring ripple effect
+      pm.grp.children.forEach(function(c){
+        if(c.userData.isScanRing){
+          c.material.opacity=.08+Math.sin(clock*1.8+pi*.3+c.userData.ringIdx*.8)*.12;
+        }
+        if(c.userData.isPulse){
+          const ps=(clock*.6+pi*.4)%1;
+          c.scale.setScalar(.5+ps*1.2);
+          c.material.opacity=.18*(1-ps);
+        }
+        // Heart beat
+        if(c.userData.isHeart){const hb=1+Math.abs(Math.sin(clock*3.5+pi*.28))*.28;c.scale.setScalar(hb);}
+        if(c.userData.isHeartGlow){c.material.opacity=.08+Math.abs(Math.sin(clock*3.5+pi*.28))*.16;}
+        if(c.userData.isHeartRing){c.scale.setScalar(1+Math.abs(Math.sin(clock*3.5+pi*.28))*.35);c.material.opacity=.3*(1-Math.abs(Math.sin(clock*3.5+pi*.28)));}
+        // Lung breathe
+        if(c.userData.isLung){const lb=1+Math.sin(clock*1.2+pi*.22)*.10;c.scale.set(.68*lb,lb,.62*lb);}
+      });
+    });
+  }
+
+  // Body scan line
+  if(G.body){
+    G.body.children.forEach(function(c){
+      if(c.userData.scan){c.position.y=((clock*.45)%1)*9-4;c.material.opacity=.15+Math.sin(clock*2)*.06;}
+    });
+    G.body.rotation.y=Math.sin(clock*.1)*.06;
+    // Orb pulse
+    clickables.forEach(function(m,ci){
+      if(m.userData.type==="system"&&m.material){m.material.emissiveIntensity=.68+Math.sin(clock*2+ci*.7)*.24;m.scale.setScalar(1+Math.sin(clock*2.2+ci*.9)*.04);}
+    });
+  }
+
+  // System / micro orbit
+  if(G.system&&ST.level==="system"){G.system.rotation.y+=.0038;clickables.forEach(function(m,ci){if(m.userData.type==="sub"&&m.material)m.material.emissiveIntensity=.58+Math.sin(clock*1.8+ci*.8)*.26;});}
+  if(G.system&&ST.level==="micro"){G.system.rotation.y+=.004;G.system.children.forEach(function(c){if(c.userData.autoRing){c.rotation.x+=c.userData.rs.x;c.rotation.y+=c.userData.rs.y;}});}
+
+  renderer.render(scene,camera);
+}
+
+// ─────────────────────────────────────────────────────────────────
+//  BOOT
+// ─────────────────────────────────────────────────────────────────
+buildCrowd();updateBC();updatePanel();animate();
+setTimeout(function(){const l=document.getElementById("loading");l.style.transition="opacity .7s";l.style.opacity="0";setTimeout(function(){l.remove();},700);},1000);
+</script>
+</body>
+</html>
