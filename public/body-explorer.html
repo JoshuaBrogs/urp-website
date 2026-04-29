@@ -1200,5 +1200,276 @@ function animate(){
 buildCrowd();updateBC();updatePanel();animate();
 setTimeout(function(){const l=document.getElementById("loading");l.style.transition="opacity .7s";l.style.opacity="0";setTimeout(function(){l.remove();},700);},1000);
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     URP QUESTIONNAIRE — fixed bottom-right, always visible
+═══════════════════════════════════════════════════════════ -->
+<style>
+#urp-quiz{
+  position:fixed;bottom:1.25rem;right:1.25rem;width:320px;z-index:200;
+  background:linear-gradient(160deg,rgba(0,8,18,.97),rgba(0,15,25,.99));
+  border:1px solid rgba(0,212,255,.22);font-family:'Space Mono',monospace;
+  box-shadow:0 0 40px rgba(0,212,255,.08),0 4px 32px rgba(0,0,0,.6);
+  transition:all .3s ease;
+}
+#urp-quiz.collapsed{width:200px;}
+#qhdr{
+  padding:.65rem 1rem;border-bottom:1px solid rgba(0,212,255,.12);
+  display:flex;align-items:center;justify-content:space-between;cursor:pointer;
+}
+#qhdr-title{font-size:9px;letter-spacing:.22em;color:#00D4FF;}
+#qtoggle{font-size:11px;color:#00D4FF;background:none;border:none;cursor:pointer;padding:0;line-height:1;}
+#qbody{padding:1rem;transition:all .3s;}
+.q-progress{display:flex;gap:3px;margin-bottom:1rem;}
+.q-dot{flex:1;height:2px;background:rgba(0,212,255,.12);transition:background .3s;}
+.q-dot.done{background:#00FFB3;}
+.q-dot.active{background:#00D4FF;}
+.q-label{font-size:8px;letter-spacing:.2em;color:rgba(0,212,255,.5);margin-bottom:.5rem;}
+.q-text{font-size:12px;color:#C8E8F0;line-height:1.7;margin-bottom:1rem;}
+.q-choices{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.85rem;}
+.q-choice{
+  background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.15);
+  color:#8ab4c8;font-size:11px;font-family:'Space Mono',monospace;
+  padding:.55rem .75rem;cursor:pointer;text-align:left;
+  transition:all .2s;line-height:1.4;
+}
+.q-choice:hover{background:rgba(0,212,255,.1);border-color:rgba(0,212,255,.4);color:#E0F4FF;}
+.q-choice.selected{background:rgba(0,255,179,.08);border-color:#00FFB3;color:#00FFB3;}
+.q-choice.wrong{background:rgba(255,107,107,.06);border-color:rgba(255,107,107,.3);color:rgba(255,107,107,.7);}
+.q-reveal{
+  background:rgba(0,255,179,.05);border-left:2px solid #00FFB3;
+  padding:.75rem .9rem;margin-bottom:.85rem;display:none;
+}
+.q-reveal.show{display:block;}
+.q-reveal-label{font-size:8px;letter-spacing:.2em;color:#00FFB3;margin-bottom:.4rem;}
+.q-reveal-text{font-size:11px;color:#A8D8C8;line-height:1.7;}
+.q-next{
+  background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.3);
+  color:#00D4FF;font-size:10px;letter-spacing:.12em;
+  padding:.5rem 1.1rem;cursor:pointer;font-family:'Space Mono',monospace;
+  display:none;transition:all .2s;
+}
+.q-next:hover{background:rgba(0,212,255,.18);}
+.q-next.show{display:inline-block;}
+#q-final{display:none;padding:.25rem 0;}
+#q-final .qf-title{font-size:11px;color:#00FFB3;letter-spacing:.1em;margin-bottom:.6rem;font-weight:700;}
+#q-final .qf-body{font-size:11px;color:#A8D8C8;line-height:1.8;margin-bottom:.85rem;}
+#q-final .qf-formula{
+  font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;
+  color:#00FFB3;text-align:center;padding:.75rem;
+  background:rgba(0,255,179,.06);border:1px solid rgba(0,255,179,.2);
+  text-shadow:0 0 20px rgba(0,255,179,.4);margin-bottom:.85rem;
+}
+#q-final .qf-link{
+  font-size:9px;color:#00D4FF;letter-spacing:.12em;text-decoration:none;
+  border:1px solid rgba(0,212,255,.2);padding:.4rem .85rem;display:inline-block;
+  transition:all .2s;
+}
+#q-final .qf-link:hover{background:rgba(0,212,255,.1);}
+#q-restart{background:none;border:none;font-size:9px;color:rgba(0,212,255,.35);
+  letter-spacing:.1em;cursor:pointer;font-family:'Space Mono',monospace;
+  margin-left:.75rem;padding:.4rem 0;}
+#q-restart:hover{color:#00D4FF;}
+</style>
+
+<div id="urp-quiz">
+  <div id="qhdr" onclick="quizToggle()">
+    <span id="qhdr-title">THE URP QUESTION</span>
+    <button id="qtoggle">−</button>
+  </div>
+  <div id="qbody">
+    <!-- Progress dots -->
+    <div class="q-progress" id="q-progress"></div>
+
+    <!-- Question area -->
+    <div id="q-area">
+      <div class="q-label" id="q-label"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-choices" id="q-choices"></div>
+      <div class="q-reveal" id="q-reveal">
+        <div class="q-reveal-label">THE URP ANSWER</div>
+        <div class="q-reveal-text" id="q-reveal-text"></div>
+      </div>
+      <button class="q-next" id="q-next" onclick="quizNext()">NEXT →</button>
+    </div>
+
+    <!-- Final screen -->
+    <div id="q-final">
+      <div class="qf-title">YOU'VE FOUND IT.</div>
+      <div class="qf-body">Every answer changed when you changed the reference. The count didn't change — the declared R did. 1 is always complete. But only within a declared reference.</div>
+      <div class="qf-formula">n / R = meaning</div>
+      <div class="qf-body" style="font-size:10px;color:#6a9aaa;">The people you see walking are 6. Or 1 group. Or 12 arms. Or ~50 trillion cells. Or ~3×10²⁷ atoms. Every answer is correct. Every answer depends on what you declared as R.</div>
+      <a href="/" class="qf-link">EXPLORE THE PAPERS →</a>
+      <button id="q-restart" onclick="quizRestart()">restart</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var QUESTIONS=[
+  {
+    label:"QUESTION 1 OF 5 — THE GROUP",
+    text:"Look at the figures in front of you. How many are there?",
+    choices:["There are 6 people","There is 1 group","There are 2 genders","It depends what you're counting"],
+    correct:3,
+    reveal:"All four answers are correct — and that's the point. You just chose a different declared reference each time. The count doesn't change. What you declared as your unit of measurement does."
+  },
+  {
+    label:"QUESTION 2 OF 5 — ONE PERSON",
+    text:"Pick one figure. They are 1 person. But inside that 1 person — how many hearts are there?",
+    choices:["1 heart","0 hearts — the heart is just tissue","Depends on the reference","A heart is just cells, not really 1 thing"],
+    correct:2,
+    reveal:"Within the declared reference of 'this body,' there is exactly 1 heart. Within the declared reference of 'cardiac muscle cells,' there are around 3 billion. 1 is always complete — but only within a declared reference R."
+  },
+  {
+    label:"QUESTION 3 OF 5 — ZOOMING IN",
+    text:"That heart has approximately 3 billion cells. Is 3 billion greater than 1?",
+    choices:["Yes — 3 billion is obviously greater than 1","No — it's still 1 heart","Neither — the question is incomplete","Only if you declared cells as your reference"],
+    correct:3,
+    reveal:"3 billion is greater than 1 only if your declared reference R is 'one cell.' If your declared reference R is 'one heart,' you have exactly 1/1. The number changes because R changed — not because the heart changed."
+  },
+  {
+    label:"QUESTION 4 OF 5 — THE ATOM",
+    text:"Each cell contains roughly 100 trillion atoms. Which of these is true?",
+    choices:[
+      "The person is really 10²⁸ atoms, not 1 person",
+      "The person is 1 — the atoms don't matter",
+      "All of these are true simultaneously",
+      "You need to declare a reference before the question makes sense"
+    ],
+    correct:3,
+    reveal:"Every scale is valid. 1 person. 1 heart. 3 billion cells. 10²⁸ atoms. Each is exactly correct within its own declared reference. None of them contradict each other. They are the same reality measured at different declared R values."
+  },
+  {
+    label:"QUESTION 5 OF 5 — THE CONCLUSION",
+    text:"So what is '1'?",
+    choices:[
+      "The number after 0",
+      "A complete whole — but only within a declared reference",
+      "An abstract concept with no fixed meaning",
+      "The smallest natural number"
+    ],
+    correct:1,
+    reveal:"1 = n/R where n equals R. The only value where the measurement equals the declared reference exactly. It is always complete. But completeness only has meaning when you have declared what 'one whole' means. Without R, there is no 1. Without 1, there is no counting."
+  }
+];
+
+var qState={current:0,answered:{},collapsed:false};
+
+function quizInit(){
+  var prog=document.getElementById('q-progress');
+  prog.innerHTML='';
+  QUESTIONS.forEach(function(_,i){
+    var d=document.createElement('div');
+    d.className='q-dot';d.id='qdot-'+i;
+    prog.appendChild(d);
+  });
+  quizRender();
+}
+
+function quizRender(){
+  var q=QUESTIONS[qState.current];
+  document.getElementById('q-final').style.display='none';
+  document.getElementById('q-area').style.display='block';
+  document.getElementById('q-label').textContent=q.label;
+  document.getElementById('q-text').textContent=q.text;
+
+  // Choices
+  var cc=document.getElementById('q-choices');
+  cc.innerHTML='';
+  q.choices.forEach(function(c,i){
+    var btn=document.createElement('button');
+    btn.className='q-choice';
+    btn.textContent=c;
+    var answered=qState.answered[qState.current];
+    if(answered!==undefined){
+      if(i===q.correct)btn.classList.add('selected');
+      else if(i===answered&&answered!==q.correct)btn.classList.add('wrong');
+    } else {
+      btn.onclick=function(){quizAnswer(i);};
+    }
+    cc.appendChild(btn);
+  });
+
+  // Reveal
+  var rev=document.getElementById('q-reveal');
+  var revTxt=document.getElementById('q-reveal-text');
+  var answered=qState.answered[qState.current];
+  if(answered!==undefined){
+    revTxt.textContent=q.reveal;
+    rev.classList.add('show');
+  } else {
+    rev.classList.remove('show');
+  }
+
+  // Next button
+  var nxt=document.getElementById('q-next');
+  if(answered!==undefined){
+    nxt.classList.add('show');
+    if(qState.current===QUESTIONS.length-1){
+      nxt.textContent='SEE THE CONCLUSION →';
+    } else {
+      nxt.textContent='NEXT QUESTION →';
+    }
+  } else {
+    nxt.classList.remove('show');
+  }
+
+  // Progress dots
+  QUESTIONS.forEach(function(_,i){
+    var dot=document.getElementById('qdot-'+i);
+    if(!dot)return;
+    dot.className='q-dot';
+    if(qState.answered[i]!==undefined)dot.classList.add('done');
+    else if(i===qState.current)dot.classList.add('active');
+  });
+}
+
+function quizAnswer(idx){
+  qState.answered[qState.current]=idx;
+  quizRender();
+}
+
+function quizNext(){
+  if(qState.current<QUESTIONS.length-1){
+    qState.current++;
+    quizRender();
+  } else {
+    // Show final
+    document.getElementById('q-area').style.display='none';
+    document.getElementById('q-final').style.display='block';
+    // All dots done
+    QUESTIONS.forEach(function(_,i){
+      var dot=document.getElementById('qdot-'+i);
+      if(dot)dot.className='q-dot done';
+    });
+  }
+}
+
+function quizRestart(){
+  qState={current:0,answered:{},collapsed:false};
+  document.getElementById('q-final').style.display='none';
+  document.getElementById('q-area').style.display='block';
+  quizInit();
+}
+
+function quizToggle(){
+  qState.collapsed=!qState.collapsed;
+  var quiz=document.getElementById('urp-quiz');
+  var body=document.getElementById('qbody');
+  var toggle=document.getElementById('qtoggle');
+  if(qState.collapsed){
+    body.style.display='none';
+    toggle.textContent='+';
+    quiz.classList.add('collapsed');
+  } else {
+    body.style.display='block';
+    toggle.textContent='−';
+    quiz.classList.remove('collapsed');
+  }
+}
+
+quizInit();
+</script>
 </body>
 </html>
