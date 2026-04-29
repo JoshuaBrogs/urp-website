@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo, memo, lazy, Suspense } from "react";
 
 // ═══════════════════════════════════════════
 // DESIGN SYSTEM
@@ -13,6 +13,48 @@ const T = {
   body:"system-ui,-apple-system,'Segoe UI',sans-serif",
   warn:"#FF6B6B", gold:"#FFB347", blue:"#00D4FF", purple:"#C77DFF",
 };
+
+
+// ═══════════════════════════════════════════════════════════════════════
+//  GLOBAL STYLES — injected once, replaces repeated inline style objects
+// ═══════════════════════════════════════════════════════════════════════
+const GLOBAL_CSS = `
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { background: #05080A; color: #F0EDE8; font-family: system-ui,-apple-system,'Segoe UI',sans-serif; overflow-x: hidden; }
+  button { font-family: inherit; }
+  a { color: inherit; }
+  textarea, input { font-family: inherit; color: inherit; }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+  ::selection { background: rgba(0,255,179,0.2); }
+  @keyframes floatUp {
+    0%,100%{transform:translateY(0) translateX(0);}
+    33%{transform:translateY(-30px) translateX(12px);}
+    66%{transform:translateY(-15px) translateX(-8px);}
+  }
+  @keyframes urpPulse {
+    0%,100%{transform:scale(1);opacity:.6}
+    50%{transform:scale(1.4);opacity:1}
+  }
+  @keyframes fadeIn {
+    from{opacity:0;transform:translateY(16px);}
+    to{opacity:1;transform:none;}
+  }
+  .fp{position:absolute;font-weight:700;animation:floatUp var(--dur) var(--delay) ease-in-out infinite;}
+  .anim-in{animation:fadeIn 0.7s ease both;}
+  .scroll-hide{scrollbar-width:none;-ms-overflow-style:none;}
+  .scroll-hide::-webkit-scrollbar{display:none;}
+  .btn-primary{background:#00FFB3;color:#020A06;border:none;font-weight:700;cursor:pointer;transition:background .2s;}
+  .btn-primary:hover{background:#00DDA0;}
+  .btn-ghost{background:transparent;border:1px solid rgba(0,255,179,0.3);color:#00FFB3;cursor:pointer;transition:border-color .2s;}
+  .btn-ghost:hover{border-color:#00FFB3;}
+`;
+
+function GlobalStyles() {
+  return <style dangerouslySetInnerHTML={{__html: GLOBAL_CSS}}/>;
+}
 
 // ═══════════════════════════════════════════
 // DATA
@@ -222,12 +264,17 @@ function ParticleField(){
   const animRef=useRef();
   const chars="01nR/∑π∞÷×½⅓∫";
   useEffect(()=>{
-    const n=30;
+    // Pause animation when tab is hidden — saves battery on mobile
+    let active = true;
+    const onVisChange = () => { active = !document.hidden; };
+    document.addEventListener('visibilitychange', onVisChange);
+    const n=window.innerWidth<768?14:28;
     const p=Array.from({length:n},(_,i)=>({id:i,x:Math.random()*100,y:Math.random()*100,
       vx:(Math.random()-.5)*.015,vy:(Math.random()-.5)*.015,
       char:chars[Math.floor(Math.random()*chars.length)],op:Math.random()*.06+.01,sz:Math.floor(Math.random()*7+7),ct:Math.floor(Math.random()*300)}));
     setPts(p);
     const loop=()=>{
+      if(!active){animRef.current=requestAnimationFrame(loop);return;}
       setPts(prev=>prev.map(p=>{
         let x=(p.x+p.vx+100)%100,y=(p.y+p.vy+100)%100;
         const ct=p.ct-1;
@@ -236,7 +283,7 @@ function ParticleField(){
       animRef.current=requestAnimationFrame(loop);
     };
     animRef.current=requestAnimationFrame(loop);
-    return()=>cancelAnimationFrame(animRef.current);
+    return()=>{cancelAnimationFrame(animRef.current);document.removeEventListener('visibilitychange',onVisChange);};
   },[]);
   return(
     <div style={{position:"fixed",inset:0,pointerEvents:"none",overflow:"hidden",zIndex:0}}>
@@ -1168,11 +1215,13 @@ function StickySection({id, height="200vh", children, bg=T.bg}) {
         alignItems:"center", justifyContent:"center",
         background:bg, overflow:"hidden",
         paddingTop:64,
+        willChange:"transform",
+        WebkitBackfaceVisibility:"hidden",
       }}>
         <div style={{
           width:"100%", maxHeight:"calc(100vh - 80px)",
           overflowY:"auto", overflowX:"hidden",
-          scrollbarWidth:"none", msOverflowStyle:"none",
+           msOverflowStyle:"none",
           display:"flex", flexDirection:"column",
           alignItems:"center", justifyContent:"center",
         }}>
@@ -1189,19 +1238,21 @@ function AnimIn({children, delay=0, from="bottom"}) {
   const [vis, setVis] = useState(false);
   useEffect(()=>{
     const el = ref.current; if(!el) return;
+    // Use IntersectionObserver — fires once, then disconnects (no ongoing cost)
     const obs = new IntersectionObserver(
-      ([e])=>{ if(e.isIntersecting) setVis(true); },
-      {threshold:0.05, rootMargin:"0px 0px 0px 0px"}
+      ([e])=>{ if(e.isIntersecting){ setVis(true); obs.disconnect(); } },
+      {threshold:0.05}
     );
     obs.observe(el);
     return ()=>obs.disconnect();
   },[]);
-  const transforms = {bottom:"translateY(40px)",top:"translateY(-40px)",left:"translateX(-40px)",right:"translateX(40px)"};
+  const transforms = {bottom:"translateY(32px)",top:"translateY(-32px)",left:"translateX(-32px)",right:"translateX(32px)"};
   return (
     <div ref={ref} style={{
       opacity: vis ? 1 : 0,
       transform: vis ? "none" : transforms[from],
-      transition: `opacity 0.9s ease ${delay}s, transform 0.9s ease ${delay}s`,
+      transition: `opacity 0.75s ease ${delay}s, transform 0.75s ease ${delay}s`,
+      willChange: vis ? "auto" : "opacity, transform",
     }}>
       {children}
     </div>
@@ -1854,7 +1905,7 @@ function URPChatbot() {
           <div style={{
             flex: 1, overflowY: 'auto', padding: '1rem 1.25rem',
             display: 'flex', flexDirection: 'column', gap: '.85rem',
-            scrollbarWidth: 'none',
+            
           }}>
             {messages.map((m, i) => (
               <div key={i} style={{
@@ -1959,7 +2010,7 @@ function URPChatbot() {
                 padding: '.6rem .85rem', resize: 'none',
                 outline: 'none', lineHeight: 1.5,
                 maxHeight: 100, overflowY: 'auto',
-                scrollbarWidth: 'none',
+                
                 transition: 'border-color .15s',
               }}
               onFocus={e => e.currentTarget.style.borderColor = 'rgba(0,255,179,.35)'}
@@ -2003,6 +2054,7 @@ export default function App(){
   const handleSelectPaper=(paper)=>{setSelectedPaper(paper);setPage("PaperDetail");window.scrollTo(0,0);};
   return(
     <div style={{background:T.bg,minHeight:"100vh",color:T.text,fontFamily:T.body}}>
+      <GlobalStyles/>
       <Nav page={page} go={go} mobile={mobile}/>
       {page==="Home"&&<><HeroSection go={go}/><WhatSection/><AxiomsSection go={go}/><QuestionsSection go={go}/><Footer go={go}/></>}
       {page==="Papers"&&<PapersPage onSelectPaper={handleSelectPaper} mobile={mobile} go={go}/>}
