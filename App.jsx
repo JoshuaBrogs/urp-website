@@ -246,7 +246,7 @@ function ParticleField(){
           {p.char}
         </div>
       ))}
-      <URPChatbot/>
+      {/* <URPChatbot/> */}
     </div>
   );
 }
